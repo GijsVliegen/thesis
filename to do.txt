@@ -1,0 +1,9 @@
+takenlijst thesis:
+
+tests runnen met optimale vtree
+
+plot met meer bars voor de random order variation
+
+skeleton versie van de presentatie maken
+
+nieuwe heuristiek over nadenken: die gebasseerd op welke variabelen er in de sdd zitten
