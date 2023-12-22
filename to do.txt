@@ -1,9 +1,11 @@
 takenlijst thesis:
 
-tests runnen met optimale vtree
+tests runnen met optimale vtree -> onmogelijk, optimale vtree hangt af van finale sdd + in een volledige compilatie zou de vtree enkel onder bep. voorwaarden mogen veranderen, omdat apply gebeurt op sdd's genormalizeerd voor dezelfde vtree. pre computing van een vtree kan wel maar past niet in de scope van de thesis
 
-plot met meer bars voor de random order variation
+plot met meer bars voor de random order variation -> done
 
 skeleton versie van de presentatie maken
 
-nieuwe heuristiek over nadenken: die gebasseerd op welke variabelen er in de sdd zitten
+nieuwe heuristiek over nadenken: die gebasseerd op welke variabelen er in de sdd zitten -> done
+	splitsen in sdds genormalizeerd voor vtree.left(), voor vtree.right(), en middle
+	

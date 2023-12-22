@@ -5,7 +5,7 @@ import pylab
 import scipy.stats as stats
 
 def randomOrderPlot():
-    filename = "output/randomOrderCompTimeVariation_20_10_OR_reverse.txt"
+    filename = "output/randomOrderCompTimeVariation_20_15_OR.txt"
     with open(filename, 'r') as file:
         # Read lines from the file
         lines = file.readlines()
@@ -20,32 +20,42 @@ def randomOrderPlot():
         except SyntaxError:
             print(f"Invalid list format in line: {line}")
 
-        nrOfClausesList.append(int(line[:start_pos].split(" ")[1]))
-        current_list = sorted(current_list)[5:-5] #5 grootste en kleinste elementen weglaten om eventuele foute uitschieters weg te laten
+        #nrOfClausesList.append(int(line[:start_pos].split(" ")[1]))
+        current_list = sorted(current_list)#[5:-5] #5 grootste en kleinste elementen weglaten om eventuele foute uitschieters weg te laten
         lists.append(current_list)
     plotMaxMinAverageList(lists)
+
+
+    plt.xlabel('#clausen per cnf')
+    plt.ylabel('tijd (in s)')
+    plt.title("Variatie in compilatietijd bij willekeurige apply ordening")
+    plt.yscale('log')
+    plt.legend()
+    plt.savefig("randomOrderVariation.png") #savefig moet blijkbaar voor show() komen
 
 def plotMaxMinAverageList(lists):
     averageList = []
     maxList = []
     minList = []
-    for list in lists:        
+    nrOfVars = 15
+    listNrOfClauses=list(tuple(range(5, int(nrOfVars*5), 5)))
+    for oneList in lists:        
         max = 0
         min = 99999
         sum = 0
-        for i in list:
+        for i in oneList:
             if i > max:
                 max = i
             if i < min:
                 min = i
             sum += i
-        averageList.append(sum/len(list))
+        averageList.append(sum/len(oneList))
         maxList.append(max)
         minList.append(min)
 
-    plt.plot(minList, label='min')
-    plt.plot(averageList, label='average')
-    plt.plot(maxList, label='max')
+    plt.plot(listNrOfClauses, minList, label='min')
+    plt.plot(listNrOfClauses, averageList, label='average')
+    plt.plot(listNrOfClauses, maxList, label='max')
 
 def getListFromLine(line):
     start_pos = line.find('[')
@@ -58,24 +68,33 @@ def getListFromLine(line):
     return current_list
 
 def heuristicVsRandomPlot():
-    filename = "output/randomVsHeuristic_20_10_10_OR_1.txt"
+    filename = "output/randomVsHeuristic_20_15_5_1_OR_[1, 2, 3].txt"
+    heuristiekenList = getListFromLine(filename)
+
     with open(filename, 'r') as file:
         # Read lines from the file
         lines = file.readlines()
     lines = [line.strip() for line in lines]
-    
+        
     randomList = getListFromLine(lines[1])
-    heuristicList = getListFromLine(lines[2])
-
-    plt.hist(randomList, bins=100, alpha=0.5, label='random')
-    plt.hist(heuristicList, bins=100, alpha=0.5, label='heuristic')
-
+    #plt.hist(randomList, bins=100, alpha=0.5, label='random')
+    diff = []
+    for index in range(len(lines[2:])):
+        heuristiek = heuristiekenList[index]
+        heuristicList = getListFromLine(lines[2 + index])
+        oneDiff = [heur/rand for (rand, heur) in zip(randomList, heuristicList)]
+        #plt.hist(oneDiff, bins = 100, alpha = 0.5, label = f"diff heur {heuristiek}")
+        plt.boxplot(oneDiff, positions = [heuristiek], widths=.8)
+        #plt.hist(heuristicList, bins=100, alpha=0.5, label=f"heur {heuristiek}")
+    #plt.plot(randomList, label='random')
+    #plt.plot(heuristicList, label='heuristic')
+    plt.xlabel('heuristiek')
+    plt.ylabel('tijd relatief tot willekeurige volgorde')
+    plt.title("Relatieve compilatietijd bij heuristieken")
+    plt.savefig("heuristieken results boxplot.png")
 def __main__():
-    heuristicVsRandomPlot() 
-    plt.xlabel('X-axis Label')
-    plt.ylabel('Y-axis Label')
-    plt.yscale('log')
-    plt.legend()
+    #heuristicVsRandomPlot() 
+    randomOrderPlot()
     plt.show()
 # Show the plot
 

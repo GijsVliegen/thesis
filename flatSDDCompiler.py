@@ -8,7 +8,7 @@ class SDDcompiler:
 
         self.sddManager = sddManager
         if self.sddManager is None:
-            vtree = Vtree(var_count=nrOfVars, vtree_type="right") #kan nog aangepast worden voor experiment
+            vtree = Vtree(var_count=nrOfVars, vtree_type="balanced") #kan nog aangepast worden voor experiment
             self.sddManager = SddManager.from_vtree(vtree)
         self.literalSdds = {}
 

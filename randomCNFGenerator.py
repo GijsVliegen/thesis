@@ -2,7 +2,33 @@ from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 from thesis_files.propositional_formula import FormulaContainer, FormulaOp, RefFormula
 import random
 
-def generateRandomCnf(nrOfClauses, nrOfVars, cnf3 = False):
+def generateRandomCnfDimacs(nrOfVars, nrOfClauses, cnf3 = True):
+    cnf_formula = []
+    # Generate random CNF clauses
+    for _ in range(nrOfClauses):
+
+        lengthOfClause = random.randint(1, nrOfVars) if not cnf3 else 3
+        clause = []
+        while len(clause) != lengthOfClause:
+            newVar = random.randint(1, nrOfVars)
+            #ofwel de pos ofwel de neg var toevoegen, beide heeft geen zin
+            if newVar not in clause and -newVar not in clause:
+                if random.choice([True, False]):
+                    clause.append(newVar)
+                else:
+                    clause.append(-newVar)
+            clause.sort()
+        cnf_formula.append(clause)
+    return getAsDimacsString(cnf_formula, nrOfVars)
+
+def getAsDimacsString(cnf_formula,  nrOfVars):
+    string = f'p cnf {nrOfVars} {len(cnf_formula)}'
+    for clause in cnf_formula:
+        string += '\n' + ' '.join(map(str, clause)) + ' 0'
+    return string
+
+
+def generateRandomCnfFormula(nrOfClauses, nrOfVars, cnf3 = False):
 
     formula = FormulaContainer()
 
