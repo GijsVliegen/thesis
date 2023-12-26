@@ -30,7 +30,7 @@ class RandomOrderApply():
         print(f" exit dead count = {self.compiler.sddManager.dead_count()}")
         self.compiler.sddManager.garbage_collect()
 
-    def __init__(self, nrOfSdds, nrOfVars, nrOfClauses, nrOfCnfs, cnf3 = True, operation = "OR"):
+    def __init__(self, nrOfSdds, nrOfVars, nrOfClauses, nrOfCnfs = 1, cnf3 = True, operation = "OR"):
         self.nrOfSdds = nrOfSdds
         self.nrOfVars = nrOfVars
         self.nrOfClauses = nrOfClauses

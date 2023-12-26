@@ -2,11 +2,105 @@
 from randomCNFGenerator import generateRandomCnfDimacs
 from randomOrderApplier import RandomOrderApply
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
+from flatSDDCompiler import SDDcompiler
+import ctypes
 import os
 
 nrOfSdds=10
 nrOfVars=20
 nrOfClauses=10
+
+def getSizes(sddManager, vars, baseSdd, operation = 0):
+    newSddSizes = []
+    for var in vars:
+        newSdd = sddManager.apply(baseSdd, var, operation) #0 voor conjoin, 1 voor disjoin
+        newSddSizes.append(newSdd.size()) #nakijken of sdds wel overeenkomen: gebruik Sdd.global_model_count()
+    return newSddSizes
+
+def testApplyOrderedVsReversed():
+    """een sdd eerst opslaan,
+    dan volgende zaken proberen, met balanced vtree alfabetisch order van vars: 
+        applyen met eerste var, en applyen met andere var, kijken hoeveel nodes in finale resultaat
+    dan, sdd omzetten naar andere vtree, kijken weet applyen met eerste var, dan met andere var, kijken hoeveel nodes in finaal resultaat."""
+
+    """order van vars veranderen -> gebruik SddManager.var_order, reverse en Vtree.new_with_var_order"""
+
+    """vars accessen dmv integers"""
+    
+    """is_var_used ook zeer interessat"""
+    nrOfSdds = 1
+    nrOfVars = 16
+    nrOfClauses = 50 
+    operation = 0 #0 voor conjoin, 1 voor disjoin
+    filenameStr = "testApplyOnOneVarSdd"
+    byte_string = filenameStr.encode('utf-8')
+    char_pointer = ctypes.create_string_buffer(byte_string)
+    filenamePtr = ctypes.cast(char_pointer, ctypes.c_char_p).value
+    nrOfIterations = 1000
+
+    randomApplier = RandomOrderApply(nrOfIterations, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
+    orderedCompiler = SDDcompiler(nrOfVars=nrOfVars)
+    varOrder = orderedCompiler.sddManager.var_order()
+    varOrder.reverse()
+    reversedCompiler = SDDcompiler(nrOfVars=nrOfVars)
+    reversedCompiler.sddManager = SddManager.from_vtree(Vtree.new_with_var_order(nrOfVars, varOrder, "balanced"))
+    
+    orderedVars = []
+    for i in range(nrOfVars):
+        orderedVars.append(orderedCompiler.sddManager.literal(i+1))
+    reversedVars = []
+    for i in range(nrOfVars):
+        reversedVars.append(reversedCompiler.sddManager.literal(i+1))
+
+    sizeComparisons = [0]*nrOfVars
+    for i in range(nrOfIterations):
+        baseSdd = randomApplier.baseSdds[i]
+        baseSdd.save(filenamePtr)
+        orderedSdd = orderedCompiler.sddManager.read_sdd_file(filenamePtr)
+        orderedSizes = getSizes(orderedCompiler.sddManager, orderedVars, orderedSdd, operation)
+        #print(f"ordered sizes : {orderedSizes}")
+        reversedSdd = reversedCompiler.sddManager.read_sdd_file(filenamePtr)
+        reversedSizes = getSizes(reversedCompiler.sddManager, reversedVars, reversedSdd, operation)
+        #print(f"reversed sized: {reversedSizes}")
+        for i in range(nrOfVars):
+            if orderedSizes[i] > reversedSizes[i]:
+                sizeComparisons[i] += 1
+    print(sizeComparisons)
+
+    """wat kunnen we afleiden uit de resultaten: 
+    als een variabele links in de sdd staat, gaat die de sdd in het algemeen minder groter maken, dan wanneer de variabele rechts staat,
+    maar het effect is best klein
+    hoe groter het aantal clauses per sdd -> hoe groter het effect
+    
+    waarom is het effect zo klein bij laag aantal clauses:
+        size wordt vergeleken tussen sdds met 2 verschillende vtree's
+        -> klein aantal clauses, vtree heeft groter effect op size van sdd
+        -> vergelijking tussen sdds hangt minder af van die ene variabele en meer van die random vtree of die goed uitkomt voor die sdd"""
+    
+def testApplyOnOneVar():
+    nrOfSdds = 1
+    nrOfVars = 16
+    nrOfClauses = 40     
+    operation = 0 #0 voor conjoin, 1 voor disjoin
+    nrOfIterations = 1000
+
+    randomApplier = RandomOrderApply(nrOfIterations, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
+    vars = []
+    for i in range(nrOfVars):
+        vars.append(randomApplier.compiler.sddManager.literal(i+1))
+
+    sizeComparisons = [0]*nrOfVars
+    for i in range(nrOfIterations):
+        baseSdd = randomApplier.baseSdds[i]
+        sizes = getSizes(randomApplier.compiler.sddManager, vars, baseSdd, operation)
+        #print(f"ordered sizes : {orderedSizes}")
+        for i in range(nrOfVars):
+            sizeComparisons[i] += sizes[i]/baseSdd.size() #lager getal geeft aan dat sdd algemeen kleiner wordt
+    for i in range(nrOfVars):
+        sizeComparisons[i] /= nrOfIterations
+        sizeComparisons[i] = round(sizeComparisons[i], 3)
+    print(sizeComparisons)
+
 
 def testDimacs():
     print(generateRandomCnfDimacs(nrOfClauses, nrOfVars))
@@ -78,7 +172,9 @@ def getVtreeFig():
 
 #testCorrectWorkingHeuristics()
 #testVtreeFunctions()
-getVtreeFig()
+#getVtreeFig()
+#testApplyOrderedVsReversed()
+testApplyOnOneVar()
 
 """
 

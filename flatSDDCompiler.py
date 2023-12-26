@@ -4,11 +4,11 @@ from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 
 class SDDcompiler:
 
-    def __init__(self, nrOfVars, sddManager = None):
+    def __init__(self, nrOfVars, sddManager = None, vtree_type = "balanced"):
 
         self.sddManager = sddManager
         if self.sddManager is None:
-            vtree = Vtree(var_count=nrOfVars, vtree_type="balanced") #kan nog aangepast worden voor experiment
+            vtree = Vtree(var_count=nrOfVars, vtree_type=vtree_type) #kan nog aangepast worden voor experiment
             self.sddManager = SddManager.from_vtree(vtree)
         self.literalSdds = {}
 
