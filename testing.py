@@ -1,6 +1,6 @@
 #dot -Tpng -O sdd.dot
 from randomCNFGenerator import generateRandomCnfDimacs
-from randomOrderApplier import RandomOrderApply, SddVarAppearance, SddVarAppearancesList
+from randomOrderApplier import RandomOrderApply, SddVarAppearancesList
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 from flatSDDCompiler import SDDcompiler
 import ctypes

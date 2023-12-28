@@ -4,32 +4,92 @@ from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode, SddManager
 import random
 import ctypes
 
-class SddVarAppearancesList(list):
-    def __init__(self, sddManager):
-        super().__init__(self)
-        self.var_order = self.getVarPriority(sddManager.vtree())
-        self.SddVarAppearances = []
-        self.sddManager = sddManager
+class extendedList(list):
+    def __init__(self, sdds):
+        super().__init__()
+        for i in sdds:
+            self.append(i)
+    def update(self, newSdd):
+        self.append(newSdd)
+    def getNextSddsToApply(self):
+        return self.pop(0), self.pop(0)
+    def __getitem__(self, index):
+        return super().__getitem__(index)
+    def _insert(self, index, newSddSize): #inserts object thats already of right type
+        super().insert(index, newSddSize)
 
-    def pop(self, index):
-        return self.SddVarAppearances.pop(index).getSdd()
+class randomList(extendedList):
+    def __init__(self, sdds):
+        super().__init__(sdds)
+    def getNextSddsToApply(self):
+        firstInt = random.randint(0, len(self)-1)
+        firstSdd = self[firstInt]
+        secondInt = firstInt
+        while (secondInt == firstInt):
+            secondInt = random.randint(0, len(self)-1)
+        secondSdd = self[secondInt]
+        if firstInt > secondInt:
+            self.remove(firstSdd)
+            self.remove(secondSdd)
+        else:
+            self.remove(secondSdd)
+            self.remove(firstSdd)
+        return firstSdd, secondSdd
     
+class SddSizeList(extendedList):
+    def __init__(self, sdds):
+        super().__init__(sdds)
+    def pop(self, index):
+        return super().pop(index).getSdd()
+    def insert(self, index, newSdd):
+        super().insert(index, self.SddSize(newSdd))
+    def append(self, newSdd):
+        super().append(self.SddSize(newSdd))
+    def update(self, newSdd):
+        insort_right(self, self.SddSize(newSdd))
+    
+    class SddSize:
+        def __init__(self, sdd):
+            self.sdd = sdd
+            self.size = sdd.size()
+        def __lt__(self, other):
+            return self.size < other.size
+        def getSdd(self):
+            return self.sdd
+
+class SddVarAppearancesList(extendedList):
+    def __init__(self, sdds, sddManager):
+        self.var_order = self.getVarPriority(sddManager.vtree())
+        self.sddManager = sddManager
+        super().__init__(sdds)
+    
+    def pop(self, index):
+        return super().pop(index).getSdd()
     def insert(self, index, newSdd):
         varList = self.sddManager.sdd_variables(newSdd)
-        newSddVarAppearance = SddVarAppearance(newSdd, varList, self.var_order)
-        self.SddVarAppearances.insert(index, newSddVarAppearance)
-    
-    def len(self):
-        return len(self.SddVarAppearances)
-
+        newSddVarAppearance = self.SddVarAppearance(newSdd, varList, self.var_order)
+        super().insert(index, newSddVarAppearance)
     def append(self, newSdd):
         varList = self.sddManager.sdd_variables(newSdd)
-        newSddVarAppearance = SddVarAppearance(newSdd, varList, self.var_order)
-        self.SddVarAppearances.append(newSddVarAppearance)
-    
-    def sort(self):
-        self.SddVarAppearances.sort()
+        newSddVarAppearance = self.SddVarAppearance(newSdd, varList, self.var_order)
+        super().append(newSddVarAppearance)
+    def update(self, newSdd):
+        varList = self.sddManager.sdd_variables(newSdd)
+        insort_right(self, self.SddVarAppearance(newSdd, varList, self.var_order))
 
+    class SddVarAppearance:
+        def __init__(self, sdd, varsUsed, varOrdering):
+            self.sdd = sdd
+            self.varsUsed = varsUsed
+            self.varOrdering = varOrdering
+        def __lt__(self, other):
+            for i in self.varOrdering:
+                if self.varsUsed[i-1] > other.varsUsed[i-1]: #als die een voorkomen heeft van een variabele hoog en links in de vtree en other niet -> sdd eerst zetten
+                    return True
+            return False
+        def getSdd(self):
+            return self.sdd
+        
     def getVarPriority(self, vtree):
         varOrdering = []
         queue = [vtree]
@@ -43,23 +103,27 @@ class SddVarAppearancesList(list):
                 queue.append(leftVtree)
                 queue.append(rightVtree)
         return varOrdering
-        #breadt first de vtree doorlopen, en dan de varOrder opslaan
+        #breadth first de vtree doorlopen, en dan de varOrder opslaan
+        
+def insort_right(sortedList, newElement, key = lambda x: x, lo=0, hi=None):
+    """Insert item x in list a, and keep it sorted assuming a is sorted.
+    If x is already in a, insert it to the right of the rightmost x.
+    Optional args lo (default 0) and hi (default len(a)) bound the
+    slice of a to be searched.
+    """
 
-class SddVarAppearance:
-    def __init__(self, sdd, varsUsed, varOrdering):
-        self.sdd = sdd
-        self.varsUsed = varsUsed
-        self.varOrdering = varOrdering
-
-    def __lt__(self, other):
-        for i in self.varOrdering:
-            if self.varsUsed[i-1] > other.varsUsed[i-1]: #als die een voorkomen heeft van een variabele hoog en links in de vtree en other niet -> sdd eerst zetten
-                return True
-        return False
-    
-    def getSdd(self):
-        return self.sdd
-
+    newElementVal = key(newElement)
+    if lo < 0:
+        raise ValueError('lo must be non-negative')
+    if hi is None:
+        hi = len(sortedList)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if newElementVal < key(sortedList[mid]):
+            hi = mid
+        else:
+            lo = mid + 1
+    sortedList._insert(lo, newElement)
 
 class RandomOrderApply():
 
@@ -161,86 +225,35 @@ class RandomOrderApply():
     11 -> verwacht aantal vars / upper bound van de apply op 2 sdd's
     """
 
-    def insort_right(self, sortedList, newElement, key = lambda x: x, lo=0, hi=None):
-        """Insert item x in list a, and keep it sorted assuming a is sorted.
-        If x is already in a, insert it to the right of the rightmost x.
-        Optional args lo (default 0) and hi (default len(a)) bound the
-        slice of a to be searched.
-        """
-
-        newElementVal = key(newElement)
-        if lo < 0:
-            raise ValueError('lo must be non-negative')
-        if hi is None:
-            hi = len(sortedList)
-        while lo < hi:
-            mid = (lo + hi) // 2
-            if newElementVal < key(sortedList[mid]):
-                hi = mid
-            else:
-                lo = mid + 1
-        sortedList.insert(lo, newElement)
-
     def getFirstDataStructure(self, sdds, heuristic):
-        if heuristic == 1:
+        if heuristic == 1 or heuristic == 4:
             #return deque(sorted(childrenSdd, key=lambda sdd: sdd.size()))  #eventuele deque implementatie
-            return sorted(sdds, key=lambda sdd: sdd.size())
-        elif heuristic == 4:
-            dataStructure = SddVarAppearancesList(self.compiler.sddManager)
-            for sdd in sdds:
-                dataStructure.append(sdd)
+            if heuristic == 1:
+                dataStructure = SddSizeList(sdds)
+            else: #heuristic == 4
+                dataStructure = SddVarAppearancesList(sdds, self.compiler.sddManager)
             dataStructure.sort()
             return dataStructure
-        else:
-            return None
-
-    def getNextSddToApply(self, sdds, heuristic, dataStructure = None):
-        if heuristic == 0: 
-            return sdds[-1], sdds[-2], None
-        
-        if dataStructure is None:
-            dataStructure = self.getFirstDataStructure(sdds, heuristic)
-            
-        if heuristic == 1 or heuristic == 4:
-            return dataStructure.pop(0), dataStructure.pop(0), dataStructure
-
+        elif heuristic == 0:
+            return extendedList(sdds)
         elif heuristic == 99:
-            firstInt = random.randint(0, len(sdds)-1)
-            firstSdd = sdds[firstInt]
-            secondInt = firstInt
-            while (secondInt == firstInt):
-                secondInt = random.randint(0, len(sdds)-1)
-            secondSdd = sdds[secondInt]
-            return firstSdd, secondSdd, None
-        else: 
-            print("er is iets mis, heuristiek heeft geen correcte waarde / implementatie")
-            return None, None, None
-
-    def updateDatastructure(self, newSdd, childrenSdd, heuristic, datastructure):
-        if heuristic == 0: 
-            pass
-        elif heuristic == 1: 
-            self.insort_right(datastructure, newSdd, key=lambda sdd: sdd.size())
-        elif heuristic == 4:
-             #werkt niet wtf!
-            self.insort_right(datastructure, newSdd)
-        elif heuristic == 99:
-            pass
-        else: 
-            print("er is iets mis, heuristiek heeft geen correcte waarde / implementatie")
+            return randomList(sdds)
+        else: print(f"heuristiek {heuristic} is nog niet geïmpleneteerd")
 
     def doRandomApply(self):
         return self.doHeuristicApply(99)
 
     #kan mss nog beter gemaakt worden dmv de linker en rechter variable op te slaan samen met de sdd
     #-> snellere computatie van in welke vtree node de sdd zit (links of rechts of beide)
-    def doHeuristicApply2Recursive(self, sdds, parentVtreeNode, innerHeuristic = 99):
+    def doHeuristicApply2Recursive(self, parentVtreeNode, innerHeuristic = 99, sdds = None):
         #recursively split up the children in left.children, right.children en middle.children
         # left children samen (recursief?) applyen, dan right.children, en dan middle.children
+        if sdds == None:
+            sdds = self.baseSdds
         if len(sdds) == 1:
             return sdds[0]
         if parentVtreeNode is None: #bijvoorbeeld omdat
-            pass
+            print("iets geks met parentVtreeNode, is None...")
         left = []
         right = []
         middle = []
@@ -255,43 +268,70 @@ class RandomOrderApply():
                 right.append(sdd)
             else: #side = middle
                 middle.append(sdd)
-        if len(left) == 1:
-            middle.append(left[0])
-        elif len(left) >= 2: 
-            middle.append(self.doHeuristicApply2Recursive(left, parentVtreeNode.left(), innerHeuristic))
-        if len(right) == 1:
-            middle.append(right[0])
-        elif len(right) >= 2: 
-            middle.append(self.doHeuristicApply2Recursive(right, parentVtreeNode.right(), innerHeuristic))
-        return self.doHeuristicApplySdds(middle, innerHeuristic)
+        if len(left) != 0:
+            middle.append(self.doHeuristicApply2Recursive(parentVtreeNode.left(), innerHeuristic, sdds = left))
+        if len(right) != 0:
+            middle.append(self.doHeuristicApply2Recursive(parentVtreeNode.right(), innerHeuristic, sdds = right))
+        return self.doHeuristicApplySdds(innerHeuristic, sdds = middle)
 
-    def doHeuristicApplySdds(self, sdds, heuristic = 1): #base value zou moeten veranderd worden naar de beste sdd
-        datastructure = None
-        while len(sdds) > 1:
-            sdd1, sdd2, datastructure = self.getNextSddToApply(sdds, heuristic, datastructure)
-            sdds.remove(sdd1)
-            sdds.remove(sdd2)
+    def doHeuristicApplySdds(self, heuristic = 1, sdds = None): #base value zou moeten veranderd worden naar de beste heuristiek
+        #print(f"nu: using heuristic {heuristic}")
+        if sdds == None:
+            sdds = self.baseSdds
+        datastructure = self.getFirstDataStructure(sdds, heuristic)
+        while len(datastructure) > 1:
+            sdd1, sdd2 = datastructure.getNextSddsToApply()
             newSdd = self.compiler.sddManager.apply(sdd1, sdd2, self.operationInt)
-            self.updateDatastructure(newSdd, sdds, heuristic, datastructure) #eerst dataStructure updaten, die gebruikt maakt van alle 
-            #overige elementen in childrenSdd, pas daaarne newSdd toevoegen aan childrenSdd
-            sdds.append(newSdd)
+            datastructure.update(newSdd)
             #doSomethingWithResults(rootNodeId, rootNode, newSdd, datastructure)
-        self.collectMostGarbage(sdds[0])
-        return sdds[0]
+        finalSdd = datastructure.pop(0)
+        self.collectMostGarbage(finalSdd)
+        return finalSdd
 
     def doHeuristicApply(self, heuristic):
-        sdds = self.baseSdds.copy()
+        #print(f"using heuristic {heuristic}")
         if heuristic == 2:
-            return self.doHeuristicApply2Recursive(sdds, self.compiler.sddManager.vtree(), 99)
+            return self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), 99)
         if heuristic == 3:
-            return self.doHeuristicApply2Recursive(sdds, self.compiler.sddManager.vtree(), 4)
-        return self.doHeuristicApplySdds(sdds, heuristic)
+            return self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), 4)
+        return self.doHeuristicApplySdds(heuristic)
         
-        # if sdds[0].is_true(): #true or false trivial sdd
-        #     print(f"de sdd is triviaal true, er zijn nog {len(sddsCopy)} sdds over")
-        # if sdds[0].is_false(): #true or false trivial sdd
-        #     print(f"de sdd is triviaal false, er zijn nog {len(sddsCopy)} sdds over")
         
+
+
+
+
+
+    # def getNextSddToApply(self, heuristic, dataStructure = None):
+    #     if heuristic == 0 or heuristic == 1 or heuristic == 4:
+    #         return dataStructure.pop(0), dataStructure.pop(0), dataStructure
+
+    #     elif heuristic == 99:
+    #         firstInt = random.randint(0, len(dataStructure)-1)
+    #         firstSdd = dataStructure[firstInt]
+    #         secondInt = firstInt
+    #         while (secondInt == firstInt):
+    #             secondInt = random.randint(0, len(dataStructure)-1)
+    #         secondSdd = dataStructure[secondInt]
+    #         if firstInt > secondInt:
+    #             dataStructure.remove(firstSdd)
+    #             dataStructure.remove(secondSdd)
+    #         else:
+    #             dataStructure.remove(secondSdd)
+    #             dataStructure.remove(firstSdd)
+    #         return firstSdd, secondSdd, dataStructure
+    #     else: 
+    #         print("er is iets mis, heuristiek heeft geen correcte waarde / implementatie")
+    #         return None, None, None
+
+    # def updateDatastructure(self, newSdd, heuristic, datastructure):
+    #     if heuristic == 0 or heuristic == 99:
+    #         datastructure.append(newSdd)
+    #     elif heuristic == 1 or heuristic == 4: 
+    #         datastructure.update(newSdd)
+    #     else: 
+    #         print("er is iets mis, heuristiek heeft geen correcte waarde / implementatie")
+
     #class vtreeDevision():
     # left bevat een nieuwe opsplitsing
     #     right ook
