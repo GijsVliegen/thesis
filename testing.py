@@ -1,6 +1,6 @@
 #dot -Tpng -O sdd.dot
 from randomCNFGenerator import generateRandomCnfDimacs
-from randomOrderApplier import RandomOrderApply
+from randomOrderApplier import RandomOrderApply, SddVarAppearance, SddVarAppearancesList
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 from flatSDDCompiler import SDDcompiler
 import ctypes
@@ -9,6 +9,18 @@ import os
 nrOfSdds=10
 nrOfVars=20
 nrOfClauses=10
+
+def testSddVarAppearances():
+    #werking van varpriority testen
+    nrOfSdds = 10
+    nrOfVars = 16
+    nrOfClauses = 10
+    randApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, operation="OR", vtree_type="random")
+    sddVarAppearancesList = SddVarAppearancesList(randApplier.compiler.sddManager)
+    varOrdering = sddVarAppearancesList.var_order
+    print(varOrdering)
+
+    finalSdd = randApplier.doHeuristicApply(4)
 
 def getSizes(sddManager, vars, baseSdd, operation = 0):
     newSddSizes = []
@@ -29,9 +41,9 @@ def testApplyOrderedVsReversed():
     
     """is_var_used ook zeer interessat"""
     nrOfSdds = 1
-    nrOfVars = 16
-    nrOfClauses = 50 
-    operation = 0 #0 voor conjoin, 1 voor disjoin
+    nrOfVars = 8
+    nrOfClauses = 10 #als dit te hoog is -> kans op division door zero 
+    operation = 1 #0 voor conjoin, 1 voor disjoin
     filenameStr = "testApplyOnOneVarSdd"
     byte_string = filenameStr.encode('utf-8')
     char_pointer = ctypes.create_string_buffer(byte_string)
@@ -39,11 +51,13 @@ def testApplyOrderedVsReversed():
     nrOfIterations = 1000
 
     randomApplier = RandomOrderApply(nrOfIterations, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
-    orderedCompiler = SDDcompiler(nrOfVars=nrOfVars)
+    orderedCompiler = SDDcompiler(nrOfVars=nrOfVars, vtree_type="left")
     varOrder = orderedCompiler.sddManager.var_order()
-    varOrder.reverse()
+    startReversing = 0
+    endReversing = nrOfVars#int(nrOfVars/2)
+    varOrder = varOrder[:startReversing] + varOrder[startReversing:endReversing][::-1] + varOrder[endReversing:]
     reversedCompiler = SDDcompiler(nrOfVars=nrOfVars)
-    reversedCompiler.sddManager = SddManager.from_vtree(Vtree.new_with_var_order(nrOfVars, varOrder, "balanced"))
+    reversedCompiler.sddManager = SddManager.from_vtree(Vtree.new_with_var_order(nrOfVars, varOrder, "left"))
     
     orderedVars = []
     for i in range(nrOfVars):
@@ -63,26 +77,36 @@ def testApplyOrderedVsReversed():
         reversedSizes = getSizes(reversedCompiler.sddManager, reversedVars, reversedSdd, operation)
         #print(f"reversed sized: {reversedSizes}")
         for i in range(nrOfVars):
-            if orderedSizes[i] > reversedSizes[i]:
+            if orderedSizes[i]/orderedSdd.size() > reversedSizes[i]/reversedSdd.size():
                 sizeComparisons[i] += 1
     print(sizeComparisons)
 
     """wat kunnen we afleiden uit de resultaten: 
-    als een variabele links in de sdd staat, gaat die de sdd in het algemeen minder groter maken, dan wanneer de variabele rechts staat,
-    maar het effect is best klein
+    AND:
+    als een variabele links in de sdd staat, gaat die de sdd in het algemeen minder groter maken, dan wanneer de variabele rechts staat.
     hoe groter het aantal clauses per sdd -> hoe groter het effect
     
     waarom is het effect zo klein bij laag aantal clauses:
         size wordt vergeleken tussen sdds met 2 verschillende vtree's
         -> klein aantal clauses, vtree heeft groter effect op size van sdd
-        -> vergelijking tussen sdds hangt minder af van die ene variabele en meer van die random vtree of die goed uitkomt voor die sdd"""
+        -> vergelijking tussen sdds hangt minder af van die ene variabele en meer van die random vtree of die goed uitkomt voor die sdd
+    OR:
+    als een variabele links in de sdd staat, gaat die de sdd in het algemeen minder groter maken, dan wanneer de variabele rechts staat.
+    hoe groter het aantal clauses per sdd -> hoe groter het effect, 
+        maar ook, het effect wordt minder recursief (bv. links-rechts vs links-links weinig verschil bij groot aantal clauses)
+
+    balanced: ...
+    right-linear: het verschil tussen links en rechts is meer gradueel, maar verschil tussen uitersten is ongeveer gelijk
+    left-linear: het effect van de vtree is veel groter
+        -> misschien een idee om variabelen die niet zo diep in de vtree zitten als leaf, te prioriteren"""
     
+    """aantal clauses ~ complexiteit van sdd
+    complexiteit van sdd ~ ?"""
 def testApplyOnOneVar():
-    nrOfSdds = 1
     nrOfVars = 16
     nrOfClauses = 40     
     operation = 0 #0 voor conjoin, 1 voor disjoin
-    nrOfIterations = 1000
+    nrOfIterations = 100
 
     randomApplier = RandomOrderApply(nrOfIterations, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
     vars = []
@@ -96,10 +120,13 @@ def testApplyOnOneVar():
         #print(f"ordered sizes : {orderedSizes}")
         for i in range(nrOfVars):
             sizeComparisons[i] += sizes[i]/baseSdd.size() #lager getal geeft aan dat sdd algemeen kleiner wordt
+
     for i in range(nrOfVars):
         sizeComparisons[i] /= nrOfIterations
         sizeComparisons[i] = round(sizeComparisons[i], 3)
     print(sizeComparisons)
+    """uit de resultaten van deze test kunnen we ook zien dat als geapplied wordt op een var aan de linkerkant, 
+    dit in het algemeen de sdd kleiner zal maken dan wanneer de var rechts zit"""
 
 
 def testDimacs():
@@ -151,7 +178,7 @@ def testVtreeFunctions():
     print(f"left id = {leftNode.position()}")
     print(f"right id = {rightNode.position()}")
 
-heuristicsList = [1, 2]
+heuristicsList = [1, 2, 3, 4]
 def testCorrectWorkingHeuristics():
     workingCorrect = True
     randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
@@ -170,11 +197,12 @@ def getVtreeFig():
         print(finalSdd.vtree().dot(), file = out)
 
 
-#testCorrectWorkingHeuristics()
+testCorrectWorkingHeuristics()
 #testVtreeFunctions()
 #getVtreeFig()
 #testApplyOrderedVsReversed()
-testApplyOnOneVar()
+#testApplyOnOneVar()
+#testSddVarAppearances()
 
 """
 

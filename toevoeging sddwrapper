@@ -1,0 +1,7 @@
+toevoeging aan pysdd wrapper:
+
+bij sddManager:
+def sdd_variables(SddNode sdd):
+	cdef int* var_order = sddapi_c.sdd_variables(sdd._sddnode, self._sddmanager)
+    	cdef list result = [int_array[i] for i in range(self.var_count()+1]  
+    	return result

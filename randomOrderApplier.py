@@ -1,8 +1,65 @@
 from randomCNFGenerator import generateRandomCnfFormula, generateRandomCnfDimacs
 from flatSDDCompiler import SDDcompiler
-from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
+from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode, SddManager
 import random
 import ctypes
+
+class SddVarAppearancesList(list):
+    def __init__(self, sddManager):
+        super().__init__(self)
+        self.var_order = self.getVarPriority(sddManager.vtree())
+        self.SddVarAppearances = []
+        self.sddManager = sddManager
+
+    def pop(self, index):
+        return self.SddVarAppearances.pop(index).getSdd()
+    
+    def insert(self, index, newSdd):
+        varList = self.sddManager.sdd_variables(newSdd)
+        newSddVarAppearance = SddVarAppearance(newSdd, varList, self.var_order)
+        self.SddVarAppearances.insert(index, newSddVarAppearance)
+    
+    def len(self):
+        return len(self.SddVarAppearances)
+
+    def append(self, newSdd):
+        varList = self.sddManager.sdd_variables(newSdd)
+        newSddVarAppearance = SddVarAppearance(newSdd, varList, self.var_order)
+        self.SddVarAppearances.append(newSddVarAppearance)
+    
+    def sort(self):
+        self.SddVarAppearances.sort()
+
+    def getVarPriority(self, vtree):
+        varOrdering = []
+        queue = [vtree]
+        while len(queue) > 0:
+            nextVtreeNode = queue.pop(0)
+            if nextVtreeNode.is_leaf() == 1:
+                varOrdering.append(nextVtreeNode.var())
+            else:
+                leftVtree = nextVtreeNode.left()
+                rightVtree = nextVtreeNode.right()
+                queue.append(leftVtree)
+                queue.append(rightVtree)
+        return varOrdering
+        #breadt first de vtree doorlopen, en dan de varOrder opslaan
+
+class SddVarAppearance:
+    def __init__(self, sdd, varsUsed, varOrdering):
+        self.sdd = sdd
+        self.varsUsed = varsUsed
+        self.varOrdering = varOrdering
+
+    def __lt__(self, other):
+        for i in self.varOrdering:
+            if self.varsUsed[i-1] > other.varsUsed[i-1]: #als die een voorkomen heeft van een variabele hoog en links in de vtree en other niet -> sdd eerst zetten
+                return True
+        return False
+    
+    def getSdd(self):
+        return self.sdd
+
 
 class RandomOrderApply():
 
@@ -30,7 +87,7 @@ class RandomOrderApply():
         print(f" exit dead count = {self.compiler.sddManager.dead_count()}")
         self.compiler.sddManager.garbage_collect()
 
-    def __init__(self, nrOfSdds, nrOfVars, nrOfClauses, nrOfCnfs = 1, cnf3 = True, operation = "OR"):
+    def __init__(self, nrOfSdds, nrOfVars, nrOfClauses, nrOfCnfs = 1, cnf3 = True, operation = "OR", vtree_type = "balanced"):
         self.nrOfSdds = nrOfSdds
         self.nrOfVars = nrOfVars
         self.nrOfClauses = nrOfClauses
@@ -40,7 +97,7 @@ class RandomOrderApply():
         """
         AND operatie -> 10 keer 50 clauses: zelfde als een cnf met 500 clauses -> skewed result?
         """ 
-        self.compiler = SDDcompiler(nrOfVars=nrOfVars)
+        self.compiler = SDDcompiler(nrOfVars=nrOfVars, vtree_type=vtree_type)
         self.baseSdds = self.generateRandomSdds(nrOfCnfs= nrOfCnfs)
 
     def generateRandomSdds(self, nrOfCnfs = 1):
@@ -95,18 +152,22 @@ class RandomOrderApply():
             -> O(log(n)) om te inserten
     2 -> sdds recursief opsplitsen in 3 subsets left, right en middle adhv vtree, en dan overblijvende sdds met innerHeuristiek 99
     3 -> 2 maar dan met innerHeuristiek 1
+    4 -> van elke sdd oplijsten welke variabelen een voorkomen hebben, dan mbv. die lijst een volgorde opstellen,
+        waarbij een voorkomen van een variabele hoog in de vtree (ondiep) en links, geprioriteerd wordt
+        -> heuristiek 4 is zeer goed bij laag aantal clauses/vars verhouding 
 
     --------kwadratische heuristieken------------
     10 -> verwachte grootte / upper bound van de apply op 2 sdd's
     11 -> verwacht aantal vars / upper bound van de apply op 2 sdd's
     """
 
-    def insort_right(self, sortedList, newElement, key, lo=0, hi=None):
+    def insort_right(self, sortedList, newElement, key = lambda x: x, lo=0, hi=None):
         """Insert item x in list a, and keep it sorted assuming a is sorted.
         If x is already in a, insert it to the right of the rightmost x.
         Optional args lo (default 0) and hi (default len(a)) bound the
         slice of a to be searched.
         """
+
         newElementVal = key(newElement)
         if lo < 0:
             raise ValueError('lo must be non-negative')
@@ -120,16 +181,29 @@ class RandomOrderApply():
                 lo = mid + 1
         sortedList.insert(lo, newElement)
 
+    def getFirstDataStructure(self, sdds, heuristic):
+        if heuristic == 1:
+            #return deque(sorted(childrenSdd, key=lambda sdd: sdd.size()))  #eventuele deque implementatie
+            return sorted(sdds, key=lambda sdd: sdd.size())
+        elif heuristic == 4:
+            dataStructure = SddVarAppearancesList(self.compiler.sddManager)
+            for sdd in sdds:
+                dataStructure.append(sdd)
+            dataStructure.sort()
+            return dataStructure
+        else:
+            return None
+
     def getNextSddToApply(self, sdds, heuristic, dataStructure = None):
         if heuristic == 0: 
             return sdds[-1], sdds[-2], None
-        elif heuristic == 1:
-            if dataStructure is None:
-                #dataStructure = deque(sorted(childrenSdd, key=lambda sdd: sdd.size()))  #eventuele deque implementatie
-                dataStructure = sorted(sdds, key=lambda sdd: sdd.size())
-                return dataStructure.pop(0), dataStructure.pop(0), dataStructure
-            else:
-                return dataStructure.pop(0), dataStructure.pop(0), dataStructure
+        
+        if dataStructure is None:
+            dataStructure = self.getFirstDataStructure(sdds, heuristic)
+            
+        if heuristic == 1 or heuristic == 4:
+            return dataStructure.pop(0), dataStructure.pop(0), dataStructure
+
         elif heuristic == 99:
             firstInt = random.randint(0, len(sdds)-1)
             firstSdd = sdds[firstInt]
@@ -147,6 +221,9 @@ class RandomOrderApply():
             pass
         elif heuristic == 1: 
             self.insort_right(datastructure, newSdd, key=lambda sdd: sdd.size())
+        elif heuristic == 4:
+             #werkt niet wtf!
+            self.insort_right(datastructure, newSdd)
         elif heuristic == 99:
             pass
         else: 
@@ -207,7 +284,7 @@ class RandomOrderApply():
         if heuristic == 2:
             return self.doHeuristicApply2Recursive(sdds, self.compiler.sddManager.vtree(), 99)
         if heuristic == 3:
-            return self.doHeuristicApply2Recursive(sdds, self.compiler.sddManager.vtree(), 1)
+            return self.doHeuristicApply2Recursive(sdds, self.compiler.sddManager.vtree(), 4)
         return self.doHeuristicApplySdds(sdds, heuristic)
         
         # if sdds[0].is_true(): #true or false trivial sdd

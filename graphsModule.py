@@ -68,7 +68,7 @@ def getListFromLine(line):
     return current_list
 
 def heuristicVsRandomPlot():
-    filename = "output/randomVsHeuristic_20_15_5_1_OR_[1, 2, 3].txt"
+    filename = "output/randomVsHeuristic_20_15_5_1_OR_[1, 2, 3, 4].txt"
     heuristiekenList = getListFromLine(filename)
 
     with open(filename, 'r') as file:
@@ -93,8 +93,8 @@ def heuristicVsRandomPlot():
     plt.title("Relatieve compilatietijd bij heuristieken")
     plt.savefig("heuristieken results boxplot.png")
 def __main__():
-    #heuristicVsRandomPlot() 
-    randomOrderPlot()
+    heuristicVsRandomPlot() 
+    #randomOrderPlot()
     plt.show()
 # Show the plot
 

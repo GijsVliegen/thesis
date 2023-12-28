@@ -46,8 +46,8 @@ def randomVsHeuristicApply(nrOfClauses):
     nrOfSdds=20
     nrOfVars=15
     operation="OR"
-    heuristics = [1, 2, 3]
-    iterations = 1000
+    heuristics = [1, 2, 3, 4]
+    iterations = 100
     nrOfCnfs = 1
 
     with open(f"output/randomVsHeuristic_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{nrOfCnfs}_{operation}_{heuristics}.txt", 'w') as file:
@@ -73,7 +73,6 @@ def __main__():
     randomVsHeuristicApply(10)
     randomVsHeuristicApply(25)
     randomVsHeuristicApply(40)
-    randomVsHeuristicApply(50)
     #randomOrderCompTimeVariation()
     #print(times)
     
