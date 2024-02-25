@@ -4,7 +4,7 @@ from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode, SddManager
 import random
 import ctypes
 
-class extendedList(list):
+class ExtendedList(list):
     def __init__(self, sdds):
         super().__init__()
         for i in sdds:
@@ -18,7 +18,7 @@ class extendedList(list):
     def _insert(self, index, newSddSize): #inserts object thats already of right type
         super().insert(index, newSddSize)
 
-class randomList(extendedList):
+class RandomList(ExtendedList):
     def __init__(self, sdds):
         super().__init__(sdds)
     def getNextSddsToApply(self):
@@ -36,7 +36,7 @@ class randomList(extendedList):
             self.remove(firstSdd)
         return firstSdd, secondSdd
     
-class SddSizeList(extendedList):
+class SddSizeList(ExtendedList):
     def __init__(self, sdds):
         super().__init__(sdds)
     def pop(self, index):
@@ -57,7 +57,7 @@ class SddSizeList(extendedList):
         def getSdd(self):
             return self.sdd
 
-class SddVarAppearancesList(extendedList):
+class SddVarAppearancesList(ExtendedList):
     def __init__(self, sdds, sddManager):
         self.var_order = self.getVarPriority(sddManager.vtree())
         self.sddManager = sddManager
@@ -127,6 +127,11 @@ def insort_right(sortedList, newElement, key = lambda x: x, lo=0, hi=None):
 
 class RandomOrderApply():
 
+    def extractCounts(self):
+        temp = self.nodeCounterList
+        self.nodeCounterList = []
+        return temp
+
     def renew(self):
         self.compiler.sddManager.garbage_collect()
         self.baseSdds = self.generateRandomSdds()
@@ -163,6 +168,7 @@ class RandomOrderApply():
         """ 
         self.compiler = SDDcompiler(nrOfVars=nrOfVars, vtree_type=vtree_type)
         self.baseSdds = self.generateRandomSdds(nrOfCnfs= nrOfCnfs)
+        self.nodeCounterList = []
 
     def generateRandomSdds(self, nrOfCnfs = 1):
         randomSdds = []
@@ -235,9 +241,9 @@ class RandomOrderApply():
             dataStructure.sort()
             return dataStructure
         elif heuristic == 0:
-            return extendedList(sdds)
+            return ExtendedList(sdds)
         elif heuristic == 99:
-            return randomList(sdds)
+            return RandomList(sdds)
         else: print(f"heuristiek {heuristic} is nog niet geïmpleneteerd")
 
     def doRandomApply(self):
@@ -283,6 +289,8 @@ class RandomOrderApply():
             sdd1, sdd2 = datastructure.getNextSddsToApply()
             newSdd = self.compiler.sddManager.apply(sdd1, sdd2, self.operationInt)
             datastructure.update(newSdd)
+            self.nodeCounterList.append(self.compiler.sddManager.dead_size())
+            # self.nodeCounterList.append((self.compiler.sddManager.count(), self.compiler.sddManager.live_count(), self.compiler.sddManager.dead_count())) #count, dead_count of live_count
             #doSomethingWithResults(rootNodeId, rootNode, newSdd, datastructure)
         finalSdd = datastructure.pop(0)
         self.collectMostGarbage(finalSdd)

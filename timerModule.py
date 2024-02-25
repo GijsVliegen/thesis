@@ -1,5 +1,6 @@
 from randomOrderApplier import RandomOrderApply
 import timeit
+import numpy
 """
 voer dit uit voor de resultaten in een json file te bewaren
 python3 bench.py -o bench.json
@@ -13,6 +14,24 @@ randomOrderCompTimeVariation:
     -10 sdd
 """
 
+def addCounts(counts):
+    prev = 0
+    total = 0
+    for i in counts:
+        total += max(i - prev, 0)
+        prev = i
+    return total
+
+def doCountingTest(nrOfIterations, randomApplier):
+    times = []
+    totalNodes = []
+    for i in range(nrOfIterations):
+        time = timeit.timeit(lambda: randomApplier.doRandomApply(), number = 1)
+        times.append(time)
+        counts = randomApplier.extractCounts()
+        totalNodes.append(addCounts(counts))
+    return times, totalNodes
+
 def doRandomOrderTest(nrOfIterations, randomApplier):
     times = []
     for i in range(nrOfIterations):
@@ -20,6 +39,22 @@ def doRandomOrderTest(nrOfIterations, randomApplier):
         time = timeit.timeit(lambda: randomApplier.doRandomApply(), number = 1)
         times.append(time)
     return times
+
+def countingVSTiming():
+    nrOfSdds=20
+    nrOfVars=15
+    nrOfIterationsPerSdd = 1000
+    operation="OR"
+    listNrOfClauses=list(tuple(range(5, int(nrOfVars*5), 5)))
+    for nrOfClauses in listNrOfClauses:
+        #print(nrOfClauses)
+        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, nrOfCnfs=1, cnf3=True, operation = operation)
+        times, counts = doCountingTest(nrOfIterationsPerSdd, randomApplier)
+
+        correlation_matrix = numpy.corrcoef(times, counts)
+        correlation_coefficient = correlation_matrix[0, 1]
+        print(f"Correlation Coefficient voor {nrOfClauses} clauses: {correlation_coefficient}")
+
 
 def randomOrderCompTimeVariation():
     nrOfSdds=20
@@ -69,10 +104,11 @@ def randomVsHeuristicApply(nrOfClauses):
             file.write(f"heuristiek {heuristics[i]} times: {heuristicsTimes[i]}\n")
 
 def __main__():
-    randomVsHeuristicApply(5)
-    randomVsHeuristicApply(10)
-    randomVsHeuristicApply(25)
-    randomVsHeuristicApply(40)
+    countingVSTiming()
+    # randomVsHeuristicApply(5)
+    # randomVsHeuristicApply(10)
+    # randomVsHeuristicApply(25)
+    # randomVsHeuristicApply(40)
     #randomOrderCompTimeVariation()
     #print(times)
     

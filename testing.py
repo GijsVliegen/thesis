@@ -5,10 +5,66 @@ from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 from flatSDDCompiler import SDDcompiler
 import ctypes
 import os
+import timeit
 
 nrOfSdds=10
 nrOfVars=20
 nrOfClauses=10
+
+def negation_test(): 
+    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="left")
+    #                       5:{all}
+    #               3:{a,b,c}   6:{d}
+    #       1:{a,b}     4:{c}
+    #  0:{a}    2:{b}
+    mgr = SddManager.from_vtree(vtree)
+    a, b, c, d = mgr.vars
+
+    # verify vtree element count for decision
+    f1 = a & b
+    f2 = b & c
+    f5 = f1 | f2
+    f6 = ~f5
+    with open("sdd5", "w") as out:
+        print(f5.dot(), file=out)
+    with open("sdd6", "w") as out:
+        print(f6.dot(), file=out)
+    
+
+def local_vtree_count_tests():
+    """ test node.vtree_element_count() on a small SDD, with vtree type left """
+    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="left")
+    #                       5:{all}
+    #               3:{a,b,c}   6:{d}
+    #       1:{a,b}     4:{c}
+    #  0:{a}    2:{b}
+    mgr = SddManager.from_vtree(vtree)
+    a, b, c, d = mgr.vars
+
+    # verify vtree element count for decision
+    f1 = a & b
+    f2 = b & c
+    f3 = f1 | f2
+    with open("vtree.dot", "w") as out:
+        print(f3.vtree().dot(), file = out)
+    with open("sdd1", "w") as out:
+        print(f1.dot(), file=out)
+    with open("sdd2", "w") as out:
+        print(f2.dot(), file=out)
+    with open("sdd3", "w") as out:
+        print(f3.dot(), file=out)
+
+
+def countingTests():
+    nrOfSdds = 10
+    nrOfVars = 16
+    nrOfClauses = 10
+    randApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, operation="OR", vtree_type="random")
+    finalSdd = randApplier.doHeuristicApply(4)
+    counts = randApplier.extractCounts()
+    for i in counts:
+        (c, lc, dc) = i
+        print(f"live count = {lc}, dead count = {dc}, total count = {c}")
 
 def testSddVarAppearances():
     #werking van varpriority testen
@@ -197,13 +253,14 @@ def getVtreeFig():
         print(finalSdd.vtree().dot(), file = out)
 
 
-testCorrectWorkingHeuristics()
+negation_test()
+#countingTests()
+# testCorrectWorkingHeuristics()
 #testVtreeFunctions()
 #getVtreeFig()
 #testApplyOrderedVsReversed()
 #testApplyOnOneVar()
 #testSddVarAppearances()
-
 """
 
 output_directory = "/home/gijs/school/23-24/thesisUbuntu/output"
