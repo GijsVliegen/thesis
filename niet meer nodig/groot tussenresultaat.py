@@ -7,9 +7,9 @@ from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 import os
 import graphviz
 
-vtree = Vtree(var_count=4, var_order=[2, 1, 4, 3], vtree_type="right")
+vtree = Vtree(var_count=3, var_order=[1, 2, 3], vtree_type="right")
 sdd = SddManager.from_vtree(vtree)
-a, b, c, d = sdd.vars
+a, b, c= sdd.vars
 
 # Build SDD for formula
 a = SddManager.literal(sdd, 1)
@@ -18,16 +18,14 @@ b = SddManager.literal(sdd, 2)
 NOTb = SddManager.literal(sdd, -2)
 c = SddManager.literal(sdd, 3)
 NOTc = SddManager.literal(sdd, -3)
-d = SddManager.literal(sdd, 4)
-NOTd = SddManager.literal(sdd, -4)
 
 f1 = a.disjoin(b)
-f2 = a
-f3 = NOTa.disjoin(c)
+f2 = b
+f3 = NOTb.disjoin(c)
 #f3 = c.conjoin(NOTa.disjoin(c))
 
-f1f2 = sdd.apply(f1, f2, 0) #f1.conjoin(f2)
-f1f3 = sdd.apply(f1, f3, 0)
+f1f2 = f1.conjoin(f2) #sdd.apply(f1, f2, 0) #f1.conjoin(f2)
+f1f3 = f1.conjoin(f3) #sdd.apply(f1, f3, 0)
 f2f3 = f2.conjoin(f3)
 final1 = f1f2.conjoin(f3)
 final2 = f1f3.conjoin(f2)

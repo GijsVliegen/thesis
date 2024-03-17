@@ -1,11 +1,12 @@
 #dot -Tpng -O sdd.dot
 from randomCNFGenerator import generateRandomCnfDimacs
-from randomOrderApplier import RandomOrderApply, SddVarAppearancesList
+from randomOrderApplier import RandomOrderApply, SddVarAppearancesList, SddVtreeCountList
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 from flatSDDCompiler import SDDcompiler
 import ctypes
 import os
 import timeit
+import graphviz
 
 nrOfSdds=10
 nrOfVars=20
@@ -29,7 +30,42 @@ def negation_test():
         print(f5.dot(), file=out)
     with open("sdd6", "w") as out:
         print(f6.dot(), file=out)
-    
+
+def vtree_count_implementation_test():
+    """ test node.vtree_element_count() on an SDDNode with more than 2 elements """
+    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="balanced")
+    # 3:{all}
+    # 1:{a,b}      5:{c,d}
+    # 0:{a} 2:{b}  4:{c}    6:{d}
+    mgr = SddManager.from_vtree(vtree)
+    a, b, c, d = mgr.vars
+    # a & b -> c
+    # a & -b -> c&d
+    # b -> -c
+    f1 = ~(a & b) | c
+    f2 = ~(a & ~b) | (c & d)
+    f3 = ~(b) | ~c
+    f4 = f1 & f2 
+    f5 = f4 & f3
+    # Source(f4.dot()).view()
+    # assert (f1.local_vtree_element_count() == [0, 4, 0, 2, 0, 0, 0])
+    # assert (f2.local_vtree_element_count() == [0, 4, 0, 2, 0, 2, 0])
+    # assert (f3.local_vtree_element_count() == [0, 0, 0, 2, 0, 0, 0])
+    # assert (f5.local_vtree_element_count() == [0, 8, 0, 4, 0, 2, 0])
+    print(f3.local_vtree_element_count())
+    print(f4.local_vtree_element_count())
+    print(f5.local_vtree_element_count())
+    # with open("f3.dot", "w") as out:
+    #     print(f3.dot(), file = out)
+    # graphviz.Source(f3.dot()).render("f3", format='png')
+    # with open("f4.dot", "w") as out:
+    #     print(f4.dot(), file = out)
+    # graphviz.Source(f4.dot()).render("f4", format='png')
+    # with open("f5.dot", "w") as out:
+    #     print(f5.dot(), file = out)
+    # graphviz.Source(f5.dot()).render("f5", format='png')
+    print(SddVtreeCountList._getVtreeOrder(f5.vtree()))
+
 
 def local_vtree_count_tests():
     """ test node.vtree_element_count() on a small SDD, with vtree type left """
@@ -45,15 +81,8 @@ def local_vtree_count_tests():
     f1 = a & b
     f2 = b & c
     f3 = f1 | f2
-    with open("vtree.dot", "w") as out:
-        print(f3.vtree().dot(), file = out)
-    with open("sdd1", "w") as out:
-        print(f1.dot(), file=out)
-    with open("sdd2", "w") as out:
-        print(f2.dot(), file=out)
-    with open("sdd3", "w") as out:
-        print(f3.dot(), file=out)
-
+    print(f1.local_vtree_element_count())
+    # vtreeOrderList = SddVtreeCountList(f3)
 
 def countingTests():
     nrOfSdds = 10
@@ -252,8 +281,9 @@ def getVtreeFig():
     with open("vtree.dot", "w") as out:
         print(finalSdd.vtree().dot(), file = out)
 
-
-negation_test()
+vtree_count_implementation_test()
+#local_vtree_count_tests()
+#negation_test()
 #countingTests()
 # testCorrectWorkingHeuristics()
 #testVtreeFunctions()

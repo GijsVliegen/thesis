@@ -4,6 +4,11 @@ from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode, SddManager
 import random
 import ctypes
 
+#uitbreiding van List met functies:
+    # getNextSddsToApply() -> moet geïmplementeerd worden, 
+    # _insert(), 
+    # __getitem__(), 
+    # update()  
 class ExtendedList(list):
     def __init__(self, sdds):
         super().__init__()
@@ -18,6 +23,7 @@ class ExtendedList(list):
     def _insert(self, index, newSddSize): #inserts object thats already of right type
         super().insert(index, newSddSize)
 
+#kiest telkens 2 random sdds uit de list 
 class RandomList(ExtendedList):
     def __init__(self, sdds):
         super().__init__(sdds)
@@ -35,7 +41,8 @@ class RandomList(ExtendedList):
             self.remove(secondSdd)
             self.remove(firstSdd)
         return firstSdd, secondSdd
-    
+
+#houdt een lijst bij van SddSize (achter de schermen), die gesorteerd zijn per size van de sdd 
 class SddSizeList(ExtendedList):
     def __init__(self, sdds):
         super().__init__(sdds)
@@ -57,6 +64,79 @@ class SddSizeList(ExtendedList):
         def getSdd(self):
             return self.sdd
 
+class SddVtreeCountList(ExtendedList):
+    def __init__(self, sdds, topvtreeNode):
+        super().__init__(sdds)
+        # self.vtreeOrder = self._getVtreeOrder(topvtreeNode)
+        self.topvtreeNode = topvtreeNode
+    def pop(self, index):
+        return super().pop(index).getSdd()
+    def insert(self, index, newSdd):
+        super.insert(index, self.SddVtreeCount(newSdd))
+    def append(self, newSdd):
+        super.append(self.SddVtreeCount(newSdd))
+    def update(self, newSdd):
+        pass #nog in te vullen
+
+    def getUpperLimit(self, sdd1, sdd2, topvtreeNode):
+        SddVtreeCount1 = self.SddVtreeCount(sdd1)
+        SddVtreeCount2 = self.SddVtreeCount(sdd2)
+        return SddVtreeCount1._getUpperLimi(SddVtreeCount1, SddVtreeCount2)
+
+    class SddVtreeCount:
+        def __init__(self, sdd):
+            self.sdd = sdd
+            self.vtreeCount = sdd.local_vtree_element_count()
+        #nog aan te vullen
+        def _getUpperLimit(self, sddVtreeCount1, sddVtreeCount2):
+            sdd1 = sddVtreeCount1.sdd
+            sdd2 = sddVtreeCount2.sdd
+            #vtree moet top-down doorlopen worden? maar hoe list juist doorlopen dan?
+            topVtreeNode1 = sdd1.vtree().position()
+            topVtreeNode2 = sdd2.vtree().position()
+            topVtreeNode = Vtree.lca(topVtreeNode1, topVtreeNode2)
+            #mbv dit de vtreeCount uitbreiden naar hogere vtree nodes indien primes
+            if (topVtreeNode1 != topVtreeNode):
+                currentTopNode = topVtreeNode1
+                while (currentTopNode.parent() != topVtreeNode):
+                    if (currentTopNode.parent().left() == currentTopNode):
+                        sddVtreeCount1[currentTopNode.parent().position()] = 2
+                    currentTopNode = currentTopNode.parent() 
+            newVtreeCount = []
+            for (i,j) in zip(sddVtreeCount1.vtreeCount, sddVtreeCount2.vtreeCount):
+                if i == 0 and j != 0: i = 1
+                if i != 0 and j == 0: j = 1
+                newVtreeCount.append(i*j)
+            newVtreeCount = self._enforceVarLimit(newVtreeCount, topVtreeNode)
+            return sum(newVtreeCount)
+        
+        def _enforceVarLimit(self, newVtreeCount, topVtreeNode):
+            return newVtreeCount
+
+        # def _sumListAccordingToVtree(self, vtreeCount, vtreeOrder, index):
+        #     levelCount = vtreeCount[index]
+        #     (left, right) = vtreeOrder[index]
+        #     if left != -1: levelCount += vtreeCount[index] * self._sumListAccordingToVtree(vtreeCount, vtreeOrder, left)
+        #     if right != -1: levelCount += vtreeCount[index] * self._sumListAccordingToVtree(vtreeCount, vtreeOrder, right)
+        #     return levelCount
+
+    def _getVtreeOrder(topVtreeNode):
+        vtreeOrdering = {}
+        queue = [topVtreeNode.root()]
+        while len(queue) > 0:
+            nextVtreeNode = queue.pop(0)
+            if nextVtreeNode.is_leaf() == 1:
+                vtreeOrdering[nextVtreeNode.position()] = (-1, -1)
+            if nextVtreeNode.is_leaf() == 0:
+                leftVtree = nextVtreeNode.left()
+                rightVtree = nextVtreeNode.right()
+                queue.append(leftVtree)
+                queue.append(rightVtree)
+                vtreeOrdering[nextVtreeNode.position()] = (leftVtree.position(), rightVtree.position())
+        return vtreeOrdering
+
+
+#houdt een lijst bij van SddVarAppearance (achter de schermen), die gesorteerd zijn volgens de varpriority
 class SddVarAppearancesList(ExtendedList):
     def __init__(self, sdds, sddManager):
         self.var_order = self.getVarPriority(sddManager.vtree())
