@@ -1,0 +1,35 @@
+
+digraph sdd {
+
+overlap=false
+
+{rank=same; n17 }
+
+n17 [label= "3",style=filled,fillcolor=gray95,shape=circle,height=.25,width=.25]; 
+n17e0
+      [label= "<L>A|<R>C",
+      shape=record,
+      fontsize=20,
+      fontname="Times-Italic",
+      fillcolor=white,
+      style=filled,
+      fixedsize=true,
+      height=.30, 
+      width=.65];
+
+n17->n17e0 [arrowsize=.50];
+n17e1
+      [label= "<L>&not;A|<R>&#8869;",
+      shape=record,
+      fontsize=20,
+      fontname="Times-Italic",
+      fillcolor=white,
+      style=filled,
+      fixedsize=true,
+      height=.30, 
+      width=.65];
+
+n17->n17e1 [arrowsize=.50];
+
+
+}

@@ -14,7 +14,7 @@ class ExtendedList(list):
         super().__init__()
         for i in sdds:
             self.append(i)
-    def update(self, newSdd):
+    def update(self, newSdd): #gebruikt in eigen code
         self.append(newSdd)
     def getNextSddsToApply(self):
         return self.pop(0), self.pop(0)
@@ -48,11 +48,11 @@ class SddSizeList(ExtendedList):
         super().__init__(sdds)
     def pop(self, index):
         return super().pop(index).getSdd()
-    def insert(self, index, newSdd):
+    def insert(self, index, newSdd):       
         super().insert(index, self.SddSize(newSdd))
     def append(self, newSdd):
         super().append(self.SddSize(newSdd))
-    def update(self, newSdd):
+    def update(self, newSdd): 
         insort_right(self, self.SddSize(newSdd))
     
     class SddSize:
@@ -64,76 +64,86 @@ class SddSizeList(ExtendedList):
         def getSdd(self):
             return self.sdd
 
+#houdt een lijst bij van sddVtreeCounts, de lijst van sdds is niet gesorteerd,
+        #achter de schermen wordt een lijst van tupels bijgehouden (estimated size, sdd1, sdd2)
 class SddVtreeCountList(ExtendedList):
-    def __init__(self, sdds, topvtreeNode):
-        super().__init__(sdds)
-        # self.vtreeOrder = self._getVtreeOrder(topvtreeNode)
-        self.topvtreeNode = topvtreeNode
-    def pop(self, index):
-        return super().pop(index).getSdd()
-    def insert(self, index, newSdd):
-        super.insert(index, self.SddVtreeCount(newSdd))
+    def __init__(self, sdds, root):
+        super().__init__([]) #roept append op voor elke sdd in 
+        self.sizeEstimateTuples = ExtendedList([])
+        self.vtreeRoot = root
+        for i in sdds:
+            self.append(i)
+
+    def getNextSddsToApply(self):
+        (_, sddVtreeCount1, sddVtreeCount2) = self.sizeEstimateTuples.pop(0)
+        index = 0
+        while index < len(self.sizeEstimateTuples):
+            sizeEstimateTuples = self.sizeEstimateTuples[index]
+            if (sddVtreeCount1 == sizeEstimateTuples[1] or sddVtreeCount1 == sizeEstimateTuples[2] or 
+                sddVtreeCount2 == sizeEstimateTuples[1] or sddVtreeCount2 == sizeEstimateTuples[2]):
+                del self.sizeEstimateTuples[index]
+            else:
+                index += 1
+        return sddVtreeCount1.getSdd(), sddVtreeCount2.getSdd()
+    # def pop(self, index):                 #onnuttig en onlgische functie voor deze structuur
+    #     sdd = super().pop(index).getSdd()
+    # def insert(self, index, newSdd):      #onnuttige en onlogische functie voor deze structuur
+    #     super.insert(index, self.SddVtreeCount(newSdd))
     def append(self, newSdd):
-        super.append(self.SddVtreeCount(newSdd))
-    def update(self, newSdd):
-        pass #nog in te vullen
+        newSddVtreeCount = self.SddVtreeCount(newSdd)
+        x = 5
+        for sddVtreeCount in self:
+            newSizeEstimateTuple = (SddVtreeCountList._getUpperLimit(sddVtreeCount, newSddVtreeCount, self.vtreeRoot), sddVtreeCount, newSddVtreeCount)
+            #newSizeEstimateTuple = (5, sddVtreeCount, newSddVtreeCount)
+            #om een of andere reden werkt dit niet -> brute force insert
+            insort_right(self.sizeEstimateTuples, newSizeEstimateTuple, key=lambda x: x[0])
+        super().append(newSddVtreeCount)
 
-    def getUpperLimit(self, sdd1, sdd2, topvtreeNode):
-        SddVtreeCount1 = self.SddVtreeCount(sdd1)
-        SddVtreeCount2 = self.SddVtreeCount(sdd2)
-        return SddVtreeCount1._getUpperLimi(SddVtreeCount1, SddVtreeCount2)
+    def update(self, newSdd): 
+        self.append(newSdd)
 
+    def _getUpperLimit(sddVtreeCount1, sddVtreeCount2, root):
+        #lca code in sdd/src/vtree/compare.c, zie github code
+        lcaVtreeNode = Vtree.lca(sddVtreeCount1.topVtreeNode, sddVtreeCount2.topVtreeNode, root)
+        while (condition):
+            if (not lcaVtreeNode.is_leaf()):
+                if (sddVtreeCount1.vtreeRoot.is_sub(lcaVtreeNode.left()) and (sddVtreeCount1.vtreeRoot.is_sub(lcaVtreeNode.right()))):
+                    pass
+                    #count naar 2 zetten
+                if ((sddVtreeCount1.vtreeRoot.is_sub(lcaVtreeNode.left()) and (sddVtreeCount1.vtreeRoot.is_sub(lcaVtreeNode.left())))
+                        or (sddVtreeCount1.vtreeRoot.is_sub(lcaVtreeNode.right()) and (sddVtreeCount1.vtreeRoot.is_sub(lcaVtreeNode.right())))):
+                    #currentNode naar leftchild of rightchild van lca zetten
+                    pass
+
+        # #mbv dit de vtreeCount uitbreiden naar hogere vtree nodes indien primes
+        # for sddVtreeCount in [sddVtreeCount1, sddVtreeCount2]:
+        #     vtreeNode = sddVtreeCount.topVtreeNode
+        #     if (vtreeNode != lcaVtreeNode):
+        #         currentTopNode = vtreeNode
+        #         while (currentTopNode.parent() != lcaVtreeNode):
+        #             if (currentTopNode.parent().left() == currentTopNode):
+        #                 sddVtreeCount.vtreeCount[currentTopNode.parent().position()] = 2
+        #             currentTopNode = currentTopNode.parent()
+        #point wise vermenigvuldigen
+        newVtreeCount = []
+        for (i,j) in zip(sddVtreeCount1.vtreeCount, sddVtreeCount2.vtreeCount):
+            if i == 0 and j != 0: i = 1
+            if i != 0 and j == 0: j = 1
+            newVtreeCount.append(i*j)
+
+        #enforce var limit... has to be implemented
+            
+        return sum(newVtreeCount)
+    
     class SddVtreeCount:
         def __init__(self, sdd):
             self.sdd = sdd
-            self.vtreeCount = sdd.local_vtree_element_count()
-        #nog aan te vullen
-        def _getUpperLimit(self, sddVtreeCount1, sddVtreeCount2):
-            sdd1 = sddVtreeCount1.sdd
-            sdd2 = sddVtreeCount2.sdd
-            #vtree moet top-down doorlopen worden? maar hoe list juist doorlopen dan?
-            topVtreeNode1 = sdd1.vtree().position()
-            topVtreeNode2 = sdd2.vtree().position()
-            topVtreeNode = Vtree.lca(topVtreeNode1, topVtreeNode2)
-            #mbv dit de vtreeCount uitbreiden naar hogere vtree nodes indien primes
-            if (topVtreeNode1 != topVtreeNode):
-                currentTopNode = topVtreeNode1
-                while (currentTopNode.parent() != topVtreeNode):
-                    if (currentTopNode.parent().left() == currentTopNode):
-                        sddVtreeCount1[currentTopNode.parent().position()] = 2
-                    currentTopNode = currentTopNode.parent() 
-            newVtreeCount = []
-            for (i,j) in zip(sddVtreeCount1.vtreeCount, sddVtreeCount2.vtreeCount):
-                if i == 0 and j != 0: i = 1
-                if i != 0 and j == 0: j = 1
-                newVtreeCount.append(i*j)
-            newVtreeCount = self._enforceVarLimit(newVtreeCount, topVtreeNode)
-            return sum(newVtreeCount)
+            self.vtreeCount = [0, 2, 0, 2, 0, 4, 4, 2, 4, 2, 0, 2, 4, 2] #zeker lang genoeg zodat er geen out of bounds access gebeurt
+            #self.vtreeCount = sdd.local_vtree_element_count()
+            self.topVtreeNode = sdd.vtree()
         
-        def _enforceVarLimit(self, newVtreeCount, topVtreeNode):
-            return newVtreeCount
-
-        # def _sumListAccordingToVtree(self, vtreeCount, vtreeOrder, index):
-        #     levelCount = vtreeCount[index]
-        #     (left, right) = vtreeOrder[index]
-        #     if left != -1: levelCount += vtreeCount[index] * self._sumListAccordingToVtree(vtreeCount, vtreeOrder, left)
-        #     if right != -1: levelCount += vtreeCount[index] * self._sumListAccordingToVtree(vtreeCount, vtreeOrder, right)
-        #     return levelCount
-
-    def _getVtreeOrder(topVtreeNode):
-        vtreeOrdering = {}
-        queue = [topVtreeNode.root()]
-        while len(queue) > 0:
-            nextVtreeNode = queue.pop(0)
-            if nextVtreeNode.is_leaf() == 1:
-                vtreeOrdering[nextVtreeNode.position()] = (-1, -1)
-            if nextVtreeNode.is_leaf() == 0:
-                leftVtree = nextVtreeNode.left()
-                rightVtree = nextVtreeNode.right()
-                queue.append(leftVtree)
-                queue.append(rightVtree)
-                vtreeOrdering[nextVtreeNode.position()] = (leftVtree.position(), rightVtree.position())
-        return vtreeOrdering
+        def getSdd(self):
+            return self.sdd
 
 
 #houdt een lijst bij van SddVarAppearance (achter de schermen), die gesorteerd zijn volgens de varpriority
@@ -153,7 +163,7 @@ class SddVarAppearancesList(ExtendedList):
         varList = self.sddManager.sdd_variables(newSdd)
         newSddVarAppearance = self.SddVarAppearance(newSdd, varList, self.var_order)
         super().append(newSddVarAppearance)
-    def update(self, newSdd):
+    def update(self, newSdd): #insert new element while keeping sortedness
         varList = self.sddManager.sdd_variables(newSdd)
         insort_right(self, self.SddVarAppearance(newSdd, varList, self.var_order))
 
@@ -184,7 +194,8 @@ class SddVarAppearancesList(ExtendedList):
                 queue.append(rightVtree)
         return varOrdering
         #breadth first de vtree doorlopen, en dan de varOrder opslaan
-        
+
+#wordt gebruikt voor bepaalde list structuren
 def insort_right(sortedList, newElement, key = lambda x: x, lo=0, hi=None):
     """Insert item x in list a, and keep it sorted assuming a is sorted.
     If x is already in a, insert it to the right of the rightmost x.
@@ -373,7 +384,7 @@ class RandomOrderApply():
             # self.nodeCounterList.append((self.compiler.sddManager.count(), self.compiler.sddManager.live_count(), self.compiler.sddManager.dead_count())) #count, dead_count of live_count
             #doSomethingWithResults(rootNodeId, rootNode, newSdd, datastructure)
         finalSdd = datastructure.pop(0)
-        self.collectMostGarbage(finalSdd)
+        self.collectMostGarbage()
         return finalSdd
 
     def doHeuristicApply(self, heuristic):

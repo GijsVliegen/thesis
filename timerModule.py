@@ -58,7 +58,7 @@ def countingVSTiming():
 
 def randomOrderCompTimeVariation():
     nrOfSdds=20
-    nrOfVars=20
+    nrOfVars=16
     nrOfIterationsPerSdd = 10000
     operation="OR"
     listNrOfClauses=list(tuple(range(5, int(nrOfVars*5), 5)))
@@ -79,12 +79,11 @@ def doHeuristicTest(heuristics, randomApplier):
 
 def randomVsHeuristicApply(nrOfClauses):
     nrOfSdds=20
-    nrOfVars=15
+    nrOfVars=16
     operation="OR"
     heuristics = [1, 2, 3, 4]
-    iterations = 100
+    iterations = 1000
     nrOfCnfs = 1
-
     with open(f"output/randomVsHeuristic_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{nrOfCnfs}_{operation}_{heuristics}.txt", 'w') as file:
         file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operation}, heuristiek = {heuristics}" + '\n')
         randomTimes = []
@@ -93,7 +92,6 @@ def randomVsHeuristicApply(nrOfClauses):
         for i in heuristics:
             heuristicsTimes.append([])
         for i in range(iterations):
-            print(i)
             randomApplier.renew()
             (timeRandom, timeHeuristics) = doHeuristicTest(heuristics, randomApplier)
             randomTimes.append(timeRandom)
@@ -104,46 +102,11 @@ def randomVsHeuristicApply(nrOfClauses):
             file.write(f"heuristiek {heuristics[i]} times: {heuristicsTimes[i]}\n")
 
 def __main__():
-    countingVSTiming()
-    # randomVsHeuristicApply(5)
-    # randomVsHeuristicApply(10)
-    # randomVsHeuristicApply(25)
-    # randomVsHeuristicApply(40)
-    #randomOrderCompTimeVariation()
+    # countingVSTiming()
+    # for i in range(5, 70, 5):
+    #     print(f"nr of clauses = {i}")
+    #     randomVsHeuristicApply(i)
+    randomOrderCompTimeVariation()
     #print(times)
-    
-    #runner = pyperf.Runner(processes=1, loops = 1)
-    #for nrOfClauses in listNrOfClauses:
-
-        #with RandomApply(nrOfSdds, nrOfVars, nrOfClauses, cnf3=True, operation="OR") as randomApplier:
-            #randomApplier.doRandomApply()
-            #runner.bench_func(name=f'random apply ordering {nrOfSdds} {nrOfVars} {nrOfClauses}', func=randomApplier.doRandomApply)
-    
-        #result = runner.timeit(name="random apply ordering",
-            #stmt="doRandomApply()",
-            #setup="from randomOrderCompTimeVariation import doRandomApply")
-        #result = runner.timeit(name="random apply ordering",
-            #stmt="doRandomApply()",
-            #setup="")
-        #runner._display_result
-
-    """print("Mean time: ", result.mean)
-    print("Standard deviation: ", result.stdev)
-    print("Min time: ", result.min)
-    print("Max time: ", result.max)
-    print("Number of loops: ", result.loops)
-    print("Inner loops: ", result.inner_loops)"""
-    """
-    # Plot the range of integers for each key
-    plt.plot(range(nrOfIterations), results, 'o', label=i) 
-
-    # Add labels and a legend
-    plt.yscale("log")
-    plt.xlabel('try')
-    plt.ylabel('total comp time')
-
-    # Show the plot
-    plt.show()
-    plt.savefig(f"results/randomOrderCompTimeVariation{operation}.png")
-"""
+        
 __main__()

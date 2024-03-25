@@ -3,12 +3,12 @@ digraph sdd {
 
 overlap=false
 
-{rank=same; n16 }
+{rank=same; n14 }
 {rank=same; n22 }
-{rank=same; n14 n21 n20 n11 }
+{rank=same; n15 n21 n20 n11 }
 
-n16 [label= "5",style=filled,fillcolor=gray95,shape=circle,height=.25,width=.25]; 
-n16e0
+n14 [label= "5",style=filled,fillcolor=gray95,shape=circle,height=.25,width=.25]; 
+n14e0
       [label= "<L>C|<R>D",
       shape=record,
       fontsize=20,
@@ -19,8 +19,8 @@ n16e0
       height=.30, 
       width=.65];
 
-n16->n16e0 [arrowsize=.50];
-n16e1
+n14->n14e0 [arrowsize=.50];
+n14e1
       [label= "<L>&not;C|<R>&#8869;",
       shape=record,
       fontsize=20,
@@ -31,7 +31,7 @@ n16e1
       height=.30, 
       width=.65];
 
-n16->n16e1 [arrowsize=.50];
+n14->n14e1 [arrowsize=.50];
 n22 [label= "3",style=filled,fillcolor=gray95,shape=circle,height=.25,width=.25]; 
 n22e0
       [label= "<L>|<R>",
@@ -45,8 +45,8 @@ n22e0
       width=.65];
 
 n22->n22e0 [arrowsize=.50];
-n22e0:L:c->n14 [arrowsize=.50,tailclip=false,arrowtail=dot,dir=both];
-n22e0:R:c->n16 [arrowsize=.50,tailclip=false,arrowtail=dot,dir=both];
+n22e0:L:c->n15 [arrowsize=.50,tailclip=false,arrowtail=dot,dir=both];
+n22e0:R:c->n14 [arrowsize=.50,tailclip=false,arrowtail=dot,dir=both];
 n22e1
       [label= "<L>|<R>&not;C",
       shape=record,
@@ -86,8 +86,8 @@ n22e3
 
 n22->n22e3 [arrowsize=.50];
 n22e3:L:c->n11 [arrowsize=.50,tailclip=false,arrowtail=dot,dir=both];
-n14 [label= "1",style=filled,fillcolor=gray95,shape=circle,height=.25,width=.25]; 
-n14e0
+n15 [label= "1",style=filled,fillcolor=gray95,shape=circle,height=.25,width=.25]; 
+n15e0
       [label= "<L>A|<R>&not;B",
       shape=record,
       fontsize=20,
@@ -98,8 +98,8 @@ n14e0
       height=.30, 
       width=.65];
 
-n14->n14e0 [arrowsize=.50];
-n14e1
+n15->n15e0 [arrowsize=.50];
+n15e1
       [label= "<L>&not;A|<R>&#8869;",
       shape=record,
       fontsize=20,
@@ -110,7 +110,7 @@ n14e1
       height=.30, 
       width=.65];
 
-n14->n14e1 [arrowsize=.50];
+n15->n15e1 [arrowsize=.50];
 n21 [label= "1",style=filled,fillcolor=gray95,shape=circle,height=.25,width=.25]; 
 n21e0
       [label= "<L>&not;A|<R>B",

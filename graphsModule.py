@@ -4,6 +4,34 @@ import pyperf
 import pylab
 import scipy.stats as stats
 
+def randomOrderVariancePlot():
+    filename = "output/randomOrderCompTimeVariation_20_15_OR.txt"
+    with open(filename, 'r') as file:
+        # Read lines from the file
+        lines = file.readlines()
+    lines = [line.strip() for line in lines]
+    lists = []
+    for (index, line) in enumerate(lines[1:]):
+        start_pos = line.find('[')
+        end_pos = line.find(']')
+        list_str = line[start_pos:end_pos+1]
+        try:
+            current_list = eval(list_str)
+        except SyntaxError:
+            print(f"Invalid list format in line: {line}")
+
+        counts, bins, _ = plt.hist(current_list, bins=30, edgecolor='black', alpha=0)  # Using alpha=0 makes bars invisible
+        plt.plot(bins[:-1], counts, linestyle='-', marker='o', label=f"{index * 5} clausen") #lijn tussen de toppen van de histogram
+        plt.show()
+        #nrOfClausesList.append(int(line[:start_pos].split(" ")[1]))
+
+    plt.xlabel('tijd (in s)')
+    plt.ylabel('aantal compilaties')
+    plt.title("Variatie in compilatietijd bij willekeurige apply ordening")
+    plt.yscale('log')
+    plt.legend()
+    plt.savefig("randomOrderVariation.png") #savefig moet blijkbaar voor show() komen
+
 def randomOrderPlot():
     filename = "output/randomOrderCompTimeVariation_20_15_OR.txt"
     with open(filename, 'r') as file:
@@ -24,7 +52,6 @@ def randomOrderPlot():
         current_list = sorted(current_list)#[5:-5] #5 grootste en kleinste elementen weglaten om eventuele foute uitschieters weg te laten
         lists.append(current_list)
     plotMaxMinAverageList(lists)
-
 
     plt.xlabel('#clausen per cnf')
     plt.ylabel('tijd (in s)')
@@ -52,7 +79,6 @@ def plotMaxMinAverageList(lists):
         averageList.append(sum/len(oneList))
         maxList.append(max)
         minList.append(min)
-
     plt.plot(listNrOfClauses, minList, label='min')
     plt.plot(listNrOfClauses, averageList, label='average')
     plt.plot(listNrOfClauses, maxList, label='max')
@@ -68,33 +94,40 @@ def getListFromLine(line):
     return current_list
 
 def heuristicVsRandomPlot():
-    filename = "output/randomVsHeuristic_20_15_5_1_OR_[1, 2, 3, 4].txt"
-    heuristiekenList = getListFromLine(filename)
+    filename = "output/randomVsHeuristic_20_15_40_1_OR_[1, 2, 3].txt"
+    heuristiekenList = ["random"] + getListFromLine(filename)
 
     with open(filename, 'r') as file:
         # Read lines from the file
         lines = file.readlines()
     lines = [line.strip() for line in lines]
         
-    randomList = getListFromLine(lines[1])
+    #randomList = getListFromLine(lines[1])
     #plt.hist(randomList, bins=100, alpha=0.5, label='random')
     diff = []
-    for index in range(len(lines[2:])):
+    for index in range(len(lines[1:])):
         heuristiek = heuristiekenList[index]
-        heuristicList = getListFromLine(lines[2 + index])
-        oneDiff = [heur/rand for (rand, heur) in zip(randomList, heuristicList)]
+        heuristicList = getListFromLine(lines[1 + index])
+        #oneDiff = [heur/rand for (rand, heur) in zip(randomList, heuristicList)]
+        #plt.plot(heuristicList, label = f"heur {heuristiek}")
         #plt.hist(oneDiff, bins = 100, alpha = 0.5, label = f"diff heur {heuristiek}")
-        plt.boxplot(oneDiff, positions = [heuristiek], widths=.8)
-        #plt.hist(heuristicList, bins=100, alpha=0.5, label=f"heur {heuristiek}")
+        #plt.boxplot(oneDiff, positions = [heuristiek], widths=.8)
+        # plt.hist(heuristicList, bins=100, alpha=0.5, label=f"heur {heuristiek}")
+        counts, bins, _ = plt.hist(heuristicList, bins=30, edgecolor='black', alpha=0)  # Using alpha=0 makes bars invisible
+        plt.plot(bins[:-1], counts, linestyle='-', marker='o', label=f"heur {heuristiek}") #lijn tussen de toppen van de histogram
+
     #plt.plot(randomList, label='random')
     #plt.plot(heuristicList, label='heuristic')
-    plt.xlabel('heuristiek')
-    plt.ylabel('tijd relatief tot willekeurige volgorde')
-    plt.title("Relatieve compilatietijd bij heuristieken")
+    plt.xlabel('tijd (s)')
+    plt.ylabel('aantal compilaties')
+    plt.title("compilatietijd bij heuristieken")
+    plt.legend()
     plt.savefig("heuristieken results boxplot.png")
+
 def __main__():
-    heuristicVsRandomPlot() 
+    #heuristicVsRandomPlot() 
     #randomOrderPlot()
+    randomOrderVariancePlot()
     plt.show()
 # Show the plot
 

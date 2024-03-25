@@ -7,10 +7,155 @@ import ctypes
 import os
 import timeit
 import graphviz
+import itertools
+import math
 
 nrOfSdds=10
 nrOfVars=20
 nrOfClauses=10
+
+
+def optimal_heuristic_test():
+    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="balanced")
+    # 3:{all}
+    # 1:{a,b}      5:{c,d}
+    # 0:{a} 2:{b}  4:{c}    6:{d}
+    mgr = SddManager.from_vtree(vtree)
+    a, b, c, d = mgr.vars
+    f1 = (~a & (b | c | d))
+    f2 = a
+    f3 = (~a & (b | c | d)) | (a & c)
+    f12 = f1 & f2 #= \bot
+    f23 = f2 & f3 #= (a & c)
+    f123 = f12 & f3 #= \bot
+    for (index, sdd) in enumerate([f1, f2, f3, f12, f23, f123]):
+        with open(f"sdd{index}", "w") as out:
+            print(sdd.dot(), file=out)
+            graphviz.Source(sdd.dot()).render(f"sdd{index}", format='png')
+
+
+def vtree_count_implementation_test():
+    """ test node.vtree_element_count() on an SDDNode with more than 2 elements """
+    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="balanced")
+    # 3:{all}
+    # 1:{a,b}      5:{c,d}
+    # 0:{a} 2:{b}  4:{c}    6:{d}
+    mgr = SddManager.from_vtree(vtree)
+    a, b, c, d = mgr.vars
+    # a & b -> c
+    # a & -b -> c&d
+    # b -> -c
+    f0 = c
+    f1 = ~(a & b) | f0
+    f15 = f0 & d
+    f2 = ~(a & ~b) | f15
+    f3 = ~(b) | ~c
+    f4 = f1 & f2 
+    f5 = f4 & f3
+    sdds = [f1, f2, f3, f4, f5]
+    fileNames = ["f1", "f2", "f3", "f4", "f5"]
+    for index, val in enumerate(sdds):
+        print(val.local_vtree_element_count())
+        with open(f"vtree_count_implementation_test_sdds/{fileNames[index]}.dot", "w") as out:
+            print(val.dot(), file = out)
+        graphviz.Source(val.dot()).render("vtree_count_implementation_test_sdds/"+fileNames[index], format='png')
+    sddVtreeCountList = SddVtreeCountList(sdds, mgr.vtree())
+    print(sddVtreeCountList.getNextSddsToApply()) 
+    # print(SddVtreeCountList._getVtreeOrder(f5.vtree())) --functie is wss niet meer nodig, maar bevat ook een segmentatiefout
+
+
+def local_vtree_count_tests():
+    """ test node.vtree_element_count() on a small SDD, with vtree type left """
+    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="left")
+    #                       5:{all}
+    #               3:{a,b,c}   6:{d}
+    #       1:{a,b}     4:{c}
+    #  0:{a}    2:{b}
+    mgr = SddManager.from_vtree(vtree)
+    a, b, c, d = mgr.vars
+    # verify vtree element count for decision
+    f1 = a & b
+    f2 = b & c
+    f3 = f1 | f2
+    print(f1.local_vtree_element_count())
+    # vtreeOrderList = SddVtreeCountList(f3)
+
+def generate_all_sdd_test():
+    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="left")
+    #                       5: {a, b, c, d}
+    #               3: {a, b, c}        6: {d}
+    #       1:{a,b}         4:{c}
+    #  0:{a}    2:{b}
+    sddmgr = SddManager.from_vtree(vtree)
+    a = SddManager.literal(sddmgr, 1)
+    NOTa = SddManager.literal(sddmgr, -1)
+    b = SddManager.literal(sddmgr, 2)
+    NOTb = SddManager.literal(sddmgr, -2)
+    c = SddManager.literal(sddmgr, 3)
+    NOTc = SddManager.literal(sddmgr, -3)
+    d = SddManager.literal(sddmgr, 4)
+    NOTd = SddManager.literal(sddmgr, -4)
+    baseSdds = [a, NOTa, b, NOTb, c, NOTc]#, d, NOTd]#, trueSdd, falseSdd] #met d erbij duurt veel te lang: meer dan 50000 sdds mogelijk
+
+    # exists = (a.conjoin(b)).disjoin(NOTa.conjoin(NOTb))
+    # with open(f"allSdds/exists", "w") as out:
+    #     print(exists.dot(), file=out)
+    # graphviz.Source(exists.dot()).render(f"allSdds/exists", format='png')
+    
+    #bevat alle mogelijke sdds
+    powersetSdd = set(baseSdds)
+    for index in range(len(baseSdds)):
+        print(index)
+        for sdd in powersetSdd.copy():
+            for i in powersetSdd.copy():
+                powersetSdd.add(i.conjoin(sdd))
+                powersetSdd.add(i.disjoin(sdd))
+            powersetSdd.add(sdd)
+    
+    # kijken hoeveel sdds hoeveel elementen hebben onder vtree knoop v
+    # dmv. stukje code om aantal partities te tellen: partities van x elementen kunnen (y! / (y-x)! /x!)? subs bevatten
+    primesets = []
+    subsset = []
+    rootVtreeNodeIndex = 3
+    varsInRootPrimes = 2
+    for (index, nrOfElements) in enumerate(range(2, 2**varsInRootPrimes+1)):
+        print(index)
+        primesets.append(set())
+        subsset.append(set())
+        sum = 0
+        for i in powersetSdd:
+            if i.local_vtree_element_count()[rootVtreeNodeIndex] == nrOfElements:
+                sum += 1
+                setOfPrimes = frozenset([x[0] for x in i.elements()])
+                primesets[index].add(setOfPrimes)
+                setOfSubs = frozenset([x[1] for x in i.elements()])
+                subsset[index].add(setOfSubs)
+
+    for i in range(len(primesets)):
+        print(f"voor {i+2}:")
+        print(f"primes = {len(primesets[i])}" )
+        print(f"subs = {len(subsset[i])}" )
+    #print(f"aantal sdds met {nrOfElements} voor root vtree knoop = {sum}")
+    print("yeet")
+    
+    # setOfPrimeSets = set()
+    # for i in powersetSdd:
+    #     if i.local_vtree_element_count()[3] != 0:
+    #         setOfPrimes = frozenset([x[0] for x in i.elements()])
+    #         # if setOfPrimes not in setOfPrimeSets:
+    #             # for (index, sdd) in enumerate(setOfPrimes):
+    #             #     with open(f"allSdds/primeSet{index}", "w") as out:
+    #             #         print(sdd.dot(), file=out)
+    #             #     graphviz.Source(sdd.dot()).render(f"allSdds/primeSet{index}", format='png')
+    #             # print("breakpoint")
+    #         setOfPrimeSets.add(setOfPrimes)
+    # for i in setOfPrimeSets:
+    #     print(len(i))
+    # for (index, sdd) in enumerate(powersetSdd):
+    #     with open(f"allSdds/{index}", "w") as out:
+    #         print(sdd.dot(), file=out)
+    #     graphviz.Source(sdd.dot()).render(f"allSdds/{index}", format='png')
+    print("done")
 
 def negation_test(): 
     vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="left")
@@ -31,58 +176,20 @@ def negation_test():
     with open("sdd6", "w") as out:
         print(f6.dot(), file=out)
 
-def vtree_count_implementation_test():
-    """ test node.vtree_element_count() on an SDDNode with more than 2 elements """
-    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="balanced")
-    # 3:{all}
-    # 1:{a,b}      5:{c,d}
-    # 0:{a} 2:{b}  4:{c}    6:{d}
-    mgr = SddManager.from_vtree(vtree)
-    a, b, c, d = mgr.vars
-    # a & b -> c
-    # a & -b -> c&d
-    # b -> -c
-    f1 = ~(a & b) | c
-    f2 = ~(a & ~b) | (c & d)
-    f3 = ~(b) | ~c
-    f4 = f1 & f2 
-    f5 = f4 & f3
-    # Source(f4.dot()).view()
-    # assert (f1.local_vtree_element_count() == [0, 4, 0, 2, 0, 0, 0])
-    # assert (f2.local_vtree_element_count() == [0, 4, 0, 2, 0, 2, 0])
-    # assert (f3.local_vtree_element_count() == [0, 0, 0, 2, 0, 0, 0])
-    # assert (f5.local_vtree_element_count() == [0, 8, 0, 4, 0, 2, 0])
-    print(f3.local_vtree_element_count())
-    print(f4.local_vtree_element_count())
-    print(f5.local_vtree_element_count())
-    # with open("f3.dot", "w") as out:
-    #     print(f3.dot(), file = out)
-    # graphviz.Source(f3.dot()).render("f3", format='png')
-    # with open("f4.dot", "w") as out:
-    #     print(f4.dot(), file = out)
-    # graphviz.Source(f4.dot()).render("f4", format='png')
-    # with open("f5.dot", "w") as out:
-    #     print(f5.dot(), file = out)
-    # graphviz.Source(f5.dot()).render("f5", format='png')
-    print(SddVtreeCountList._getVtreeOrder(f5.vtree()))
+def sdd_graphical_research_test():
+    nrOfSdds=20
+    nrOfVars=16
+    operation="OR"
+    listNrOfClauses=list(tuple(range(2, int(nrOfVars*5), 4)))
 
-
-def local_vtree_count_tests():
-    """ test node.vtree_element_count() on a small SDD, with vtree type left """
-    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="left")
-    #                       5:{all}
-    #               3:{a,b,c}   6:{d}
-    #       1:{a,b}     4:{c}
-    #  0:{a}    2:{b}
-    mgr = SddManager.from_vtree(vtree)
-    a, b, c, d = mgr.vars
-
-    # verify vtree element count for decision
-    f1 = a & b
-    f2 = b & c
-    f3 = f1 | f2
-    print(f1.local_vtree_element_count())
-    # vtreeOrderList = SddVtreeCountList(f3)
+    for (i, nrOfClauses) in enumerate(listNrOfClauses):
+        fileName = "f"+str(i)
+        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, nrOfCnfs=1, cnf3=True, operation = operation)
+        sdd = randomApplier.baseSdds[0]
+        print(sdd.local_vtree_element_count())
+        # with open(f"vtree_count_implementation_test_sdds/{fileName}.dot", "w") as out:
+        #     print(sdd.dot(), file = out)
+        # graphviz.Source(sdd.dot()).render("vtree_count_implementation_test_sdds/"+fileName, format='png')
 
 def countingTests():
     nrOfSdds = 10
@@ -281,6 +388,9 @@ def getVtreeFig():
     with open("vtree.dot", "w") as out:
         print(finalSdd.vtree().dot(), file = out)
 
+#optimal_heuristic_test()
+#generate_all_sdd_test()
+#sdd_graphical_research_test()
 vtree_count_implementation_test()
 #local_vtree_count_tests()
 #negation_test()

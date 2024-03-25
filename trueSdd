@@ -1,0 +1,9 @@
+
+digraph sdd {
+
+overlap=false
+
+n2 [label= "&#8868;",shape=box]; 
+
+
+}
