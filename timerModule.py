@@ -1,4 +1,5 @@
 from randomOrderApplier import RandomOrderApply
+from randomOrderApplier import RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
 import timeit
 import numpy
 """
@@ -71,18 +72,16 @@ def randomOrderCompTimeVariation():
             file.write(f"voor {nrOfClauses} clauses {times}\n")
 
 def doHeuristicTest(heuristics, randomApplier):
-    timeRandom = timeit.timeit(lambda: randomApplier.doRandomApply(), number = 1)
     timeHeuristics = []
     for heur in heuristics:
         timeHeuristics.append(timeit.timeit(lambda: randomApplier.doHeuristicApply(heur), number = 1))
-    return (timeRandom, timeHeuristics)
+    return timeHeuristics
 
-def randomVsHeuristicApply(nrOfClauses):
+def heuristicsApply(nrOfClauses, heuristics):
     nrOfSdds=20
     nrOfVars=16
     operation="OR"
-    heuristics = [1, 2, 3, 4]
-    iterations = 1000
+    iterations = 100
     nrOfCnfs = 1
     with open(f"output/randomVsHeuristic_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{nrOfCnfs}_{operation}_{heuristics}.txt", 'w') as file:
         file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operation}, heuristiek = {heuristics}" + '\n')
@@ -93,20 +92,20 @@ def randomVsHeuristicApply(nrOfClauses):
             heuristicsTimes.append([])
         for i in range(iterations):
             randomApplier.renew()
-            (timeRandom, timeHeuristics) = doHeuristicTest(heuristics, randomApplier)
-            randomTimes.append(timeRandom)
+            timeHeuristics = doHeuristicTest(heuristics, randomApplier)
             for i in range(len(timeHeuristics)):
                 heuristicsTimes[i].append(timeHeuristics[i])
-        file.write(f"random times: {randomTimes}\n")
         for i in range(len(heuristics)):
             file.write(f"heuristiek {heuristics[i]} times: {heuristicsTimes[i]}\n")
 
 def __main__():
+    #heuristieken: RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
+    heuristics = [RANDOM, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND]
+    for i in range(5, 80, 5):
+        print(f"nr of clauses = {i}")
+        heuristicsApply(i, heuristics)
     # countingVSTiming()
-    # for i in range(5, 70, 5):
-    #     print(f"nr of clauses = {i}")
-    #     randomVsHeuristicApply(i)
-    randomOrderCompTimeVariation()
+    #randomOrderCompTimeVariation()
     #print(times)
         
 __main__()
