@@ -1,9 +1,0 @@
-
-digraph sdd {
-
-overlap=false
-
-n5 [label= "B",shape=box]; 
-
-
-}

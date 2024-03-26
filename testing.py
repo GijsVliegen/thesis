@@ -1,6 +1,8 @@
 #dot -Tpng -O sdd.dot
 from randomCNFGenerator import generateRandomCnfDimacs
 from randomOrderApplier import RandomOrderApply, SddVarAppearancesList, SddVtreeCountList
+from randomOrderApplier import RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
+
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 from flatSDDCompiler import SDDcompiler
 import ctypes
@@ -372,15 +374,23 @@ def testVtreeFunctions():
     print(f"left id = {leftNode.position()}")
     print(f"right id = {rightNode.position()}")
 
-heuristicsList = [1, 2, 3, 4]
 def testCorrectWorkingHeuristics():
+    heuristicsList = [RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND]
+    nrOfVars = 16
+    nrOfClauses = 25#[5, 25, 40, 55, 75]
+    operation = 0#[0, 1] #0 voor conjoin, 1 voor disjoin
+    nrOfIterations = 10
     workingCorrect = True
-    randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
-    finalSdd = randomApplier.doRandomApply()
-    for heuristic in heuristicsList:
-        if finalSdd != randomApplier.doHeuristicApply(heuristic):
-            print(f"er is iets mis met heuristic {heuristic}")
-            workingCorrect = False
+    # for nrOfClauses in nrOfClausesList:
+    #     for operation in operations:
+    randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
+    for _ in range(nrOfIterations):
+        finalSdd = randomApplier.doHeuristicApply(RANDOM, operation)
+        for heuristic in heuristicsList:
+            if finalSdd != randomApplier.doHeuristicApply(heuristic, operation):
+                print(f"er is iets mis met heuristic {heuristic}")
+                workingCorrect = False
+        randomApplier.renew()
     if workingCorrect:
         print("heuristieken werken correct")
 
@@ -393,11 +403,11 @@ def getVtreeFig():
 #optimal_heuristic_test()
 #generate_all_sdd_test()
 #sdd_graphical_research_test()
-vtree_count_implementation_test()
+#vtree_count_implementation_test()
 #local_vtree_count_tests()
 #negation_test()
 #countingTests()
-# testCorrectWorkingHeuristics()
+testCorrectWorkingHeuristics()
 #testVtreeFunctions()
 #getVtreeFig()
 #testApplyOrderedVsReversed()

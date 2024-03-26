@@ -94,39 +94,25 @@ def getListFromLine(line):
     return current_list
 
 def heuristicsPlot():
-    filename = "output/randomVsHeuristic_20_16_5_1_OR_[99, 3, 4, 5].txt"
-    heuristiekenIntList = getListFromLine(filename)
-    heuristieken = []
-    for heuristiekInt in heuristiekenIntList:
-        variable_name = [name for name, value in locals().items() if value is heuristiekInt][0]
-        heuristieken.append(variable_name) #haalt namen eruit ipv getallen voor heuristieken
+    filename = "output/randomVsHeuristic_20_16_25_1_OR_[99, 3, 4, 5].txt"
+    heuristieken = getListFromLine(filename)
 
     with open(filename, 'r') as file:
         # Read lines from the file
         lines = file.readlines()
     lines = [line.strip() for line in lines]
         
-    #randomList = getListFromLine(lines[1])
-    #plt.hist(randomList, bins=100, alpha=0.5, label='random')
-    diff = []
     for index in range(len(lines[1:])):
         heuristiek = heuristieken[index]
         heuristicList = getListFromLine(lines[1 + index])
-        #oneDiff = [heur/rand for (rand, heur) in zip(randomList, heuristicList)]
-        #plt.plot(heuristicList, label = f"heur {heuristiek}")
-        #plt.hist(oneDiff, bins = 100, alpha = 0.5, label = f"diff heur {heuristiek}")
-        #plt.boxplot(oneDiff, positions = [heuristiek], widths=.8)
-        # plt.hist(heuristicList, bins=100, alpha=0.5, label=f"heur {heuristiek}")
         counts, bins, _ = plt.hist(heuristicList, bins=30, edgecolor='black', alpha=0)  # Using alpha=0 makes bars invisible
-        plt.plot(bins[:-1], counts, linestyle='-', marker='o', label=f"heur {heuristiek}") #lijn tussen de toppen van de histogram
+        plt.plot(bins[:-1], counts, linestyle='-', marker='o', label=heuristiek) #lijn tussen de toppen van de histogram
 
-    #plt.plot(randomList, label='random')
-    #plt.plot(heuristicList, label='heuristic')
     plt.xlabel('tijd (s)')
     plt.ylabel('aantal compilaties')
     plt.title("compilatietijd bij heuristieken")
     plt.legend()
-    plt.savefig("heuristieken results boxplot.png")
+    plt.savefig("heuristieken results.png")
 
 def __main__():
     heuristicsPlot() 

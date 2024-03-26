@@ -10,6 +10,8 @@ VTREESPLIT_WITH_SMALLEST_FIRST = 3
 VTREE_VARIABLE_ORDERING = 4
 ELEMENT_UPPERBOUND = 5
 RANDOM = 99
+OR = 1
+AND = 0
 
 #uitbreiding van List met functies:
     # getNextSddsToApply() -> moet geïmplementeerd worden, 
@@ -81,6 +83,10 @@ class SddVtreeCountList(ExtendedList):
         self.sddManager = sddManager
         for i in sdds:
             self.append(i)
+    def pop(self, index):
+        return super().pop(index).getSdd()
+    def update(self, newSdd): 
+        self.append(newSdd)
 
     def getNextSddsToApply(self):
         (_, sddVtreeCount1, sddVtreeCount2) = self.sizeEstimateTuples.pop(0)
@@ -108,17 +114,15 @@ class SddVtreeCountList(ExtendedList):
             insort_right(self.sizeEstimateTuples, newSizeEstimateTuple, key=lambda x: x[0])
         super().append(newSddVtreeCount)
 
-    def update(self, newSdd): 
-        self.append(newSdd)
-
     def _getUpperLimit(sddVtreeCount1, sddVtreeCount2, root):
-        queue = [root]
         root1 = sddVtreeCount1.topVtreeNode
         root2 = sddVtreeCount2.topVtreeNode
         if (root1 is None):
             return sum(sddVtreeCount2.vtreeCount)
         if (root2 is None):
             return sum(sddVtreeCount1.vtreeCount)
+        #root = Vtree.lca(root1, root2, root)
+        queue = [root]
         tempVtreeCount1 = sddVtreeCount1.vtreeCount.copy()
         tempVtreeCount2 = sddVtreeCount2.vtreeCount.copy()
         extraFactorFound = False
@@ -277,36 +281,24 @@ class RandomOrderApply():
         print(f" exit dead count = {self.compiler.sddManager.dead_count()}")
         self.compiler.sddManager.garbage_collect()
 
-    def __init__(self, nrOfSdds, nrOfVars, nrOfClauses, nrOfCnfs = 1, cnf3 = True, operation = "OR", vtree_type = "balanced"):
+    def __init__(self, nrOfSdds, nrOfVars, nrOfClauses, vtree_type = "balanced"):
         self.nrOfSdds = nrOfSdds
         self.nrOfVars = nrOfVars
         self.nrOfClauses = nrOfClauses
-        self.operation = operation
-        self.operationInt = 0 if self.operation == "AND" else 1
-        self.cnf3 = cnf3
+        self.cnf3 = True
         """
         AND operatie -> 10 keer 50 clauses: zelfde als een cnf met 500 clauses -> skewed result?
         """ 
         self.compiler = SDDcompiler(nrOfVars=nrOfVars, vtree_type=vtree_type)
-        self.baseSdds = self.generateRandomSdds(nrOfCnfs= nrOfCnfs)
+        self.baseSdds = self.generateRandomSdds()
         self.nodeCounterList = []
 
-    def generateRandomSdds(self, nrOfCnfs = 1):
+    def generateRandomSdds(self):
         randomSdds = []
-        for i in range(self.nrOfSdds):
-            newSdd = self.compiler.sddManager.false()
-            for j in range(nrOfCnfs): #maakt het mogelijk om elke baseSdd uit meerdere cnfs te laten bestaan
-
-                nextCnf = generateRandomCnfFormula(self.nrOfClauses, self.nrOfVars, self.cnf3)
-                (nextSdd, _) = self.compiler.compileToSdd(nextCnf)
-
-                #nextCnf = generateRandomCnfDimacs(self.nrOfClauses, self.nrOfVars, self.cnf3)
-                #maakt een nextSdd aan met als default vtree = 'balanced'
-                #(newSddManager, nextSdd) = self.compiler.sddManager.from_cnf_string(nextCnf)#
-                #nextSdd.copy(self.compiler.sddManager)
-
-                newSdd = self.compiler.sddManager.apply(newSdd, nextSdd, 1)
-            randomSdds.append(newSdd)
+        for _ in range(self.nrOfSdds):
+            cnf = generateRandomCnfFormula(self.nrOfClauses, self.nrOfVars, self.cnf3)
+            (sdd, _) = self.compiler.compileToSdd(cnf)
+            randomSdds.append(sdd)
         return randomSdds
 
     def saveBaseSdds(self):
@@ -326,7 +318,7 @@ class RandomOrderApply():
     def getFirstDataStructure(self, sdds, heuristic):
         if heuristic == SMALLEST_FIRST:
             return SddSizeList(sdds)
-        if heuristic == VTREE_VARIABLE_ORDERING: #heuristic == 4
+        if heuristic == VTREE_VARIABLE_ORDERING:
             return SddVarAppearancesList(sdds, self.compiler.sddManager)
         if heuristic == ELEMENT_UPPERBOUND:
             return SddVtreeCountList(sdds, self.compiler.sddManager)
@@ -334,20 +326,13 @@ class RandomOrderApply():
             return RandomList(sdds)
         else: print(f"heuristiek {heuristic} is nog niet geïmpleneteerd")
 
-    def doRandomApply(self):
-        return self.doHeuristicApply(99)
-
-    #kan mss nog beter gemaakt worden dmv de linker en rechter variable op te slaan samen met de sdd
-    #-> snellere computatie van in welke vtree node de sdd zit (links of rechts of beide)
-    def doHeuristicApply2Recursive(self, parentVtreeNode, innerHeuristic = RANDOM, sdds = None):
+    def doHeuristicApply2Recursive(self, parentVtreeNode, innerHeuristic, sdds, operation):
         #recursively split up the children in left.children, right.children en middle.children
-        # left children samen (recursief?) applyen, dan right.children, en dan middle.children
-        if sdds == None:
-            sdds = self.baseSdds
+        # left children samen (recursief) applyen, dan right.children (recursief), en dan middle.children
         if len(sdds) == 1:
             return sdds[0]
         if len(sdds) == 2:
-            return self.compiler.sddManager.apply(sdds[0], sdds[1], self.operationInt)
+            return self.compiler.sddManager.apply(sdds[0], sdds[1], operation)
         if parentVtreeNode is None: #bijvoorbeeld omdat
             print("iets geks met parentVtreeNode, is None...")
         left = []
@@ -356,45 +341,39 @@ class RandomOrderApply():
         for sdd in sdds:
             if (sdd.vtree() is None):
                 middle.append(sdd)
-            #(leftVar, rightVar) = self.getOutsides(sdd)
-            #in principe zou je zo iets kunnen doen, en dan met leftVar en rightVar de vtree kunnen traverseren,    
-            #maar dat is niet nodig want er is een functie SddNode.vtree(), die de vtree node geeft waarvoor de sdd is genormalizeerd
-            # + Vtree.left en Vtree.right om de left en right child van een bep. vtree node te krijgen 
             elif Vtree.is_sub(sdd.vtree(), parentVtreeNode.left()):
                 left.append(sdd)
             elif Vtree.is_sub(sdd.vtree(), parentVtreeNode.right()):
                 right.append(sdd)
-            else: #side = middle
+            else: #aan beide zijden -> middle
                 middle.append(sdd)
         if len(left) > 0:
-            middle.append(self.doHeuristicApply2Recursive(parentVtreeNode.left(), innerHeuristic, sdds = left))
+            middle.append(self.doHeuristicApply2Recursive(parentVtreeNode.left(), innerHeuristic, left, operation))
         if len(right) > 0:
-            middle.append(self.doHeuristicApply2Recursive(parentVtreeNode.right(), innerHeuristic, sdds = right))
-        return self.doHeuristicApplySdds(innerHeuristic, sdds = middle)
+            middle.append(self.doHeuristicApply2Recursive(parentVtreeNode.right(), innerHeuristic, right, operation))
+        return self.doHeuristicApplySdds(innerHeuristic, middle, operation)
 
-    def doHeuristicApplySdds(self, heuristic = SMALLEST_FIRST, sdds = None): #base value zou moeten veranderd worden naar de beste heuristiek
+    def doHeuristicApplySdds(self, heuristic, sdds, operation): #base value zou moeten veranderd worden naar de beste heuristiek
         #print(f"nu: using heuristic {heuristic}")
-        if sdds == None:
-            sdds = self.baseSdds
         datastructure = self.getFirstDataStructure(sdds, heuristic)
         while len(datastructure) > 1:
             sdd1, sdd2 = datastructure.getNextSddsToApply()
-            newSdd = self.compiler.sddManager.apply(sdd1, sdd2, self.operationInt)
+            newSdd = self.compiler.sddManager.apply(sdd1, sdd2, operation)
             datastructure.update(newSdd)
-            self.nodeCounterList.append(self.compiler.sddManager.dead_size())
+            #self.nodeCounterList.append(self.compiler.sddManager.dead_size())
             # self.nodeCounterList.append((self.compiler.sddManager.count(), self.compiler.sddManager.live_count(), self.compiler.sddManager.dead_count())) #count, dead_count of live_count
             #doSomethingWithResults(rootNodeId, rootNode, newSdd, datastructure)
         finalSdd = datastructure.pop(0)
         self.collectMostGarbage()
         return finalSdd
 
-    def doHeuristicApply(self, heuristic):
+    def doHeuristicApply(self, heuristic, operation):
         #print(f"using heuristic {heuristic}")
         if heuristic == VTREESPLIT:
-            return self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), RANDOM)
+            return self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), RANDOM, self.baseSdds, operation)
         if heuristic == VTREESPLIT_WITH_SMALLEST_FIRST:
-            return self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), SMALLEST_FIRST)
-        return self.doHeuristicApplySdds(heuristic)
+            return self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), SMALLEST_FIRST, self.baseSdds, operation)
+        return self.doHeuristicApplySdds(heuristic, self.baseSdds, operation)
         
         
 
