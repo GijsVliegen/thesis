@@ -93,9 +93,13 @@ def getListFromLine(line):
         print(f"Invalid list format in line: {line}")
     return current_list
 
-def heuristicVsRandomPlot():
-    filename = "output/randomVsHeuristic_20_15_40_1_OR_[1, 2, 3].txt"
-    heuristiekenList = ["random"] + getListFromLine(filename)
+def heuristicsPlot():
+    filename = "output/randomVsHeuristic_20_16_5_1_OR_[99, 3, 4, 5].txt"
+    heuristiekenIntList = getListFromLine(filename)
+    heuristieken = []
+    for heuristiekInt in heuristiekenIntList:
+        variable_name = [name for name, value in locals().items() if value is heuristiekInt][0]
+        heuristieken.append(variable_name) #haalt namen eruit ipv getallen voor heuristieken
 
     with open(filename, 'r') as file:
         # Read lines from the file
@@ -106,7 +110,7 @@ def heuristicVsRandomPlot():
     #plt.hist(randomList, bins=100, alpha=0.5, label='random')
     diff = []
     for index in range(len(lines[1:])):
-        heuristiek = heuristiekenList[index]
+        heuristiek = heuristieken[index]
         heuristicList = getListFromLine(lines[1 + index])
         #oneDiff = [heur/rand for (rand, heur) in zip(randomList, heuristicList)]
         #plt.plot(heuristicList, label = f"heur {heuristiek}")
@@ -125,9 +129,9 @@ def heuristicVsRandomPlot():
     plt.savefig("heuristieken results boxplot.png")
 
 def __main__():
-    #heuristicVsRandomPlot() 
+    heuristicsPlot() 
     #randomOrderPlot()
-    randomOrderVariancePlot()
+    #randomOrderVariancePlot()
     plt.show()
 # Show the plot
 

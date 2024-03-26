@@ -35,6 +35,7 @@ def optimal_heuristic_test():
 
 
 def vtree_count_implementation_test():
+    """test together with debugging to see if _getUpperLimit() works correctly"""
     """ test node.vtree_element_count() on an SDDNode with more than 2 elements """
     vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="balanced")
     # 3:{all}
@@ -45,21 +46,19 @@ def vtree_count_implementation_test():
     # a & b -> c
     # a & -b -> c&d
     # b -> -c
-    f0 = c
-    f1 = ~(a & b) | f0
-    f15 = f0 & d
-    f2 = ~(a & ~b) | f15
-    f3 = ~(b) | ~c
-    f4 = f1 & f2 
-    f5 = f4 & f3
+    f1 = ~(a & b) #onder 1
+    f2 = ~(a & ~b) | (c & d) #onder 3
+    f3 = ~c #onder 4
+    f4 = d #onder 6
+    f5 = f3 & f4 | c #onder 5
+    # Source(f4.dot()).view()
     sdds = [f1, f2, f3, f4, f5]
-    fileNames = ["f1", "f2", "f3", "f4", "f5"]
-    for index, val in enumerate(sdds):
-        print(val.local_vtree_element_count())
-        with open(f"vtree_count_implementation_test_sdds/{fileNames[index]}.dot", "w") as out:
-            print(val.dot(), file = out)
-        graphviz.Source(val.dot()).render("vtree_count_implementation_test_sdds/"+fileNames[index], format='png')
-    sddVtreeCountList = SddVtreeCountList(sdds, mgr.vtree())
+    for i in range(len(sdds)):
+        for j in range(i+1, len(sdds)):
+            print(f"f{i+1} met f{j+1}: {(sdds[i] & sdds[j]).local_vtree_element_count()}")
+    for sdd in sdds:
+        print(sdd.local_vtree_element_count())
+    sddVtreeCountList = SddVtreeCountList(sdds, mgr)
     print(sddVtreeCountList.getNextSddsToApply()) 
     # print(SddVtreeCountList._getVtreeOrder(f5.vtree())) --functie is wss niet meer nodig, maar bevat ook een segmentatiefout
 
@@ -74,9 +73,13 @@ def local_vtree_count_tests():
     mgr = SddManager.from_vtree(vtree)
     a, b, c, d = mgr.vars
     # verify vtree element count for decision
-    f1 = a & b
-    f2 = b & c
-    f3 = f1 | f2
+    f1 = ~(a & b) #onder 1
+    f2 = ~(a & ~b) | (c & d) #onder 3
+    f3 = ~c #onder 4
+    f4 = f1 & f3
+    with open(f"primesWithSubs", "w") as out:
+        print(f4.dot(), file=out)
+    graphviz.Source(f4.dot()).render(f"primesWithSubs", format='png')
     print(f1.local_vtree_element_count())
     # vtreeOrderList = SddVtreeCountList(f3)
 
@@ -158,23 +161,23 @@ def generate_all_sdd_test():
     print("done")
 
 def negation_test(): 
-    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="left")
+    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="balanced")
     #                       5:{all}
     #               3:{a,b,c}   6:{d}
     #       1:{a,b}     4:{c}
     #  0:{a}    2:{b}
     mgr = SddManager.from_vtree(vtree)
     a, b, c, d = mgr.vars
-
-    # verify vtree element count for decision
     f1 = a & b
-    f2 = b & c
+    f2 = b & (c|d)
     f5 = f1 | f2
     f6 = ~f5
     with open("sdd5", "w") as out:
         print(f5.dot(), file=out)
+    graphviz.Source(f5.dot()).render(f"sdd5", format='png')
     with open("sdd6", "w") as out:
         print(f6.dot(), file=out)
+    graphviz.Source(f6.dot()).render(f"sdd6", format='png')
 
 def sdd_graphical_research_test():
     nrOfSdds=20
@@ -211,7 +214,6 @@ def testSddVarAppearances():
     sddVarAppearancesList = SddVarAppearancesList(randApplier.compiler.sddManager)
     varOrdering = sddVarAppearancesList.var_order
     print(varOrdering)
-
     finalSdd = randApplier.doHeuristicApply(4)
 
 def getSizes(sddManager, vars, baseSdd, operation = 0):
