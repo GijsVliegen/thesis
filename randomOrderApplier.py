@@ -364,16 +364,18 @@ class RandomOrderApply():
             # self.nodeCounterList.append((self.compiler.sddManager.count(), self.compiler.sddManager.live_count(), self.compiler.sddManager.dead_count())) #count, dead_count of live_count
             #doSomethingWithResults(rootNodeId, rootNode, newSdd, datastructure)
         finalSdd = datastructure.pop(0)
-        self.collectMostGarbage()
         return finalSdd
 
     def doHeuristicApply(self, heuristic, operation):
         #print(f"using heuristic {heuristic}")
         if heuristic == VTREESPLIT:
-            return self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), RANDOM, self.baseSdds, operation)
-        if heuristic == VTREESPLIT_WITH_SMALLEST_FIRST:
-            return self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), SMALLEST_FIRST, self.baseSdds, operation)
-        return self.doHeuristicApplySdds(heuristic, self.baseSdds, operation)
+            result = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), RANDOM, self.baseSdds, operation)
+        elif heuristic == VTREESPLIT_WITH_SMALLEST_FIRST:
+            result = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), SMALLEST_FIRST, self.baseSdds, operation)
+        else:
+            result = self.doHeuristicApplySdds(heuristic, self.baseSdds, operation)
+        self.collectMostGarbage(result)
+        return result
         
         
 

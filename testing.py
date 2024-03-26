@@ -2,6 +2,7 @@
 from randomCNFGenerator import generateRandomCnfDimacs
 from randomOrderApplier import RandomOrderApply, SddVarAppearancesList, SddVtreeCountList
 from randomOrderApplier import RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
+from randomOrderApplier import AND, OR
 
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 from flatSDDCompiler import SDDcompiler
@@ -377,20 +378,21 @@ def testVtreeFunctions():
 def testCorrectWorkingHeuristics():
     heuristicsList = [RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND]
     nrOfVars = 16
-    nrOfClauses = 25#[5, 25, 40, 55, 75]
-    operation = 0#[0, 1] #0 voor conjoin, 1 voor disjoin
-    nrOfIterations = 10
+    nrOfClausesList = [5, 25, 40, 55, 75]
+    operations = [OR, AND] #0 voor conjoin, 1 voor disjoin
+    nrOfIterations = 100
     workingCorrect = True
-    # for nrOfClauses in nrOfClausesList:
-    #     for operation in operations:
-    randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
-    for _ in range(nrOfIterations):
-        finalSdd = randomApplier.doHeuristicApply(RANDOM, operation)
-        for heuristic in heuristicsList:
-            if finalSdd != randomApplier.doHeuristicApply(heuristic, operation):
-                print(f"er is iets mis met heuristic {heuristic}")
-                workingCorrect = False
-        randomApplier.renew()
+    for nrOfClauses in nrOfClausesList:
+        for operation in operations:
+            print(f"aantal clauses = {nrOfClauses}, operatie = {operation}")
+            randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
+            for _ in range(nrOfIterations):
+                finalSdd = randomApplier.doHeuristicApply(RANDOM, operation)
+                for heuristic in heuristicsList:
+                    if finalSdd != randomApplier.doHeuristicApply(heuristic, operation):
+                        print(f"er is iets mis met heuristic {heuristic}")
+                        workingCorrect = False
+                randomApplier.renew()
     if workingCorrect:
         print("heuristieken werken correct")
 

@@ -94,7 +94,7 @@ def getListFromLine(line):
     return current_list
 
 def heuristicsPlot():
-    filename = "output/randomVsHeuristic_20_16_25_1_OR_[99, 3, 4, 5].txt"
+    filename = "output/randomVsHeuristic_20_16_40_OR_[99, 3, 4, 5].txt"
     heuristieken = getListFromLine(filename)
 
     with open(filename, 'r') as file:

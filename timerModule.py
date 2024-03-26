@@ -1,5 +1,7 @@
 from randomOrderApplier import RandomOrderApply
 from randomOrderApplier import RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
+from randomOrderApplier import OR, AND
+
 import timeit
 import numpy
 """
@@ -23,76 +25,73 @@ def addCounts(counts):
         prev = i
     return total
 
-def doCountingTest(nrOfIterations, randomApplier):
+def doCountingTest(nrOfIterations, randomApplier, operation):
     times = []
     totalNodes = []
-    for i in range(nrOfIterations):
-        time = timeit.timeit(lambda: randomApplier.doRandomApply(), number = 1)
+    for _ in range(nrOfIterations):
+        time = timeit.timeit(lambda: randomApplier.doHeuristicApply(RANDOM, operation), number = 1)
         times.append(time)
         counts = randomApplier.extractCounts()
         totalNodes.append(addCounts(counts))
     return times, totalNodes
 
-def doRandomOrderTest(nrOfIterations, randomApplier):
+def doRandomOrderTest(nrOfIterations, randomApplier, operation):
     times = []
-    for i in range(nrOfIterations):
+    for _ in range(nrOfIterations):
         # sdds = randomApplier.loadBaseSdds()
-        time = timeit.timeit(lambda: randomApplier.doRandomApply(), number = 1)
+        time = timeit.timeit(lambda: randomApplier.doHeuristicApply(RANDOM, operation), number = 1)
         times.append(time)
     return times
 
-def countingVSTiming():
+def countingVSTiming(operation):
     nrOfSdds=20
     nrOfVars=15
     nrOfIterationsPerSdd = 1000
-    operation="OR"
     listNrOfClauses=list(tuple(range(5, int(nrOfVars*5), 5)))
     for nrOfClauses in listNrOfClauses:
         #print(nrOfClauses)
-        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, nrOfCnfs=1, cnf3=True, operation = operation)
-        times, counts = doCountingTest(nrOfIterationsPerSdd, randomApplier)
+        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
+        times, counts = doCountingTest(nrOfIterationsPerSdd, randomApplier, operation)
 
         correlation_matrix = numpy.corrcoef(times, counts)
         correlation_coefficient = correlation_matrix[0, 1]
         print(f"Correlation Coefficient voor {nrOfClauses} clauses: {correlation_coefficient}")
 
 
-def randomOrderCompTimeVariation():
+def randomOrderCompTimeVariation(operation):
     nrOfSdds=20
     nrOfVars=16
     nrOfIterationsPerSdd = 10000
-    operation="OR"
     listNrOfClauses=list(tuple(range(5, int(nrOfVars*5), 5)))
-    with open(f"output/randomOrderCompTimeVariation_{nrOfSdds}_{nrOfVars}_{operation}.txt", 'w') as file:
-        file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operation}" + '\n')
+    operationStr = "OR" if operation == OR else "AND"
+    with open(f"output/randomOrderCompTimeVariation_{nrOfSdds}_{nrOfVars}_{operationStr}.txt", 'w') as file:
+        file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}" + '\n')
         for nrOfClauses in listNrOfClauses:
             print(nrOfClauses)
-            randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, nrOfCnfs=1, cnf3=True, operation = operation)
-            times = doRandomOrderTest(nrOfIterationsPerSdd, randomApplier)
+            randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
+            times = doRandomOrderTest(nrOfIterationsPerSdd, randomApplier, operation)
             file.write(f"voor {nrOfClauses} clauses {times}\n")
 
-def doHeuristicTest(heuristics, randomApplier):
+def doHeuristicTest(heuristics, randomApplier, operation):
     timeHeuristics = []
     for heur in heuristics:
-        timeHeuristics.append(timeit.timeit(lambda: randomApplier.doHeuristicApply(heur), number = 1))
+        timeHeuristics.append(timeit.timeit(lambda: randomApplier.doHeuristicApply(heur, operation), number = 1))
     return timeHeuristics
 
-def heuristicsApply(nrOfClauses, heuristics):
+def heuristicsApply(nrOfClauses, heuristics, operation):
     nrOfSdds=20
     nrOfVars=16
-    operation="OR"
     iterations = 100
-    nrOfCnfs = 1
-    with open(f"output/randomVsHeuristic_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{nrOfCnfs}_{operation}_{heuristics}.txt", 'w') as file:
-        file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operation}, heuristiek = {heuristics}" + '\n')
-        randomTimes = []
+    operationStr = "OR" if operation == OR else "AND"
+    with open(f"output/randomVsHeuristic_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{heuristics}.txt", 'w') as file:
+        file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}, heuristiek = {heuristics}" + '\n')
         heuristicsTimes = []
-        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, nrOfCnfs, cnf3=True, operation = operation)
+        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
         for i in heuristics:
             heuristicsTimes.append([])
         for i in range(iterations):
             randomApplier.renew()
-            timeHeuristics = doHeuristicTest(heuristics, randomApplier)
+            timeHeuristics = doHeuristicTest(heuristics, randomApplier, operation)
             for i in range(len(timeHeuristics)):
                 heuristicsTimes[i].append(timeHeuristics[i])
         for i in range(len(heuristics)):
@@ -101,9 +100,10 @@ def heuristicsApply(nrOfClauses, heuristics):
 def __main__():
     #heuristieken: RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
     heuristics = [RANDOM, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND]
+    operation = OR 
     for i in range(5, 80, 5):
         print(f"nr of clauses = {i}")
-        heuristicsApply(i, heuristics)
+        heuristicsApply(i, heuristics, operation)
     # countingVSTiming()
     #randomOrderCompTimeVariation()
     #print(times)
