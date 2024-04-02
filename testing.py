@@ -17,7 +17,33 @@ nrOfSdds=10
 nrOfVars=20
 nrOfClauses=10
 
+def varsUnderVtreeNode_test():
+    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="balanced")
+    # 3:{all}
+    # 1:{a,b}      5:{c,d}
+    # 0:{a} 2:{b}  4:{c}    6:{d}
+    mgr = SddManager.from_vtree(vtree)
+    a, b, c, d = mgr.vars
+    f2 = a
+    f3 = (~a & (b | c | d)) | (a & c)
+    f2vars = mgr.sdd_variables(f2)[1:]
+    f3vars = mgr.sdd_variables(f3)[1:]
+    print(SddVtreeCountList.varsUnderVtreeNode(f2vars, vtree))
+    print(SddVtreeCountList.varsUnderVtreeNode(f3vars, vtree))
 
+def overheadTime_test():
+    heuristics = [RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND]
+    nrOfSdds=20
+    nrOfVars=15
+    nrOfClauses = 5#25#[5, 15, 25, 35, 45, 55, 65]
+    #nrOfIterations = 10
+    operation = OR
+    randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="random")
+    for heuristic in heuristics:
+        (resultSdd, noOverheadTime) = randomApplier.doHeuristicApply(heuristic, operation, timeOverhead=False)
+        totalTime = timeit.timeit(lambda: randomApplier.doHeuristicApply(heuristic, operation), number = 1)
+        print(f"heur {heuristic}: total time = {totalTime}, zonder overhead = {noOverheadTime}")
+    
 def optimal_heuristic_test():
     vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="balanced")
     # 3:{all}
@@ -237,17 +263,16 @@ def testApplyOrderedVsReversed():
     """vars accessen dmv integers"""
     
     """is_var_used ook zeer interessat"""
-    nrOfSdds = 1
     nrOfVars = 8
     nrOfClauses = 10 #als dit te hoog is -> kans op division door zero 
-    operation = 1 #0 voor conjoin, 1 voor disjoin
+    operation = OR #0 voor conjoin, 1 voor disjoin
     filenameStr = "testApplyOnOneVarSdd"
     byte_string = filenameStr.encode('utf-8')
     char_pointer = ctypes.create_string_buffer(byte_string)
     filenamePtr = ctypes.cast(char_pointer, ctypes.c_char_p).value
     nrOfIterations = 1000
 
-    randomApplier = RandomOrderApply(nrOfIterations, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
+    randomApplier = RandomOrderApply(nrOfIterations, nrOfVars, nrOfClauses)
     orderedCompiler = SDDcompiler(nrOfVars=nrOfVars, vtree_type="left")
     varOrder = orderedCompiler.sddManager.var_order()
     startReversing = 0
@@ -363,17 +388,12 @@ def testMinimization():
         print(randomApplier.compiler.sddManager.vtree().dot(), file=out)
 
 def testVtreeFunctions():
-    randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
-    oneSdd = randomApplier.baseSdds[0]
-    print(oneSdd.vtree())
-    if (Vtree.is_sub(oneSdd.vtree(), oneSdd.vtree().left())):
-        print("yeet")
-    rootNode = oneSdd.vtree()
-    print(f"id = {rootNode.position()}")
-    leftNode = rootNode.left()
-    rightNode = rootNode.right()
-    print(f"left id = {leftNode.position()}")
-    print(f"right id = {rightNode.position()}")
+    randomApplier = RandomOrderApply(1, 16, 5, vtree_type="random")
+    vtree = randomApplier.compiler.sddManager.vtree()
+    with open("vtree", "w") as out:
+        print(vtree.dot(), file=out)
+    graphviz.Source(vtree.dot()).render(f"vtree", format='png')
+
 
 def testCorrectWorkingHeuristics():
     heuristicsList = [RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND]
@@ -402,6 +422,8 @@ def getVtreeFig():
     with open("vtree.dot", "w") as out:
         print(finalSdd.vtree().dot(), file = out)
 
+#varsUnderVtreeNode_test()
+#overheadTime_test()
 #optimal_heuristic_test()
 #generate_all_sdd_test()
 #sdd_graphical_research_test()
@@ -409,12 +431,13 @@ def getVtreeFig():
 #local_vtree_count_tests()
 #negation_test()
 #countingTests()
-testCorrectWorkingHeuristics()
-#testVtreeFunctions()
+testVtreeFunctions()
 #getVtreeFig()
 #testApplyOrderedVsReversed()
 #testApplyOnOneVar()
 #testSddVarAppearances()
+
+testCorrectWorkingHeuristics()
 """
 
 output_directory = "/home/gijs/school/23-24/thesisUbuntu/output"

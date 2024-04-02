@@ -2,6 +2,7 @@ from randomCNFGenerator import generateRandomCnfFormula, generateRandomCnfDimacs
 from flatSDDCompiler import SDDcompiler
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode, SddManager
 import random
+import timeit
 import ctypes
 
 SMALLEST_FIRST = 1
@@ -92,9 +93,9 @@ class SddVtreeCountList(ExtendedList):
         (_, sddVtreeCount1, sddVtreeCount2) = self.sizeEstimateTuples.pop(0)
         index = 0
         while index < len(self.sizeEstimateTuples):
-            sizeEstimateTuples = self.sizeEstimateTuples[index]
-            if (sddVtreeCount1 == sizeEstimateTuples[1] or sddVtreeCount1 == sizeEstimateTuples[2] or 
-                sddVtreeCount2 == sizeEstimateTuples[1] or sddVtreeCount2 == sizeEstimateTuples[2]):
+            sizeEstimateTuple = self.sizeEstimateTuples[index]
+            if (sddVtreeCount1 == sizeEstimateTuple[1] or sddVtreeCount1 == sizeEstimateTuple[2] or 
+                sddVtreeCount2 == sizeEstimateTuple[1] or sddVtreeCount2 == sizeEstimateTuple[2]):
                 del self.sizeEstimateTuples[index]
             else:
                 index += 1
@@ -106,7 +107,8 @@ class SddVtreeCountList(ExtendedList):
     # def insert(self, index, newSdd):      #onnuttige en onlogische functie voor deze structuur
     #     super.insert(index, self.SddVtreeCount(newSdd))
     def append(self, newSdd):
-        newSddVtreeCount = self.SddVtreeCount(newSdd)
+        varList = self.sddManager.sdd_variables(newSdd)
+        newSddVtreeCount = self.SddVtreeCount(newSdd, varList)
         for sddVtreeCount in self:
             newSizeEstimateTuple = (SddVtreeCountList._getUpperLimit(sddVtreeCount, newSddVtreeCount, self.vtreeRoot), sddVtreeCount, newSddVtreeCount)
             #newSizeEstimateTuple = (5, sddVtreeCount, newSddVtreeCount)
@@ -129,8 +131,8 @@ class SddVtreeCountList(ExtendedList):
         while len(queue) > 0 and not extraFactorFound: #veel simpelere implementatie die de volledige vtree overloopt
             nextVtreeNode = queue.pop(0)
             pos = nextVtreeNode.position()
-            if (nextVtreeNode is None or root1 is None or root2 is None):
-                x = 5
+            if (nextVtreeNode is None):
+                print("iets geks met nextVtreeNode of root1 of root2, is None...")
             if (Vtree.is_sub(root1, nextVtreeNode.left()) and (Vtree.is_sub(nextVtreeNode, root2) or root2.position() > pos)): #sdd1 links van nextVtreeNode, nextVtreeNode onder sdd2
                 extraFactorFound = True
                 tempVtreeCount1 = sddVtreeCount1.addFactor2()
@@ -147,17 +149,51 @@ class SddVtreeCountList(ExtendedList):
             if i == 0 and j != 0: i = 1
             if i != 0 and j == 0: j = 1
             newVtreeCount.append(i*j)
-
-        #enforce var limit... has to be implemented
+        
+        combinedVars = [int(x or y) for x,y in zip(sddVtreeCount1.varList, sddVtreeCount2.varList)]
+        varsPerVtreeNode = SddVtreeCountList.varsUnderVtreeNode(combinedVars, root)
+        newVtreeCount = SddVtreeCountList.extraUpperbound(newVtreeCount, varsPerVtreeNode, root)
+        newVtreeCount = SddVtreeCountList.extraUpperbound(newVtreeCount, varsPerVtreeNode, root) #2 iteraties doen
             
         return sum(newVtreeCount)
     
+    def extraUpperbound(vtreeCount, varsPerVtreeNode, root):
+        queue = [root]    
+        while len(queue) > 0: #veel simpelere implementatie die de volledige vtree overloopt
+            currentNode = queue.pop(0)
+            parentElCount = 1
+            if (currentNode != root):
+                parentElCount = vtreeCount[currentNode.parent().position()]
+            if (not currentNode.is_leaf()): #geen rootnode -> nog hoger level
+                queue.append(currentNode.left())
+                queue.append(currentNode.right())
+                varLimit = 2**(min(varsPerVtreeNode[currentNode.left().position()], 2**varsPerVtreeNode[currentNode.right().position()]))
+                if vtreeCount[currentNode.position()] > parentElCount*varLimit:
+                    #print(f"extra limiet was nuttig: eerst {vtreeCount[currentNode.position()]}, nu {parentElCount*varLimit}")
+                    vtreeCount[currentNode.position()] = parentElCount*varLimit
+        return vtreeCount
+
+    def varsUnderVtreeNode(varList, vtreeNode, left = 0, right = 0):
+        #als vtreeNode geen leaf is -> oneven positie
+        #                   wel een leaf -> even positie
+        #als vtreeNode positie 7 is, 4 variabelen links
+        parent = vtreeNode.root()
+        if (vtreeNode == parent):#rootnode
+            left = 0
+            right = len(varList)*2-1
+        if vtreeNode.is_leaf() == 1: #leafnode
+            return [varList[int(left/2)]]
+        leftList = SddVtreeCountList.varsUnderVtreeNode(varList, vtreeNode.left(), left, vtreeNode.position())
+        rightList = SddVtreeCountList.varsUnderVtreeNode(varList, vtreeNode.right(), vtreeNode.position() + 1, right)
+        return leftList + [sum(varList[int(left/2): int((right+1)/2)])] + rightList
+        
     class SddVtreeCount:
-        def __init__(self, sdd):
+        def __init__(self, sdd, varList):
             self.sdd = sdd
             #self.vtreeCount = [0, 2, 0, 2, 0, 4, 4, 2, 4, 2, 0, 2, 4, 2] #zeker lang genoeg zodat er geen out of bounds access gebeurt
             self.vtreeCount = sdd.local_vtree_element_count()
             self.topVtreeNode = sdd.vtree()
+            self.varList = varList
         
         def getSdd(self):
             return self.sdd
@@ -308,6 +344,16 @@ class RandomOrderApply():
     def unsaveBaseSdds(self):
         for baseSdd in self.baseSdds:
             baseSdd.deref()
+    
+    def doApply(self, sdd1, sdd2, operation, timeOverhead):
+        time = 0
+        if not timeOverhead:
+            startTime = timeit.default_timer()
+            newSdd = self.compiler.sddManager.apply(sdd1, sdd2, operation)
+            time += timeit.default_timer() - startTime
+        else:
+            newSdd = self.compiler.sddManager.apply(sdd1, sdd2, operation)
+        return (newSdd, time)
 
     # SMALLEST_FIRST = 1
     # VTREESPLIT = 2
@@ -326,13 +372,14 @@ class RandomOrderApply():
             return RandomList(sdds)
         else: print(f"heuristiek {heuristic} is nog niet geïmpleneteerd")
 
-    def doHeuristicApply2Recursive(self, parentVtreeNode, innerHeuristic, sdds, operation):
+    def doHeuristicApply2Recursive(self, parentVtreeNode, innerHeuristic, sdds, operation, timeOverhead):
         #recursively split up the children in left.children, right.children en middle.children
         # left children samen (recursief) applyen, dan right.children (recursief), en dan middle.children
+        totalTime = 0
         if len(sdds) == 1:
-            return sdds[0]
+            return (sdds[0], 0)
         if len(sdds) == 2:
-            return self.compiler.sddManager.apply(sdds[0], sdds[1], operation)
+            return self.doApply(sdds[0], sdds[1], operation, timeOverhead)
         if parentVtreeNode is None: #bijvoorbeeld omdat
             print("iets geks met parentVtreeNode, is None...")
         left = []
@@ -348,34 +395,41 @@ class RandomOrderApply():
             else: #aan beide zijden -> middle
                 middle.append(sdd)
         if len(left) > 0:
-            middle.append(self.doHeuristicApply2Recursive(parentVtreeNode.left(), innerHeuristic, left, operation))
+            (recursiveSdd, recursiveTime) = self.doHeuristicApply2Recursive(parentVtreeNode.left(), innerHeuristic, left, operation, timeOverhead)
+            middle.append(recursiveSdd)
+            totalTime += recursiveTime 
         if len(right) > 0:
-            middle.append(self.doHeuristicApply2Recursive(parentVtreeNode.right(), innerHeuristic, right, operation))
-        return self.doHeuristicApplySdds(innerHeuristic, middle, operation)
+            (recursiveSdd, recursiveTime) = self.doHeuristicApply2Recursive(parentVtreeNode.right(), innerHeuristic, right, operation, timeOverhead)
+            middle.append(recursiveSdd)
+            totalTime += recursiveTime
+        (resultSdd, extraTime) = self.doHeuristicApplySdds(innerHeuristic, middle, operation, timeOverhead)
+        return (resultSdd, totalTime + extraTime)
 
-    def doHeuristicApplySdds(self, heuristic, sdds, operation): #base value zou moeten veranderd worden naar de beste heuristiek
+    def doHeuristicApplySdds(self, heuristic, sdds, operation, timeOverhead): #base value zou moeten veranderd worden naar de beste heuristiek
         #print(f"nu: using heuristic {heuristic}")
+        totalTime = 0
         datastructure = self.getFirstDataStructure(sdds, heuristic)
         while len(datastructure) > 1:
             sdd1, sdd2 = datastructure.getNextSddsToApply()
-            newSdd = self.compiler.sddManager.apply(sdd1, sdd2, operation)
+            (newSdd, applytime) = self.doApply(sdd1, sdd2, operation, timeOverhead)
+            totalTime += applytime
             datastructure.update(newSdd)
             #self.nodeCounterList.append(self.compiler.sddManager.dead_size())
             # self.nodeCounterList.append((self.compiler.sddManager.count(), self.compiler.sddManager.live_count(), self.compiler.sddManager.dead_count())) #count, dead_count of live_count
             #doSomethingWithResults(rootNodeId, rootNode, newSdd, datastructure)
         finalSdd = datastructure.pop(0)
-        return finalSdd
+        return (finalSdd, totalTime)
 
-    def doHeuristicApply(self, heuristic, operation):
+    def doHeuristicApply(self, heuristic, operation, timeOverhead = True):
         #print(f"using heuristic {heuristic}")
         if heuristic == VTREESPLIT:
-            result = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), RANDOM, self.baseSdds, operation)
+            (result, time) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), RANDOM, self.baseSdds, operation, timeOverhead)
         elif heuristic == VTREESPLIT_WITH_SMALLEST_FIRST:
-            result = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), SMALLEST_FIRST, self.baseSdds, operation)
+            (result, time) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), SMALLEST_FIRST, self.baseSdds, operation, timeOverhead)
         else:
-            result = self.doHeuristicApplySdds(heuristic, self.baseSdds, operation)
+            (result, time) = self.doHeuristicApplySdds(heuristic, self.baseSdds, operation, timeOverhead)
         self.collectMostGarbage(result)
-        return result
+        return (result, time)
         
         
 

@@ -72,26 +72,31 @@ def randomOrderCompTimeVariation(operation):
             times = doRandomOrderTest(nrOfIterationsPerSdd, randomApplier, operation)
             file.write(f"voor {nrOfClauses} clauses {times}\n")
 
-def doHeuristicTest(heuristics, randomApplier, operation):
+def doHeuristicTest(heuristics, randomApplier, operation, overheadTime):
     timeHeuristics = []
     for heur in heuristics:
-        timeHeuristics.append(timeit.timeit(lambda: randomApplier.doHeuristicApply(heur, operation), number = 1))
+        if (overheadTime):
+            timeHeuristics.append(timeit.timeit(lambda: randomApplier.doHeuristicApply(heur, operation), number = 1))
+        else:
+            (_, time) = randomApplier.doHeuristicApply(heur, operation, overheadTime)
+            timeHeuristics.append(time)
     return timeHeuristics
 
-def heuristicsApply(nrOfClauses, heuristics, operation):
+def heuristicsApply(nrOfClauses, heuristics, operation, overheadTime):
     nrOfSdds=20
     nrOfVars=16
-    iterations = 100
+    iterations = 1000
+    vtree = "balanced"
     operationStr = "OR" if operation == OR else "AND"
-    with open(f"output/randomVsHeuristic_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{heuristics}.txt", 'w') as file:
-        file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}, heuristiek = {heuristics}" + '\n')
+    with open(f"output/randomVsHeuristic_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
+        file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}, vtree = {vtree}, heuristiek = {heuristics}" + '\n')
         heuristicsTimes = []
-        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
+        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
         for i in heuristics:
             heuristicsTimes.append([])
         for i in range(iterations):
             randomApplier.renew()
-            timeHeuristics = doHeuristicTest(heuristics, randomApplier, operation)
+            timeHeuristics = doHeuristicTest(heuristics, randomApplier, operation, overheadTime)
             for i in range(len(timeHeuristics)):
                 heuristicsTimes[i].append(timeHeuristics[i])
         for i in range(len(heuristics)):
@@ -99,11 +104,11 @@ def heuristicsApply(nrOfClauses, heuristics, operation):
 
 def __main__():
     #heuristieken: RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
-    heuristics = [RANDOM, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND]
+    heuristics = [VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND]
     operation = OR 
     for i in range(5, 80, 5):
         print(f"nr of clauses = {i}")
-        heuristicsApply(i, heuristics, operation)
+        heuristicsApply(i, heuristics, operation, overheadTime=False) #false -> meet zonder overhead
     # countingVSTiming()
     #randomOrderCompTimeVariation()
     #print(times)
