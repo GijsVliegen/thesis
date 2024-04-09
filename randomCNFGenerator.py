@@ -1,5 +1,5 @@
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
-from thesis_files.propositional_formula import FormulaContainer, FormulaOp, RefFormula
+from problog_formulas.propositional_formula import FormulaContainer, FormulaOp, RefFormula
 import random
 
 def generateRandomCnfDimacs(nrOfVars, nrOfClauses, cnf3 = True):

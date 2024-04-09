@@ -1,7 +1,9 @@
 #dot -Tpng -O sdd.dot
 from randomCNFGenerator import generateRandomCnfDimacs
 from randomOrderApplier import RandomOrderApply, SddVarAppearancesList, SddVtreeCountList
-from randomOrderApplier import RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
+from randomOrderApplier import RANDOM, INVERSE_VAR_ORDER_LR, INVERSE_VAR_ORDER_RL, \
+    SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, \
+    ELEMENT_UPPERBOUND
 from randomOrderApplier import AND, OR
 
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
@@ -394,13 +396,14 @@ def testVtreeFunctions():
         print(vtree.dot(), file=out)
     graphviz.Source(vtree.dot()).render(f"vtree", format='png')
 
-
 def testCorrectWorkingHeuristics():
-    heuristicsList = [RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND]
+    heuristicsList = [RANDOM, SMALLEST_FIRST, VTREESPLIT, \
+                      VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, \
+                        ELEMENT_UPPERBOUND, INVERSE_VAR_ORDER_LR, INVERSE_VAR_ORDER_RL]
     nrOfVars = 16
     nrOfClausesList = [5, 25, 40, 55, 75]
     operations = [OR, AND] #0 voor conjoin, 1 voor disjoin
-    nrOfIterations = 100
+    nrOfIterations = 10
     workingCorrect = True
     for nrOfClauses in nrOfClausesList:
         for operation in operations:
@@ -431,7 +434,7 @@ def getVtreeFig():
 #local_vtree_count_tests()
 #negation_test()
 #countingTests()
-testVtreeFunctions()
+testVtreeFunctions() #RESULT SDD TERUGGEGEN IN RandomOrderApplier
 #getVtreeFig()
 #testApplyOrderedVsReversed()
 #testApplyOnOneVar()

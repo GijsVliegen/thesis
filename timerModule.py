@@ -1,5 +1,7 @@
 from randomOrderApplier import RandomOrderApply
-from randomOrderApplier import RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
+from randomOrderApplier import RANDOM, INVERSE_VAR_ORDER_LR, INVERSE_VAR_ORDER_RL, \
+    SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, \
+    ELEMENT_UPPERBOUND
 from randomOrderApplier import OR, AND
 
 import timeit
@@ -104,11 +106,11 @@ def heuristicsApply(nrOfClauses, heuristics, operation, overheadTime):
 
 def __main__():
     #heuristieken: RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
-    heuristics = [VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND]
+    heuristics = [VTREE_VARIABLE_ORDERING, INVERSE_VAR_ORDER_LR, INVERSE_VAR_ORDER_RL]
     operation = OR 
     for i in range(5, 80, 5):
         print(f"nr of clauses = {i}")
-        heuristicsApply(i, heuristics, operation, overheadTime=False) #false -> meet zonder overhead
+        heuristicsApply(i, heuristics, operation, overheadTime=True) #false -> tijdsmeting zonder overhead
     # countingVSTiming()
     #randomOrderCompTimeVariation()
     #print(times)

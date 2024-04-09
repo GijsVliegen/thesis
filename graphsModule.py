@@ -3,10 +3,14 @@ import matplotlib.pyplot as plt
 import pyperf
 import pylab
 import scipy.stats as stats
-from randomOrderApplier import RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
+from randomOrderApplier import RANDOM, INVERSE_VAR_ORDER_LR, INVERSE_VAR_ORDER_RL, \
+    SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, \
+    ELEMENT_UPPERBOUND
 
-heuristicDict = {RANDOM: "Random", SMALLEST_FIRST: "Smallest first", VTREESPLIT: "Vtree split", ELEMENT_UPPERBOUND: "element upperbound", 
-                 VTREESPLIT_WITH_SMALLEST_FIRST: "Vtree split + smallest first", VTREE_VARIABLE_ORDERING: "Vtree var-order"}
+heuristicDict = {RANDOM: "Random", SMALLEST_FIRST: "Smallest first", VTREESPLIT: "Vtree split", 
+                 ELEMENT_UPPERBOUND: "element upperbound", VTREESPLIT_WITH_SMALLEST_FIRST: "Vtree split + smallest first", 
+                 VTREE_VARIABLE_ORDERING: "Vtree var-order", INVERSE_VAR_ORDER_LR: "Inverse var-order LR",
+                 INVERSE_VAR_ORDER_RL: "Inverse var-order RL"}
 def getHeuristicName(heuristicInt):
     return heuristicDict[heuristicInt]
 
@@ -46,7 +50,7 @@ def heuristicsPlot(nrOfClauses):
     nrOfVars = 16
     operation = "OR"
     vtree = "balanced"
-    heuristieken = "[4, 5]"
+    heuristieken = "[4, 6, 7]"
     filename = f"output/randomVsHeuristic_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.txt"
     heuristieken = getListFromLine(filename)
     with open(filename, 'r') as file:
@@ -66,7 +70,7 @@ def heuristicsPlot(nrOfClauses):
     plt.clf() #clear
 
 def __main__():
-    nrOfClauses = list(range(5, 75, 5))
+    nrOfClauses = list(range(5, 80, 5))
     for i in nrOfClauses:
         heuristicsPlot(i) 
     # randomOrderPlot()

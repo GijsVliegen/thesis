@@ -10,6 +10,8 @@ VTREESPLIT = 2
 VTREESPLIT_WITH_SMALLEST_FIRST = 3
 VTREE_VARIABLE_ORDERING = 4
 ELEMENT_UPPERBOUND = 5
+INVERSE_VAR_ORDER_LR = 6
+INVERSE_VAR_ORDER_RL = 7
 RANDOM = 99
 OR = 1
 AND = 0
@@ -153,7 +155,6 @@ class SddVtreeCountList(ExtendedList):
         combinedVars = [int(x or y) for x,y in zip(sddVtreeCount1.varList, sddVtreeCount2.varList)]
         varsPerVtreeNode = SddVtreeCountList.varsUnderVtreeNode(combinedVars, root)
         newVtreeCount = SddVtreeCountList.extraUpperbound(newVtreeCount, varsPerVtreeNode, root)
-        newVtreeCount = SddVtreeCountList.extraUpperbound(newVtreeCount, varsPerVtreeNode, root) #2 iteraties doen
             
         return sum(newVtreeCount)
     
@@ -215,11 +216,12 @@ class SddVtreeCountList(ExtendedList):
                     queue.append(nextVtreeNode.right())
             return tempVtreeCount
 
-
 #houdt een lijst bij van SddVarAppearance (achter de schermen), die gesorteerd zijn volgens de varpriority
 class SddVarAppearancesList(ExtendedList):
-    def __init__(self, sdds, sddManager):
-        self.var_order = self.getVarPriority(sddManager.vtree())
+    def __init__(self, sdds, sddManager, inverse = False, LR = True):
+        self.var_order = self.getVarPriority(sddManager.vtree(), LR)
+        if (inverse):
+            self.var_order.reverse()
         self.sddManager = sddManager
         super().__init__(sdds)
     
@@ -249,8 +251,9 @@ class SddVarAppearancesList(ExtendedList):
             return False
         def getSdd(self):
             return self.sdd
-        
-    def getVarPriority(self, vtree):
+    
+    #LR geeft aan of de vtree van links naar rechts of van rechts naar links moet doorlopen worden
+    def getVarPriority(self, vtree, LR):
         varOrdering = []
         queue = [vtree]
         while len(queue) > 0:
@@ -260,8 +263,12 @@ class SddVarAppearancesList(ExtendedList):
             else:
                 leftVtree = nextVtreeNode.left()
                 rightVtree = nextVtreeNode.right()
-                queue.append(leftVtree)
-                queue.append(rightVtree)
+                if (LR):
+                    queue.append(leftVtree)
+                    queue.append(rightVtree)
+                else:
+                    queue.append(rightVtree)
+                    queue.append(leftVtree)
         return varOrdering
         #breadth first de vtree doorlopen, en dan de varOrder opslaan
 
@@ -333,7 +340,7 @@ class RandomOrderApply():
         randomSdds = []
         for _ in range(self.nrOfSdds):
             cnf = generateRandomCnfFormula(self.nrOfClauses, self.nrOfVars, self.cnf3)
-            (sdd, _) = self.compiler.compileToSdd(cnf)
+            (sdd, size) = self.compiler.compileToSdd(cnf, len(cnf))
             randomSdds.append(sdd)
         return randomSdds
 
@@ -360,12 +367,18 @@ class RandomOrderApply():
     # VTREESPLIT_WITH_SMALLEST_FIRST = 3
     # VTREE_VARIABLE_ORDERING = 4
     # ELEMENT_UPPERBOUND = 5
+    # INVERSE_VAR_ORDER_LR = 6
+    # INVERSE_VAR_ORDER_RL = 7
     # RANDOM = 99
     def getFirstDataStructure(self, sdds, heuristic):
         if heuristic == SMALLEST_FIRST:
             return SddSizeList(sdds)
         if heuristic == VTREE_VARIABLE_ORDERING:
             return SddVarAppearancesList(sdds, self.compiler.sddManager)
+        if heuristic == INVERSE_VAR_ORDER_LR:
+            return SddVarAppearancesList(sdds, self.compiler.sddManager, inverse=True)
+        if heuristic == INVERSE_VAR_ORDER_RL:
+            return SddVarAppearancesList(sdds, self.compiler.sddManager, inverse=True, LR=False)
         if heuristic == ELEMENT_UPPERBOUND:
             return SddVtreeCountList(sdds, self.compiler.sddManager)
         if heuristic == RANDOM:
@@ -428,7 +441,7 @@ class RandomOrderApply():
             (result, time) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), SMALLEST_FIRST, self.baseSdds, operation, timeOverhead)
         else:
             (result, time) = self.doHeuristicApplySdds(heuristic, self.baseSdds, operation, timeOverhead)
-        self.collectMostGarbage(result)
+        self.collectMostGarbage()#result) #dit toevoegen als we correctheid willen testen
         return (result, time)
         
         
