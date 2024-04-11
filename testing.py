@@ -238,14 +238,40 @@ def countingTests():
 
 def testSddVarAppearances():
     #werking van varpriority testen
-    nrOfSdds = 10
-    nrOfVars = 16
-    nrOfClauses = 10
-    randApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, operation="OR", vtree_type="random")
-    sddVarAppearancesList = SddVarAppearancesList(randApplier.compiler.sddManager)
-    varOrdering = sddVarAppearancesList.var_order
-    print(varOrdering)
-    finalSdd = randApplier.doHeuristicApply(4)
+    vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="balanced")
+    #                       5:{all}
+    #               3:{a,b,c}   6:{d}
+    #       1:{a,b}     4:{c}
+    #  0:{a}    2:{b}
+    mgr = SddManager.from_vtree(vtree)
+    a, b, c, d = mgr.vars
+    f1 = a & b
+    f2 = b & (c|d)
+    f3 = f1 | f2
+    f4 = ~f3
+
+    var_order = SddVarAppearancesList.getVarPriority(vtree, LR=True)
+    f1varList = [0, 1, 0, 0]#mgr.sdd_variables(f1)
+    f1VarApp = SddVarAppearancesList.SddVarAppearance(f1, f1varList, var_order)
+    f2varList = [1, 0, 0, 0]#mgr.sdd_variables(f2)
+    f2VarApp = SddVarAppearancesList.SddVarAppearance(f2, f2varList, var_order)
+    f3varList = [1, 1, 0, 0]#mgr.sdd_variables(f3)
+    f3VarApp = SddVarAppearancesList.SddVarAppearance(f3, f3varList, var_order)
+    f4varList = [1, 0, 0, 1]#mgr.sdd_variables(f4)
+    f4VarApp = SddVarAppearancesList.SddVarAppearance(f4, f4varList, var_order)
+    assert f2VarApp < f1VarApp
+    assert f3VarApp < f4VarApp
+    assert f2VarApp < f3VarApp
+    assert f3VarApp < f4VarApp
+
+    # nrOfSdds = 10
+    # nrOfVars = 16
+    # nrOfClauses = 10
+    # randApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, operation="OR", vtree_type="random")
+    # sddVarAppearancesList = SddVarAppearancesList(randApplier.compiler.sddManager)
+    # varOrdering = sddVarAppearancesList.var_order
+    # print(varOrdering)
+    # finalSdd = randApplier.doHeuristicApply(4)
 
 def getSizes(sddManager, vars, baseSdd, operation = 0):
     newSddSizes = []
@@ -434,13 +460,12 @@ def getVtreeFig():
 #local_vtree_count_tests()
 #negation_test()
 #countingTests()
-testVtreeFunctions() #RESULT SDD TERUGGEGEN IN RandomOrderApplier
 #getVtreeFig()
 #testApplyOrderedVsReversed()
 #testApplyOnOneVar()
-#testSddVarAppearances()
+testSddVarAppearances()
 
-testCorrectWorkingHeuristics()
+#testCorrectWorkingHeuristics() #RESULT SDD TERUGGEGEN IN RandomOrderApplier
 """
 
 output_directory = "/home/gijs/school/23-24/thesisUbuntu/output"
