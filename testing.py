@@ -19,6 +19,28 @@ nrOfSdds=10
 nrOfVars=20
 nrOfClauses=10
 
+def varOrderTest():
+    nrOfSdds=2
+    nrOfVars=15
+    nrOfClauses = 5#25#[5, 15, 25, 35, 45, 55, 65]
+    #nrOfIterations = 10
+    operation = OR
+    randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="random")
+    vtree = randomApplier.compiler.sddManager.vtree() 
+    sdds = randomApplier.baseSdds
+    varAppList = SddVarAppearancesList(sdds, randomApplier.compiler.sddManager)
+    varAppOrder = varAppList.var_order
+    ReverseLRvarAppList = SddVarAppearancesList(sdds, randomApplier.compiler.sddManager, inverse=True, LR = True)
+    ReverseLRvarAppOrder = ReverseLRvarAppList.var_order
+    ReverseRLvarAppList = SddVarAppearancesList(sdds, randomApplier.compiler.sddManager, inverse=True, LR = False)
+    ReverseRLvarAppOrder = ReverseRLvarAppList.var_order
+    print(f"var order = {varAppOrder}")
+    print(f"inverse var order LR = {ReverseLRvarAppOrder}")
+    print(f"inverse var order RL = {ReverseRLvarAppOrder}")
+    with open(f"testing/varOrderTest_random_vtree", "w") as out:
+        print(vtree.dot(), file=out)
+        graphviz.Source(vtree.dot()).render(f"testing/varOrderTest_random_vtree", format='png')
+    
 def varsUnderVtreeNode_test():
     vtree = Vtree(var_count=4, var_order=[1, 2, 3, 4], vtree_type="balanced")
     # 3:{all}
@@ -32,6 +54,15 @@ def varsUnderVtreeNode_test():
     f3vars = mgr.sdd_variables(f3)[1:]
     print(SddVtreeCountList.varsUnderVtreeNode(f2vars, vtree))
     print(SddVtreeCountList.varsUnderVtreeNode(f3vars, vtree))
+
+    randomApplier = RandomOrderApply(nrOfSdds, 15, 75, vtree_type="random")
+    mgr = randomApplier.compiler.sddManager
+    vtree = mgr.vtree() 
+    sdds = randomApplier.baseSdds
+    varCounts = [sum(mgr.sdd_variables(sdd)) for sdd in sdds]
+    print(varCounts)
+
+    
 
 def overheadTime_test():
     heuristics = [RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND]
@@ -245,24 +276,15 @@ def testSddVarAppearances():
     #  0:{a}    2:{b}
     mgr = SddManager.from_vtree(vtree)
     a, b, c, d = mgr.vars
-    f1 = a & b
-    f2 = b & (c|d)
-    f3 = f1 | f2
-    f4 = ~f3
-
-    var_order = SddVarAppearancesList.getVarPriority(vtree, LR=True)
-    f1varList = [0, 1, 0, 0]#mgr.sdd_variables(f1)
-    f1VarApp = SddVarAppearancesList.SddVarAppearance(f1, f1varList, var_order)
-    f2varList = [1, 0, 0, 0]#mgr.sdd_variables(f2)
-    f2VarApp = SddVarAppearancesList.SddVarAppearance(f2, f2varList, var_order)
-    f3varList = [1, 1, 0, 0]#mgr.sdd_variables(f3)
-    f3VarApp = SddVarAppearancesList.SddVarAppearance(f3, f3varList, var_order)
-    f4varList = [1, 0, 0, 1]#mgr.sdd_variables(f4)
-    f4VarApp = SddVarAppearancesList.SddVarAppearance(f4, f4varList, var_order)
-    assert f2VarApp < f1VarApp
-    assert f3VarApp < f4VarApp
-    assert f2VarApp < f3VarApp
-    assert f3VarApp < f4VarApp
+    f1 = b      #[0, 1, 0, 0]
+    f2 = a      #[1, 0, 0, 0]
+    f3 = a | b  #[1, 1, 0, 0]
+    f4 = a | d  #[1, 0, 0, 1]
+    sddVarAppList = SddVarAppearancesList([f1, f2, f3, f4], mgr)
+    assert sddVarAppList.pop(0) == f2
+    assert sddVarAppList.pop(0) == f3
+    assert sddVarAppList.pop(0) == f4
+    assert sddVarAppList.pop(0) == f1
 
     # nrOfSdds = 10
     # nrOfVars = 16
@@ -436,9 +458,9 @@ def testCorrectWorkingHeuristics():
             print(f"aantal clauses = {nrOfClauses}, operatie = {operation}")
             randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
             for _ in range(nrOfIterations):
-                finalSdd = randomApplier.doHeuristicApply(RANDOM, operation)
+                finalSdd = randomApplier.doHeuristicApply(RANDOM, operation)[0]
                 for heuristic in heuristicsList:
-                    if finalSdd != randomApplier.doHeuristicApply(heuristic, operation):
+                    if finalSdd != randomApplier.doHeuristicApply(heuristic, operation)[0]:
                         print(f"er is iets mis met heuristic {heuristic}")
                         workingCorrect = False
                 randomApplier.renew()
@@ -463,7 +485,9 @@ def getVtreeFig():
 #getVtreeFig()
 #testApplyOrderedVsReversed()
 #testApplyOnOneVar()
-testSddVarAppearances()
+#testSddVarAppearances()
+varsUnderVtreeNode_test()
+#varOrderTest()
 
 #testCorrectWorkingHeuristics() #RESULT SDD TERUGGEGEN IN RandomOrderApplier
 """

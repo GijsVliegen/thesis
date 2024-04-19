@@ -12,9 +12,14 @@ VTREE_VARIABLE_ORDERING = 4
 ELEMENT_UPPERBOUND = 5
 INVERSE_VAR_ORDER_LR = 6
 INVERSE_VAR_ORDER_RL = 7
+VTREESPLIT_WITH_EL_UPPERBOUND = 8
 RANDOM = 99
 OR = 1
 AND = 0
+heuristicDict = {RANDOM: "Random", SMALLEST_FIRST: "KE", VTREESPLIT: "VP", 
+                 ELEMENT_UPPERBOUND: "EL", VTREESPLIT_WITH_SMALLEST_FIRST: "VP + KE", 
+                 VTREE_VARIABLE_ORDERING: "VO", INVERSE_VAR_ORDER_LR: "IVO-LR",
+                 INVERSE_VAR_ORDER_RL: "IVO-RL", VTREESPLIT_WITH_EL_UPPERBOUND:"VP + EL"}
 
 #uitbreiding van List met functies:
     # getNextSddsToApply() -> moet geïmplementeerd worden, 
@@ -228,27 +233,28 @@ class SddVarAppearancesList(ExtendedList):
     def pop(self, index):
         return super().pop(index).getSdd()
     def insert(self, index, newSdd):
-        varList = self.sddManager.sdd_variables(newSdd)
-        newSddVarAppearance = self.SddVarAppearance(newSdd, varList, self.var_order)
+        newSddVarAppearance = self.SddVarAppearance(newSdd, self.var_order, self.sddManager)
         super().insert(index, newSddVarAppearance)
     def append(self, newSdd):
-        varList = self.sddManager.sdd_variables(newSdd)
-        newSddVarAppearance = self.SddVarAppearance(newSdd, varList, self.var_order)
-        super().append(newSddVarAppearance)
+        insort_right(self, self.SddVarAppearance(newSdd, self.var_order, self.sddManager))
     def update(self, newSdd): #insert new element while keeping sortedness
-        varList = self.sddManager.sdd_variables(newSdd)
-        insort_right(self, self.SddVarAppearance(newSdd, varList, self.var_order))
+        self.append(newSdd)
 
     class SddVarAppearance:
-        def __init__(self, sdd, varsUsed, varOrdering):
+        def __init__(self, sdd, var_order, mgr):
             self.sdd = sdd
-            self.varsUsed = varsUsed
-            self.varOrdering = varOrdering
+            self.var_order = var_order
+            varList = mgr.sdd_variables(sdd)
+            self.varsUsed = list(map(lambda i_el_tuple: sum(varList[1:i_el_tuple[0]+2]), enumerate(varList[1:])))#sum van elke subarray
         def __lt__(self, other):
-            for i in self.varOrdering:
-                if sum(self.varsUsed[i-1:]) == 0:
+            if self.varsUsed[0] == 0: 
+                return True
+            if other.varsUsed[0] == 0:
+                return False
+            for i in self.var_order:
+                if self.varsUsed[i-1] == self.varsUsed[-1]: #geen andere vars meer -> ook goed
                     return True
-                if sum(other.varsUsed[i-1:]) == 0:
+                if other.varsUsed[i-1] == other.varsUsed[-1]:
                     return False
                 if self.varsUsed[i-1] > other.varsUsed[i-1]: #als die een voorkomen heeft van een variabele hoog en links in de vtree en other niet -> sdd eerst zetten
                     return True
@@ -278,6 +284,12 @@ class SddVarAppearancesList(ExtendedList):
         return varOrdering
         #breadth first de vtree doorlopen, en dan de varOrder opslaan
 
+def getAllVtrees(nrOfSdds):
+    pass
+    #2 -> 1
+    #3 -> 3
+    #4 -> (4 choose 1)*getAllVtrees(3) + (4 choose 2)*getAllVtrees(2) = 4*3 + 3*1
+    
 #wordt gebruikt voor bepaalde list structuren
 def insort_right(sortedList, newElement, key = lambda x: x, lo=0, hi=None):
     """Insert item x in list a, and keep it sorted assuming a is sorted.
@@ -375,6 +387,7 @@ class RandomOrderApply():
     # ELEMENT_UPPERBOUND = 5
     # INVERSE_VAR_ORDER_LR = 6
     # INVERSE_VAR_ORDER_RL = 7
+    # VTREESPLIT_WITH_EL_UPPERBOUND = 8
     # RANDOM = 99
     def getFirstDataStructure(self, sdds, heuristic):
         if heuristic == SMALLEST_FIRST:
@@ -451,6 +464,8 @@ class RandomOrderApply():
             (finalSdd, compileSizes, totalTime) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), RANDOM, self.baseSdds, operation, timeOverhead)
         elif heuristic == VTREESPLIT_WITH_SMALLEST_FIRST:
             (finalSdd, compileSizes, totalTime) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), SMALLEST_FIRST, self.baseSdds, operation, timeOverhead)
+        elif heuristic == VTREESPLIT_WITH_EL_UPPERBOUND:
+            (finalSdd, compileSizes, totalTime) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), ELEMENT_UPPERBOUND, self.baseSdds, operation, timeOverhead)
         else:
             (finalSdd, compileSizes, totalTime) = self.doHeuristicApplySdds(heuristic, self.baseSdds, operation, timeOverhead)
         self.collectMostGarbage()#finalSdd) #dit toevoegen als we correctheid willen testen -> correctheid testen door sizes te vergelijken?

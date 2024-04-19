@@ -1,0 +1,3 @@
+experiment: sdds: 20, vars: 24, operation = OR, vtree = balanced, heuristiek = [8, 8]
+heuristiek 8 times: [2.9960454489996664]
+heuristiek 8 times: [2.5949005970001053]

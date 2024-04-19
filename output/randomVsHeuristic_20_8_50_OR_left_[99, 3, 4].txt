@@ -1,1 +1,0 @@
-experiment: sdds: 20, vars: 8, operation = OR, vtree = left, heuristiek = [99, 3, 4]

@@ -1,1 +1,0 @@
-experiment: sdds: 20, vars: 20, operation = OR
