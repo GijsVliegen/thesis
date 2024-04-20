@@ -43,11 +43,11 @@ def getListFromLine(line):
     return current_list
 
 def heuristicsPlot(nrOfClauses):
-    nrOfVars = 12
+    nrOfVars = 24
     operation = "OR"
     vtree = "balanced"
-    heuristieken = "[8, 8]"
-    filename = f"output/randomVsHeuristic_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.txt"
+    heuristieken = "[8, 7]"
+    filename = f"output/heuristic/test_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.txt"
     heuristieken = getListFromLine(filename)
     with open(filename, 'r') as file:
         lines = file.readlines()
@@ -66,7 +66,7 @@ def heuristicsPlot(nrOfClauses):
     plt.clf() #clear
 
 def __main__():
-    nrOfClauses = list(range(5, 80, 5))
+    nrOfClauses = list(range(12, 24*5, 12))
     for i in nrOfClauses:
         heuristicsPlot(i) 
     # randomOrderPlot()

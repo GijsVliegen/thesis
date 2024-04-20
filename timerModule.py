@@ -80,7 +80,7 @@ def doHeuristicTest(heuristics, randomApplier, operation, overheadTime):
         if (overheadTime):
             timeHeuristics.append(timeit.timeit(lambda: randomApplier.doHeuristicApply(heur, operation), number = 1))
         else:
-            (_, time) = randomApplier.doHeuristicApply(heur, operation, overheadTime)
+            (_, _, time) = randomApplier.doHeuristicApply(heur, operation, overheadTime)
             timeHeuristics.append(time)
     return timeHeuristics
 
@@ -89,8 +89,9 @@ def heuristicsApply(nrOfClauses, heuristics, operation, overheadTime):
     nrOfVars=24
     iterations = 100
     vtree = "balanced"
+    name = "test" if not overheadTime else "overhead"
     operationStr = "OR" if operation == OR else "AND"
-    with open(f"output/heuristic/test_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
+    with open(f"output/heuristic/{name}_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
         file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}, vtree = {vtree}, heuristiek = {heuristics}" + '\n')
         heuristicsTimes = []
         randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
@@ -132,9 +133,9 @@ def __main__():
     #heuristieken: RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
     heuristics = [VTREESPLIT_WITH_EL_UPPERBOUND, INVERSE_VAR_ORDER_RL]
     operation = OR 
-    for i in range(int(24*0.5), 24*5, int(24*0.5)):
+    for i in range(int(12), 24*5, int(24*0.5)):
         print(f"nr of clauses = {i}")
-        heuristicsApply(i, heuristics, operation, overheadTime=True) #false -> tijdsmeting zonder overhead
+        heuristicsApply(i, heuristics, operation, overheadTime=False) #false -> tijdsmeting zonder overhead
     # diffSizesApply(heuristics, operation)
     # countingVSTiming()
     #randomOrderCompTimeVariation()
