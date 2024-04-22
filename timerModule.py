@@ -1,7 +1,7 @@
 from randomOrderApplier import RandomOrderApply
-from randomOrderApplier import RANDOM, INVERSE_VAR_ORDER_LR, INVERSE_VAR_ORDER_RL, \
-    SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, \
-    ELEMENT_UPPERBOUND, VTREESPLIT_WITH_EL_UPPERBOUND, heuristicDict
+from randomOrderApplier import RANDOM, IVO_LR, IVO_RL, \
+    KE, VP, VP_KE, VO, \
+    EL, VP_EL, heuristicDict
 from randomOrderApplier import OR, AND
 
 import timeit
@@ -84,26 +84,29 @@ def doHeuristicTest(heuristics, randomApplier, operation, overheadTime):
             timeHeuristics.append(time)
     return timeHeuristics
 
-def heuristicsApply(nrOfClauses, heuristics, operation, overheadTime):
+def heuristicsApply(heuristics, operation, overheadTime):
     nrOfSdds=20
-    nrOfVars=24
-    iterations = 100
-    vtree = "balanced"
-    name = "test" if not overheadTime else "overhead"
-    operationStr = "OR" if operation == OR else "AND"
-    with open(f"output/heuristic/{name}_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
-        file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}, vtree = {vtree}, heuristiek = {heuristics}" + '\n')
-        heuristicsTimes = []
-        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
-        for i in heuristics:
-            heuristicsTimes.append([])
-        for _ in range(iterations):
-            randomApplier.renew()
-            timeHeuristics = doHeuristicTest(heuristics, randomApplier, operation, overheadTime)
-            for i in range(len(timeHeuristics)):
-                heuristicsTimes[i].append(timeHeuristics[i])
-        for i in range(len(heuristics)):
-            file.write(f"heuristiek {heuristics[i]} times: {heuristicsTimes[i]}\n")
+    iterations = 2000
+    nrOfVars=20
+    for i in range(int(nrOfVars/2), nrOfVars*5, int(nrOfVars*0.5)):
+        print(f"nr of clauses = {i}")
+        nrOfClauses = i
+        vtree = "balanced"
+        name = "test" if overheadTime else "noOverhead"
+        operationStr = "OR" if operation == OR else "AND"
+        with open(f"output/heuristic/{name}_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
+            file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}, vtree = {vtree}, heuristiek = {heuristics}" + '\n')
+            heuristicsTimes = []
+            randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
+            for i in heuristics:
+                heuristicsTimes.append([])
+            for _ in range(iterations):
+                randomApplier.renew()
+                timeHeuristics = doHeuristicTest(heuristics, randomApplier, operation, overheadTime)
+                for i in range(len(timeHeuristics)):
+                    heuristicsTimes[i].append(timeHeuristics[i])
+            for i in range(len(heuristics)):
+                file.write(f"heuristiek {heuristics[i]} times: {heuristicsTimes[i]}\n")
 
 def diffSizesApply(heuristics, operation):
     nrOfSdds = 20
@@ -130,12 +133,10 @@ def diffSizesApply(heuristics, operation):
     
 
 def __main__():
-    #heuristieken: RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
-    heuristics = [VTREESPLIT_WITH_EL_UPPERBOUND, INVERSE_VAR_ORDER_RL]
+    #heuristieken: VP, VP_EL, VP_KE, VO, IVO_LR, IVO_RL, RANDOM, KE,
+    heuristics = [RANDOM, VP_KE, VP_EL, IVO_LR, VO, IVO_RL]
     operation = OR 
-    for i in range(int(12), 24*5, int(24*0.5)):
-        print(f"nr of clauses = {i}")
-        heuristicsApply(i, heuristics, operation, overheadTime=False) #false -> tijdsmeting zonder overhead
+    heuristicsApply(heuristics, operation, overheadTime=False) #false -> tijdsmeting zonder overhead
     # diffSizesApply(heuristics, operation)
     # countingVSTiming()
     #randomOrderCompTimeVariation()

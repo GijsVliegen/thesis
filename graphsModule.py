@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import pyperf
 import pylab
 import scipy.stats as stats
-from randomOrderApplier import RANDOM, INVERSE_VAR_ORDER_LR, INVERSE_VAR_ORDER_RL, \
-    SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, \
-    ELEMENT_UPPERBOUND, heuristicDict
+from randomOrderApplier import RANDOM, IVO_LR, IVO_RL, \
+    KE, VP, VP_KE, VO, \
+    EL, heuristicDict
 
 def getHeuristicName(heuristicInt):
     return heuristicDict[heuristicInt]
@@ -42,33 +42,35 @@ def getListFromLine(line):
         print(f"Invalid list format in line: {line}")
     return current_list
 
-def heuristicsPlot(nrOfClauses):
-    nrOfVars = 24
-    operation = "OR"
+def heuristicsPlot():
     vtree = "balanced"
-    heuristieken = "[8, 7]"
-    filename = f"output/heuristic/test_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.txt"
-    heuristieken = getListFromLine(filename)
-    with open(filename, 'r') as file:
-        lines = file.readlines()
-    lines = [line.strip() for line in lines]
-        
-    for index in range(len(lines[1:])):
-        heuristiek = heuristieken[index]
-        heuristicList = getListFromLine(lines[1 + index])
-        counts, bins, _ = plt.hist(heuristicList, bins=30, edgecolor='black', alpha=0)  # Using alpha=0 makes bars invisible
-        plt.plot(bins[:-10], counts[:-9], linestyle='-', marker='o', label=getHeuristicName(heuristiek)) #lijn tussen de toppen van de histogram
-    plt.xlabel('tijd (s)')
-    plt.ylabel('aantal compilaties')
-    plt.title("compilatietijd bij heuristieken")
-    plt.legend()
-    plt.savefig(f"figs/heuristics/{vtree}/heuristics_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.png")
-    plt.clf() #clear
+    heuristieken = "[99, 3, 8, 6, 4, 7]"
+    overhead = False
+    testName = "test" if overhead else "noOverhead"
+    nrOfVars = 20
+    operation = "OR"
+    nrOfClausesLists = list(range(int(nrOfVars/2), int(nrOfVars*2.5), int(nrOfVars/2)))
+    for nrOfClauses in nrOfClausesLists:
+        filename = f"output/heuristic/{testName}_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.txt"
+        heuristieken = getListFromLine(filename)
+        with open(filename, 'r') as file:
+            lines = file.readlines()
+        lines = [line.strip() for line in lines]
+            
+        for index in range(len(lines[1:])):
+            heuristiek = heuristieken[index]
+            heuristicList = getListFromLine(lines[1 + index])
+            counts, bins, _ = plt.hist(heuristicList, bins=30, edgecolor='black', alpha=0)  # Using alpha=0 makes bars invisible
+            plt.plot(bins[:-10], counts[:-9], linestyle='-', marker='o', label=getHeuristicName(heuristiek)) #lijn tussen de toppen van de histogram
+        plt.xlabel('tijd (s)')
+        plt.ylabel('aantal compilaties')
+        plt.title("compilatietijd bij heuristieken")
+        plt.legend()
+        plt.savefig(f"figs/heuristics/{vtree}/{testName}_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.png")
+        plt.clf() #clear
 
 def __main__():
-    nrOfClauses = list(range(12, 24*5, 12))
-    for i in nrOfClauses:
-        heuristicsPlot(i) 
+    heuristicsPlot() 
     # randomOrderPlot()
     #plt.show()
 

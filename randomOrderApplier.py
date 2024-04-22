@@ -5,21 +5,21 @@ import random
 import timeit
 import ctypes
 
-SMALLEST_FIRST = 1
-VTREESPLIT = 2
-VTREESPLIT_WITH_SMALLEST_FIRST = 3
-VTREE_VARIABLE_ORDERING = 4
-ELEMENT_UPPERBOUND = 5
-INVERSE_VAR_ORDER_LR = 6
-INVERSE_VAR_ORDER_RL = 7
-VTREESPLIT_WITH_EL_UPPERBOUND = 8
+KE = 1
+VP = 2
+VP_KE = 3
+VO = 4
+EL = 5
+IVO_LR = 6
+IVO_RL = 7
+VP_EL = 8
 RANDOM = 99
 OR = 1
 AND = 0
-heuristicDict = {RANDOM: "Random", SMALLEST_FIRST: "KE", VTREESPLIT: "VP", 
-                 ELEMENT_UPPERBOUND: "EL", VTREESPLIT_WITH_SMALLEST_FIRST: "VP + KE", 
-                 VTREE_VARIABLE_ORDERING: "VO", INVERSE_VAR_ORDER_LR: "IVO-LR",
-                 INVERSE_VAR_ORDER_RL: "IVO-RL", VTREESPLIT_WITH_EL_UPPERBOUND:"VP + EL"}
+heuristicDict = {RANDOM: "Random", KE: "KE", VP: "VP", 
+                 EL: "EL", VP_KE: "VP + KE", 
+                 VO: "VO", IVO_LR: "IVO-LR",
+                 IVO_RL: "IVO-RL", VP_EL:"VP + EL"}
 
 #uitbreiding van List met functies:
     # getNextSddsToApply() -> moet geïmplementeerd worden, 
@@ -390,15 +390,15 @@ class RandomOrderApply():
     # VTREESPLIT_WITH_EL_UPPERBOUND = 8
     # RANDOM = 99
     def getFirstDataStructure(self, sdds, heuristic):
-        if heuristic == SMALLEST_FIRST:
+        if heuristic == KE:
             return SddSizeList(sdds)
-        if heuristic == VTREE_VARIABLE_ORDERING:
+        if heuristic == VO:
             return SddVarAppearancesList(sdds, self.compiler.sddManager)
-        if heuristic == INVERSE_VAR_ORDER_LR:
+        if heuristic == IVO_LR:
             return SddVarAppearancesList(sdds, self.compiler.sddManager, inverse=True, LR=True)
-        if heuristic == INVERSE_VAR_ORDER_RL:
+        if heuristic == IVO_RL:
             return SddVarAppearancesList(sdds, self.compiler.sddManager, inverse=True, LR=False)
-        if heuristic == ELEMENT_UPPERBOUND:
+        if heuristic == EL:
             return SddVtreeCountList(sdds, self.compiler.sddManager)
         if heuristic == RANDOM:
             return RandomList(sdds)
@@ -460,12 +460,12 @@ class RandomOrderApply():
 
     def doHeuristicApply(self, heuristic, operation, timeOverhead = True):
         #print(f"using heuristic {heuristic}")
-        if heuristic == VTREESPLIT:
+        if heuristic == VP:
             (finalSdd, compileSizes, totalTime) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), RANDOM, self.baseSdds, operation, timeOverhead)
-        elif heuristic == VTREESPLIT_WITH_SMALLEST_FIRST:
-            (finalSdd, compileSizes, totalTime) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), SMALLEST_FIRST, self.baseSdds, operation, timeOverhead)
-        elif heuristic == VTREESPLIT_WITH_EL_UPPERBOUND:
-            (finalSdd, compileSizes, totalTime) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), ELEMENT_UPPERBOUND, self.baseSdds, operation, timeOverhead)
+        elif heuristic == VP_KE:
+            (finalSdd, compileSizes, totalTime) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), KE, self.baseSdds, operation, timeOverhead)
+        elif heuristic == VP_EL:
+            (finalSdd, compileSizes, totalTime) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), EL, self.baseSdds, operation, timeOverhead)
         else:
             (finalSdd, compileSizes, totalTime) = self.doHeuristicApplySdds(heuristic, self.baseSdds, operation, timeOverhead)
         self.collectMostGarbage()#finalSdd) #dit toevoegen als we correctheid willen testen -> correctheid testen door sizes te vergelijken?

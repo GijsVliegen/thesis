@@ -1,6 +1,6 @@
 #dot -Tpng -O sdd.dot
 from randomOrderApplier import RandomOrderApply, SddVarAppearancesList, SddVtreeCountList
-from randomOrderApplier import RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
+from randomOrderApplier import RANDOM, KE, VP, VP_KE, VO, EL
 from randomOrderApplier import AND, OR
 
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode

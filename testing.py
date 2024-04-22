@@ -1,9 +1,9 @@
 #dot -Tpng -O sdd.dot
 from randomCNFGenerator import generateRandomCnfDimacs
 from randomOrderApplier import RandomOrderApply, SddVarAppearancesList, SddVtreeCountList
-from randomOrderApplier import RANDOM, INVERSE_VAR_ORDER_LR, INVERSE_VAR_ORDER_RL, \
-    SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, \
-    ELEMENT_UPPERBOUND
+from randomOrderApplier import RANDOM, IVO_LR, IVO_RL, \
+    KE, VP, VP_KE, VO, \
+    EL
 from randomOrderApplier import AND, OR
 
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
@@ -65,7 +65,7 @@ def varsUnderVtreeNode_test():
     
 
 def overheadTime_test():
-    heuristics = [RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND]
+    heuristics = [RANDOM, KE, VP, VP_KE, VO, EL]
     nrOfSdds=20
     nrOfVars=15
     nrOfClauses = 5#25#[5, 15, 25, 35, 45, 55, 65]
@@ -445,9 +445,9 @@ def testVtreeFunctions():
     graphviz.Source(vtree.dot()).render(f"vtree", format='png')
 
 def testCorrectWorkingHeuristics():
-    heuristicsList = [RANDOM, SMALLEST_FIRST, VTREESPLIT, \
-                      VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, \
-                        ELEMENT_UPPERBOUND, INVERSE_VAR_ORDER_LR, INVERSE_VAR_ORDER_RL]
+    heuristicsList = [RANDOM, KE, VP, \
+                      VP_KE, VO, \
+                        EL, IVO_LR, IVO_RL]
     nrOfVars = 16
     nrOfClausesList = [5, 25, 40, 55, 75]
     operations = [OR, AND] #0 voor conjoin, 1 voor disjoin

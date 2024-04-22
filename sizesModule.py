@@ -1,7 +1,7 @@
 from randomOrderApplier import RandomOrderApply
-from randomOrderApplier import RANDOM, INVERSE_VAR_ORDER_LR, INVERSE_VAR_ORDER_RL, \
-    SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, \
-    ELEMENT_UPPERBOUND, VTREESPLIT_WITH_EL_UPPERBOUND, heuristicDict
+from randomOrderApplier import RANDOM, IVO_LR, IVO_RL, \
+    KE, VP, VP_KE, VO, \
+    EL, VP_EL, heuristicDict
 from randomOrderApplier import OR, AND
 import matplotlib.pyplot as plt
 
@@ -64,10 +64,10 @@ def heuristicsApply(nrOfClauses, heuristics, operation):
 
 
 def __main__():
-    #heuristieken: VTREESPLIT_WITH_EL_UPPERBOUND, RANDOM, SMALLEST_FIRST, VTREESPLIT, VTREESPLIT_WITH_SMALLEST_FIRST, VTREE_VARIABLE_ORDERING, ELEMENT_UPPERBOUND
-    heuristics = [VTREESPLIT_WITH_EL_UPPERBOUND, VTREE_VARIABLE_ORDERING, VTREESPLIT_WITH_SMALLEST_FIRST, INVERSE_VAR_ORDER_LR, INVERSE_VAR_ORDER_RL]
+    #heuristieken: VP_EL, VO, VP_KE, IVO_LR, IVO_RL, RANDOM
+    heuristics = [RANDOM, VP_EL, VO, VP_KE, IVO_LR, IVO_RL]
     operation = OR 
-    for i in range(22, 80, 2):
+    for i in range(2, 80, 2):
         print(f"nr of clauses = {i}")
         randomOrderMaxSizeVariation(i, operation)
         
