@@ -94,17 +94,17 @@ def heuristicsApply(heuristics, operation, overheadTime):
         vtree = "balanced"
         name = "test" if overheadTime else "noOverhead"
         operationStr = "OR" if operation == OR else "AND"
+        heuristicsTimes = []
+        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
+        for i in heuristics:
+            heuristicsTimes.append([])
+        for _ in range(iterations):
+            randomApplier.renew()
+            timeHeuristics = doHeuristicTest(heuristics, randomApplier, operation, overheadTime)
+            for i in range(len(timeHeuristics)):
+                heuristicsTimes[i].append(timeHeuristics[i])
         with open(f"output/heuristic/{name}_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
             file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}, vtree = {vtree}, heuristiek = {heuristics}" + '\n')
-            heuristicsTimes = []
-            randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
-            for i in heuristics:
-                heuristicsTimes.append([])
-            for _ in range(iterations):
-                randomApplier.renew()
-                timeHeuristics = doHeuristicTest(heuristics, randomApplier, operation, overheadTime)
-                for i in range(len(timeHeuristics)):
-                    heuristicsTimes[i].append(timeHeuristics[i])
             for i in range(len(heuristics)):
                 file.write(f"heuristiek {heuristics[i]} times: {heuristicsTimes[i]}\n")
 

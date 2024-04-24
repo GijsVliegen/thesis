@@ -49,7 +49,8 @@ def heuristicsPlot():
     testName = "test" if overhead else "noOverhead"
     nrOfVars = 20
     operation = "OR"
-    nrOfClausesLists = list(range(int(nrOfVars/2), int(nrOfVars*2.5), int(nrOfVars/2)))
+    colors = ['red', 'blue', "green", "orange", "purple", "brown", "yellow", "pink"]
+    nrOfClausesLists = list(range(int(nrOfVars/2), int(nrOfVars*5), int(nrOfVars/2)))
     for nrOfClauses in nrOfClausesLists:
         filename = f"output/heuristic/{testName}_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.txt"
         heuristieken = getListFromLine(filename)
@@ -60,10 +61,12 @@ def heuristicsPlot():
         for index in range(len(lines[1:])):
             heuristiek = heuristieken[index]
             heuristicList = getListFromLine(lines[1 + index])
+            col = colors[index]
             counts, bins, _ = plt.hist(heuristicList, bins=30, edgecolor='black', alpha=0)  # Using alpha=0 makes bars invisible
-            plt.plot(bins[:-10], counts[:-9], linestyle='-', marker='o', label=getHeuristicName(heuristiek)) #lijn tussen de toppen van de histogram
+            plt.plot(bins[:-10], counts[:-9], linestyle='-', color = col, marker='o', label=getHeuristicName(heuristiek)) #lijn tussen de toppen van de histogram
         plt.xlabel('tijd (s)')
         plt.ylabel('aantal compilaties')
+        plt.xscale('log')
         plt.title("compilatietijd bij heuristieken")
         plt.legend()
         plt.savefig(f"figs/heuristics/{vtree}/{testName}_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.png")
