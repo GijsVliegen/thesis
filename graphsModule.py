@@ -22,12 +22,13 @@ def randomOrderPlot():
     for (index, line) in enumerate(lines[1:]):
         lister = getListFromLine(line)
         nrOfClauses = nrOfClausesList[index]
+        ratio = nrOfClauses/nrOfVars
         #sort(list) #[5:-5] #5 grootste en kleinste elementen weglaten om eventuele foute uitschieters weg te laten
         counts, bins, _ = plt.hist(lister, bins=100, edgecolor='black', alpha=0)  # Using alpha=0 makes bars invisible
         plt.plot(bins[:-1], counts[:], linestyle='-', marker='o') #lijn tussen de toppen van de histogram
         plt.xlabel('tijd (in s)')
         plt.ylabel('aantal compilaties')
-        plt.title("Variatie in compilatietijd bij willekeurige apply ordening")
+        plt.title(f"Variatie in compilatietijd voor r = {ratio}")
         plt.yscale('log')
         plt.savefig(f"figs/randomVariation/randomOrder_20_{nrOfVars}_{nrOfClauses}_{operation}.png") #savefig moet blijkbaar voor show() komen
         plt.clf()
@@ -44,10 +45,10 @@ def getListFromLine(line):
 
 def heuristicsPlot():
     vtree = "balanced"
-    heuristieken = "[99, 3, 8, 6, 4, 7]"
+    heuristieken = "[8, 7]"
     overhead = False
     testName = "test" if overhead else "noOverhead"
-    nrOfVars = 20
+    nrOfVars = 24
     operation = "OR"
     colors = ['red', 'blue', "green", "orange", "purple", "brown", "yellow", "pink"]
     nrOfClausesLists = list(range(int(nrOfVars/2), int(nrOfVars*5), int(nrOfVars/2)))
@@ -57,7 +58,7 @@ def heuristicsPlot():
         with open(filename, 'r') as file:
             lines = file.readlines()
         lines = [line.strip() for line in lines]
-            
+        ratio = nrOfClauses/nrOfVars
         for index in range(len(lines[1:])):
             heuristiek = heuristieken[index]
             heuristicList = getListFromLine(lines[1 + index])
@@ -67,7 +68,7 @@ def heuristicsPlot():
         plt.xlabel('tijd (s)')
         plt.ylabel('aantal compilaties')
         plt.xscale('log')
-        plt.title("compilatietijd bij heuristieken")
+        plt.title(f"Compilatietijd voor r = {ratio}")
         plt.legend()
         plt.savefig(f"figs/heuristics/{vtree}/{testName}_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.png")
         plt.clf() #clear

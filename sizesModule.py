@@ -54,23 +54,42 @@ def heuristicsApply(heuristics, nrOfVars, vtree):
         for i in range(iterations):
             randomApplier.renew()
             sizeListsHeuristics = doHeuristicTest(heuristics, randomApplier, operation)
-            for (heur, sizeList) in zip(heuristics, sizeListsHeuristics):
-                plt.plot(range(nrOfSdds-1), sizeList, marker='o', \
-                            linestyle='-', label=getHeuristicName(heur))
-            plt.xlabel('Index tussenresultaat')
-            plt.ylabel('Grootte van tussenresultaat')
-            plt.title(f"Groottes tijdens compilatiesequentie voor ratio {nrOfClauses/nrOfVars}")
-            plt.legend()
-            plt.yscale('log')
-            plt.savefig(f"figs/sizes/{vtree}/20_{nrOfVars}_{nrOfClauses}_{heuristics}_{operationStr}.png") #savefig moet blijkbaar voor show() komen
-            plt.clf()
+            with open(f"output/sizes/{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
+                for i in range(len(sizeListsHeuristics)):
+                    file.write(f"{sizeListsHeuristics[i]}\n")
+
+def graphHeuristicApply(heuristics, nrOfVars, vtree):
+    nrOfSdds=20
+    operation = OR 
+    iterations = 1
+    operationStr = "OR" if operation == OR else "AND"
+    for nrOfClauses in range(int(nrOfVars*0.25), nrOfVars*5, int(nrOfVars*0.25)):
+        filename = f"output/sizes/{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt"
+        with open(filename, 'r') as file:
+            lines = file.readlines()
+        lines = [line.strip() for line in lines]
+        for (index, line) in enumerate(lines):
+            try:
+                current_list = eval(line)
+            except SyntaxError:
+                print(f"Invalid list format in line: {line}")
+            plt.plot(range(1, nrOfSdds), current_list, marker='o', \
+                        linestyle='-', label=getHeuristicName(heuristics[index]))
+        plt.xlabel('Index tussenresultaat')
+        plt.ylabel('Grootte van tussenresultaat')
+        plt.title(f"Groottes tussenresultaten voor ratio {nrOfClauses/nrOfVars}")
+        plt.legend()
+        plt.xticks(range(1, 21, 2))
+        plt.yscale('log')
+        plt.savefig(f"figs/sizes/{vtree}/20_{nrOfVars}_{nrOfClauses}_{heuristics}_{operationStr}.png") #savefig moet blijkbaar voor show() komen
+        plt.clf()
 
 
 def __main__():
     #heuristieken: VP_EL, VO, VP_KE, IVO_LR, IVO_RL, RANDOM
     heuristics = [RANDOM, VP_EL, VO, VP_KE, IVO_LR, IVO_RL]
-    heuristicsApply(heuristics, 24, "balanced")
-    heuristicsApply(heuristics, 24, "right")
+    #heuristicsApply(heuristics, 24, "balanced")
+    graphHeuristicApply(heuristics, 24, "balanced")
     #randomOrderMaxSizeVariation()
         
 __main__()
