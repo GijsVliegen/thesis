@@ -89,8 +89,8 @@ def graphHeuristicApply(heuristics, nrOfVars, vtree):
 def __main__():
     #heuristieken: VP_EL, VO, VP_KE, IVO_LR, IVO_RL, RANDOM
     heuristics = [RANDOM, VP_KE, VP_EL, IVO_LR, VO, IVO_RL]
-    heuristicsApply(heuristics, 24, "balanced")
-    graphHeuristicApply(heuristics, 24, "balanced")
+    heuristicsApply(heuristics, 20, "balanced")
+    graphHeuristicApply(heuristics, 20, "balanced")
     #randomOrderMaxSizeVariation()
         
 __main__()
