@@ -88,7 +88,7 @@ def heuristicsApply(heuristics, operation, overheadTime):
     nrOfSdds=20
     iterations = 2000
     nrOfVars=20
-    for i in range(int(nrOfVars/2), nrOfVars*5, int(nrOfVars*0.5)):
+    for i in range(int(nrOfVars/4), int(nrOfVars*1.25), int(nrOfVars*0.25)):
         print(f"nr of clauses = {i}")
         nrOfClauses = i
         vtree = "balanced"

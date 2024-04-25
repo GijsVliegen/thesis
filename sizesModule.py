@@ -63,6 +63,7 @@ def graphHeuristicApply(heuristics, nrOfVars, vtree):
     operation = OR 
     iterations = 1
     operationStr = "OR" if operation == OR else "AND"
+    colors = ['red', 'blue', "green", "orange", "purple", "brown", "yellow", "pink"]
     for nrOfClauses in range(int(nrOfVars*0.25), nrOfVars*5, int(nrOfVars*0.25)):
         filename = f"output/sizes/{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt"
         with open(filename, 'r') as file:
@@ -74,7 +75,7 @@ def graphHeuristicApply(heuristics, nrOfVars, vtree):
             except SyntaxError:
                 print(f"Invalid list format in line: {line}")
             plt.plot(range(1, nrOfSdds), current_list, marker='o', \
-                        linestyle='-', label=getHeuristicName(heuristics[index]))
+                        linestyle='-', color = colors[index], label=getHeuristicName(heuristics[index]))
         plt.xlabel('Index tussenresultaat')
         plt.ylabel('Grootte van tussenresultaat')
         plt.title(f"Groottes tussenresultaten voor ratio {nrOfClauses/nrOfVars}")
@@ -87,8 +88,8 @@ def graphHeuristicApply(heuristics, nrOfVars, vtree):
 
 def __main__():
     #heuristieken: VP_EL, VO, VP_KE, IVO_LR, IVO_RL, RANDOM
-    heuristics = [RANDOM, VP_EL, VO, VP_KE, IVO_LR, IVO_RL]
-    #heuristicsApply(heuristics, 24, "balanced")
+    heuristics = [RANDOM, VP_KE, VP_EL, IVO_LR, VO, IVO_RL]
+    heuristicsApply(heuristics, 24, "balanced")
     graphHeuristicApply(heuristics, 24, "balanced")
     #randomOrderMaxSizeVariation()
         
