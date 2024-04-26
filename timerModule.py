@@ -88,7 +88,7 @@ def heuristicsApply(heuristics, operation, overheadTime):
     nrOfSdds=20
     iterations = 2000
     nrOfVars=20
-    for i in range(int(nrOfVars/4), int(nrOfVars*1.25), int(nrOfVars*0.25)):
+    for i in range(int(nrOfVars/2), int(nrOfVars*5), int(nrOfVars*0.5)):
         print(f"nr of clauses = {i}")
         nrOfClauses = i
         vtree = "balanced"
@@ -136,7 +136,7 @@ def __main__():
     #heuristieken: VP, VP_EL, VP_KE, VO, IVO_LR, IVO_RL, RANDOM, KE,
     heuristics = [RANDOM, VP_KE, VP_EL, IVO_LR, VO, IVO_RL]
     operation = OR 
-    heuristicsApply(heuristics, operation, overheadTime=False) #false -> tijdsmeting zonder overhead
+    heuristicsApply(heuristics, operation, overheadTime=True) #false -> tijdsmeting zonder overhead
     # diffSizesApply(heuristics, operation)
     # countingVSTiming()
     #randomOrderCompTimeVariation()

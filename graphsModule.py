@@ -46,13 +46,12 @@ def getListFromLine(line):
 def heuristicsPlot():
     vtree = "balanced"
     heuristieken = "[99, 3, 8, 6, 4, 7]"
-    overhead = False
+    overhead = True
     testName = "test" if overhead else "noOverhead"
     nrOfVars = 20
     operation = "OR"
     colors = ['red', 'blue', "green", "orange", "purple", "brown", "yellow", "pink"]
-    nrOfClausesLists = list(range(int(nrOfVars/4), int(nrOfVars*1.25), int(nrOfVars*0.25)))
-    #nrOfClausesLists = list(range(int(nrOfVars/2), int(nrOfVars*5), int(nrOfVars/2)))
+    nrOfClausesLists = list(range(int(nrOfVars/2), int(nrOfVars*5), int(nrOfVars/2)))
     for nrOfClauses in nrOfClausesLists:
         filename = f"output/heuristic/{testName}_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.txt"
         heuristieken = getListFromLine(filename)
