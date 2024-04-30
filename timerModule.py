@@ -1,8 +1,8 @@
-from randomOrderApplier import RandomOrderApply
-from randomOrderApplier import RANDOM, IVO_LR, IVO_RL, \
+from heuristicApplier import HeuristicApply
+from heuristicApplier import RANDOM, IVO_LR, IVO_RL, \
     KE, VP, VP_KE, VO, \
     EL, VP_EL, heuristicDict
-from randomOrderApplier import OR, AND
+from heuristicApplier import OR, AND
 
 import timeit
 import numpy
@@ -52,7 +52,7 @@ def countingVSTiming(operation):
     listNrOfClauses=list(tuple(range(5, int(nrOfVars*5), 5)))
     for nrOfClauses in listNrOfClauses:
         #print(nrOfClauses)
-        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
+        randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
         times, counts = doCountingTest(nrOfIterationsPerSdd, randomApplier, operation)
 
         correlation_matrix = numpy.corrcoef(times, counts)
@@ -70,7 +70,7 @@ def randomOrderCompTimeVariation(operation):
         file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}" + '\n')
         for nrOfClauses in listNrOfClauses:
             print(nrOfClauses)
-            randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
+            randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
             times = doRandomOrderTest(nrOfIterationsPerSdd, randomApplier, operation)
             file.write(f"voor {nrOfClauses} clauses {times}\n")
 
@@ -95,7 +95,7 @@ def heuristicsApply(heuristics, operation, overheadTime):
         name = "test" if overheadTime else "noOverhead"
         operationStr = "OR" if operation == OR else "AND"
         heuristicsTimes = []
-        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
+        randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
         for i in heuristics:
             heuristicsTimes.append([])
         for _ in range(iterations):
@@ -120,7 +120,7 @@ def diffSizesApply(heuristics, operation):
         with open(f"output/diffSizes_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
             file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}, vtree = {vtree}, heuristiek = {heuristics}" + '\n')
             heuristicsTimes = []
-            randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
+            randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
             for i in heuristics:
                 heuristicsTimes.append([])
             for _ in range(iterations):

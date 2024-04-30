@@ -1,8 +1,8 @@
-from randomOrderApplier import RandomOrderApply
-from randomOrderApplier import RANDOM, IVO_LR, IVO_RL, \
+from heuristicApplier import HeuristicApply
+from heuristicApplier import RANDOM, IVO_LR, IVO_RL, \
     KE, VP, VP_KE, VO, \
     EL, VP_EL, heuristicDict
-from randomOrderApplier import OR, AND
+from heuristicApplier import OR, AND
 import matplotlib.pyplot as plt
 
 import timeit
@@ -22,7 +22,7 @@ def randomOrderMaxSizeVariation():
     vtree = "balanced"
     operationStr = "OR" if operation == OR else "AND"
     for nrOfClauses in range(int(nrOfVars*0.2), nrOfVars*5, int(nrOfVars*0.2)):
-        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
+        randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
         maxSizeList = []
         for i in range(iterations):
             maxSizeList.append(doRandomOrderTest(randomApplier, operation))
@@ -50,10 +50,10 @@ def heuristicsApply(heuristics, nrOfVars, vtree):
     operationStr = "OR" if operation == OR else "AND"
     for nrOfClauses in range(int(nrOfVars*0.25), nrOfVars*5, int(nrOfVars*0.25)):
         print(f"nr of clauses = {nrOfClauses}")
-        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
+        heuristicApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
         for i in range(iterations):
-            randomApplier.renew()
-            sizeListsHeuristics = doHeuristicTest(heuristics, randomApplier, operation)
+            heuristicApplier.renew()
+            sizeListsHeuristics = doHeuristicTest(heuristics, heuristicApplier, operation)
             with open(f"output/sizes/{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
                 for i in range(len(sizeListsHeuristics)):
                     file.write(f"{sizeListsHeuristics[i]}\n")

@@ -1,10 +1,10 @@
 #dot -Tpng -O sdd.dot
 from randomCNFGenerator import generateRandomCnfDimacs
-from randomOrderApplier import RandomOrderApply, SddVarAppearancesList, SddVtreeCountList
-from randomOrderApplier import RANDOM, IVO_LR, IVO_RL, \
+from heuristicApplier import HeuristicApply, SddVarAppearancesList, SddVtreeCountList
+from heuristicApplier import RANDOM, IVO_LR, IVO_RL, \
     KE, VP, VP_KE, VO, \
     EL
-from randomOrderApplier import AND, OR
+from heuristicApplier import AND, OR
 
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 from flatSDDCompiler import SDDcompiler
@@ -25,7 +25,7 @@ def varOrderTest():
     nrOfClauses = 5#25#[5, 15, 25, 35, 45, 55, 65]
     #nrOfIterations = 10
     operation = OR
-    randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="random")
+    randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="random")
     vtree = randomApplier.compiler.sddManager.vtree() 
     sdds = randomApplier.baseSdds
     varAppList = SddVarAppearancesList(sdds, randomApplier.compiler.sddManager)
@@ -55,7 +55,7 @@ def varsUnderVtreeNode_test():
     print(SddVtreeCountList.varsUnderVtreeNode(f2vars, vtree))
     print(SddVtreeCountList.varsUnderVtreeNode(f3vars, vtree))
 
-    randomApplier = RandomOrderApply(nrOfSdds, 15, 75, vtree_type="random")
+    randomApplier = HeuristicApply(nrOfSdds, 15, 75, vtree_type="random")
     mgr = randomApplier.compiler.sddManager
     vtree = mgr.vtree() 
     sdds = randomApplier.baseSdds
@@ -71,7 +71,7 @@ def overheadTime_test():
     nrOfClauses = 5#25#[5, 15, 25, 35, 45, 55, 65]
     #nrOfIterations = 10
     operation = OR
-    randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="random")
+    randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="random")
     for heuristic in heuristics:
         (resultSdd, noOverheadTime) = randomApplier.doHeuristicApply(heuristic, operation, timeOverhead=False)
         totalTime = timeit.timeit(lambda: randomApplier.doHeuristicApply(heuristic, operation), number = 1)
@@ -249,7 +249,7 @@ def sdd_graphical_research_test():
 
     for (i, nrOfClauses) in enumerate(listNrOfClauses):
         fileName = "f"+str(i)
-        randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, nrOfCnfs=1, cnf3=True, operation = operation)
+        randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, nrOfCnfs=1, cnf3=True, operation = operation)
         sdd = randomApplier.baseSdds[0]
         print(sdd.local_vtree_element_count())
         # with open(f"vtree_count_implementation_test_sdds/{fileName}.dot", "w") as out:
@@ -260,7 +260,7 @@ def countingTests():
     nrOfSdds = 10
     nrOfVars = 16
     nrOfClauses = 10
-    randApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, operation="OR", vtree_type="random")
+    randApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, operation="OR", vtree_type="random")
     finalSdd = randApplier.doHeuristicApply(4)
     counts = randApplier.extractCounts()
     for i in counts:
@@ -322,7 +322,7 @@ def testApplyOrderedVsReversed():
     filenamePtr = ctypes.cast(char_pointer, ctypes.c_char_p).value
     nrOfIterations = 1000
 
-    randomApplier = RandomOrderApply(nrOfIterations, nrOfVars, nrOfClauses)
+    randomApplier = HeuristicApply(nrOfIterations, nrOfVars, nrOfClauses)
     orderedCompiler = SDDcompiler(nrOfVars=nrOfVars, vtree_type="left")
     varOrder = orderedCompiler.sddManager.var_order()
     startReversing = 0
@@ -380,7 +380,7 @@ def testApplyOnOneVar():
     operation = 0 #0 voor conjoin, 1 voor disjoin
     nrOfIterations = 100
 
-    randomApplier = RandomOrderApply(nrOfIterations, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
+    randomApplier = HeuristicApply(nrOfIterations, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
     vars = []
     for i in range(nrOfVars):
         vars.append(randomApplier.compiler.sddManager.literal(i+1))
@@ -405,7 +405,7 @@ def testDimacs():
     print(generateRandomCnfDimacs(nrOfClauses, nrOfVars))
 
 def testMinimization():
-    randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
+    randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
     baseSdd0 = randomApplier.baseSdds[0]
     print(f"grootte: base sdd heeft size {baseSdd0.count()} en {randomApplier.compiler.sddManager.count()} nodes in de sddManager")
 
@@ -438,7 +438,7 @@ def testMinimization():
         print(randomApplier.compiler.sddManager.vtree().dot(), file=out)
 
 def testVtreeFunctions():
-    randomApplier = RandomOrderApply(1, 16, 5, vtree_type="random")
+    randomApplier = HeuristicApply(1, 16, 5, vtree_type="random")
     vtree = randomApplier.compiler.sddManager.vtree()
     with open("vtree", "w") as out:
         print(vtree.dot(), file=out)
@@ -456,7 +456,7 @@ def testCorrectWorkingHeuristics():
     for nrOfClauses in nrOfClausesList:
         for operation in operations:
             print(f"aantal clauses = {nrOfClauses}, operatie = {operation}")
-            randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
+            randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
             for _ in range(nrOfIterations):
                 finalSdd = randomApplier.doHeuristicApply(RANDOM, operation)[0]
                 for heuristic in heuristicsList:
@@ -468,7 +468,7 @@ def testCorrectWorkingHeuristics():
         print("heuristieken werken correct")
 
 def getVtreeFig():
-    randomApplier = RandomOrderApply(20, 15, 10, 1, cnf3=True, operation="OR")
+    randomApplier = HeuristicApply(20, 15, 10, 1, cnf3=True, operation="OR")
     finalSdd = randomApplier.doRandomApply()
     with open("vtree.dot", "w") as out:
         print(finalSdd.vtree().dot(), file = out)

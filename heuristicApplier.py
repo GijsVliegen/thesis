@@ -311,7 +311,7 @@ def insort_right(sortedList, newElement, key = lambda x: x, lo=0, hi=None):
             lo = mid + 1
     sortedList._insert(lo, newElement)
 
-class RandomOrderApply():
+class HeuristicApply():
 
     def extractCounts(self):
         temp = self.nodeCounterList

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pyperf
 import pylab
 import scipy.stats as stats
-from randomOrderApplier import RANDOM, IVO_LR, IVO_RL, \
+from heuristicApplier import RANDOM, IVO_LR, IVO_RL, \
     KE, VP, VP_KE, VO, \
     EL, heuristicDict
 

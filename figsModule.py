@@ -1,7 +1,7 @@
 #dot -Tpng -O sdd.dot
-from randomOrderApplier import RandomOrderApply, SddVarAppearancesList, SddVtreeCountList
-from randomOrderApplier import RANDOM, KE, VP, VP_KE, VO, EL
-from randomOrderApplier import AND, OR
+from heuristicApplier import HeuristicApply, SddVarAppearancesList, SddVtreeCountList
+from heuristicApplier import RANDOM, KE, VP, VP_KE, VO, EL
+from heuristicApplier import AND, OR
 
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 from flatSDDCompiler import SDDcompiler
