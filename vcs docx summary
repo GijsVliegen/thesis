@@ -1,0 +1,47 @@
+jobs in vsc
+
+requesting compute resources
+
+	nrOfTasks --ntasks=<number of tasks>
+	cores per task --cpus-per-task=<value>
+	
+	Make sure to request a valid combination of tasks and/or cores per task.
+	
+requesting memory 
+	mem per cpy -mem-per-cpu=<amount><unit> (e.g., --mem-per-cpu=1g)
+	The amount is an integer, <unit> can be either k for kilobytes, m for megabyte or g for gigabyte
+	
+	If --mem-per-cpu is not set, a default value will be used, which is usually equal to the total memory available for job allocations of that node divided by the number of cores.
+
+	The amount of available memory per core is available via the variable SLURM_MEM_PER_CPU as an integer with megabytes as unit in the environment of the running job.
+	
+requesting walltime
+	compute time --time=<time>. <time> is specified in mm (minutes), mm:ss (minutes and seconds), hh:mm:ss (hours, minutes and seconds), 
+	d-hh (days and hours), d-hh:mm (days, hours and minutes) or d-hh:mm:ss (days, hours, minutes and seconds) format.
+	
+mail on event
+	--mail-type=<type>. <type> is a comma-separated list of type values. Type values include BEGIN, END and FAIL
+	--mail-user=<mail address> 
+
+voorbeeld voor mpi
+	#! /bin/bash
+	#
+	#SBATCH --job-name=mpihello
+	#SBATCH --ntasks=56 --cpus-per-task=1 --mem-per-cpu=512m //-> two nodes on a cluster with 28 cores per node.
+	#SBATCH --time=5:00
+
+	# Build the environment (UAntwerp example)
+	module --force purge
+	module load calcua/2020a
+	module load vsc-tutorial
+
+	# Run the MPI program
+	srun mpi_hello
+	
+to run a python script
+	srun python mpi_script.py
+
+
+submit job
+	sbatch run_mpi_job.sbatch
+
