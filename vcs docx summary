@@ -1,5 +1,7 @@
 jobs in vsc
 
+job in sbatch zetten: sbatch --export=NrOfVars=28,Iters=1,Vtree="balanced",Overhead="true" exampleSbatchScript.slurm
+
 requesting compute resources
 
 	nrOfTasks --ntasks=<number of tasks>
@@ -23,11 +25,26 @@ mail on event
 	--mail-type=<type>. <type> is a comma-separated list of type values. Type values include BEGIN, END and FAIL
 	--mail-user=<mail address> 
 
+check which modules are available (bv voor iPython):
+ 	ml av ipython
+ 	->mpi4py module: mpi4py/3.1.4-gompi-2022b
+ 	
+loading modules:
+	module load <name>
+
+resetting all modules:
+	module purge
+	
+kul cluster + partition
+	--clusters=wice
+	--partition=batch (default, 72 tasks per node)
 voorbeeld voor mpi
 	#! /bin/bash
 	#
-	#SBATCH --job-name=mpihello
-	#SBATCH --ntasks=56 --cpus-per-task=1 --mem-per-cpu=512m //-> two nodes on a cluster with 28 cores per node.
+	#SBATCH --clusters=wice
+	#SBATCH --job-name=sddCompilationTest
+	#SBATCH --nodes=1
+	#SBATCH --ntasks-per-node=72	//--cpus-per-task=1 --mem-per-cpu=512m //-> two nodes on a cluster with 28 cores per node.
 	#SBATCH --time=5:00
 
 	# Build the environment (UAntwerp example)
@@ -35,13 +52,38 @@ voorbeeld voor mpi
 	module load calcua/2020a
 	module load vsc-tutorial
 
-	# Run the MPI program
-	srun mpi_hello
+	mpirun python mpi_script.py
 	
 to run a python script
-	srun python mpi_script.py
-
+	mpirun python mpi_script.py
+--------------------------------------------------------------------------------------------------------------------------------------
 
 submit job
-	sbatch run_mpi_job.sbatch
+	sbatch --account=intro_vsc3xxxx run_mpi_job.slurm
+	
+copying files from pc to servers:
+ 	scp local_file.txt <vsc-account>@<vsc-loginnode>:
+copying files from server to pc:
+	scp <vsc-account>@<vsc-loginnode>:remote_file.txt
+copying dirs: 
+	scp -r inputs/ vsc50005@login.hpc.kuleuven.be:/data/leuven/500/vsc50005/
+	
+login-nodes:
+	login1-tier2.hpc.kuleuven.be 	
+	
+credit overzicht commands:
+	sam-balance, sam-list-usagerecords, sam-list-allocations and sam-statement
+ 	
+modules for python:
+	Note that some packages, e.g., mpi4py, pyh5, pytables,…, are available through the module system, and have to be loaded separately. 
+	These packages will not be listed by pip unless you loaded the corresponding module. 
+	In recent toolchains, many of the packages you need for scientific computing have been bundled into the SciPy-bundle module.
+ 
+ 
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
 

@@ -1,1 +1,0 @@
-experiment: sdds: 20, vars: 24, operation = OR, vtree = balanced, heuristiek = [8, 8]

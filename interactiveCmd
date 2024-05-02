@@ -1,0 +1,1 @@
+srun --account=intro_vsc36004 --clusters=wice --partition=interactive --time=01:00:00 --nodes=1 --ntasks-per-node=6 --pty bash  -l
