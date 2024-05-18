@@ -4,7 +4,7 @@ import pyperf
 import pylab
 import scipy.stats as stats
 from heuristicApplier import RANDOM, IVO_LR, IVO_RL, \
-    KE, VP, VP_KE, VO, \
+    KE, VP, VP_KE, VO, VP_ELVAR, ELVAR , \
     EL, heuristicDict
 
 def getHeuristicName(heuristicInt):
@@ -36,35 +36,49 @@ def randomOrderPlot():
 def getListFromLine(line):
     start_pos = line.find('[')
     end_pos = line.find(']')
-    list_str = line[start_pos:end_pos+1]
     try:
-        current_list = eval(list_str)
+        list_str = line[start_pos:end_pos+1]
+        if ',' in list_str:
+            current_list = eval(list_str)
+        else:
+            list_str = line[start_pos+1:end_pos]
+            current_list = list_str.split()
     except SyntaxError:
         print(f"Invalid list format in line: {line}")
     return current_list
 
 def heuristicsPlot():
     vtree = "balanced"
-    heuristieken = "[99, 3, 8, 6, 4, 7]"
-    overhead = True
+    heuristieken2 = [9, 10, 5, 8]
+    heuristieken = [99, 4, 6, 7, 3, 8]
+    overhead = True#False#True
     testName = "test" if overhead else "noOverhead"
-    nrOfVars = 20
+    nrOfVars = 28
     operation = "OR"
-    colors = ['red', 'blue', "green", "orange", "purple", "brown", "yellow", "pink"]
+    colors = ['red', 'blue', "green", "orange", "purple", "brown", "pink", "yellow"]
     nrOfClausesLists = list(range(int(nrOfVars/2), int(nrOfVars*5), int(nrOfVars/2)))
     for nrOfClauses in nrOfClausesLists:
+        heuristieken = [99, 4, 6, 7, 3, 8]
         filename = f"output/heuristic/{testName}_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.txt"
-        heuristieken = getListFromLine(filename)
         with open(filename, 'r') as file:
             lines = file.readlines()
         lines = [line.strip() for line in lines]
+        filename2 = f"output/heuristic/{testName}_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken2}.txt"
+        with open(filename2, 'r') as file:
+            lines2 = file.readlines()
+        lines += [line.strip() for line in lines2][2:3]
+        heuristieken += [10]
         ratio = nrOfClauses/nrOfVars
         for index in range(len(lines[1:])):
             heuristiek = heuristieken[index]
             heuristicList = getListFromLine(lines[1 + index])
             col = colors[index]
-            counts, bins, _ = plt.hist(heuristicList, bins=30, edgecolor='black', alpha=0)  # Using alpha=0 makes bars invisible
-            plt.plot(bins[:-10], counts[:-9], linestyle='-', color = col, marker='o', label=getHeuristicName(heuristiek)) #lijn tussen de toppen van de histogram
+            counts, bins, _ = plt.hist(heuristicList, bins=20, edgecolor='black', alpha=0)  # Using alpha=0 makes bars invisible
+            plt.plot(bins[:-1], counts, linestyle='-', color = col, marker='o', label=getHeuristicName(heuristiek)) #lijn tussen de toppen van de histogram
+
+
+
+
         plt.xlabel('tijd (s)')
         plt.ylabel('aantal compilaties')
         plt.xscale('log')

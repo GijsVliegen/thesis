@@ -3,7 +3,7 @@ from randomCNFGenerator import generateRandomCnfDimacs
 from heuristicApplier import HeuristicApply, SddVarAppearancesList, SddVtreeCountList
 from heuristicApplier import RANDOM, IVO_LR, IVO_RL, \
     KE, VP, VP_KE, VO, \
-    EL
+    EL, ELVAR, VP_ELVAR
 from heuristicApplier import AND, OR
 
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
@@ -447,7 +447,7 @@ def testVtreeFunctions():
 def testCorrectWorkingHeuristics():
     heuristicsList = [RANDOM, KE, VP, \
                       VP_KE, VO, \
-                        EL, IVO_LR, IVO_RL]
+                        EL, IVO_LR, IVO_RL, ELVAR, VP_ELVAR]
     nrOfVars = 16
     nrOfClausesList = [5, 25, 40, 55, 75]
     operations = [OR, AND] #0 voor conjoin, 1 voor disjoin
@@ -486,10 +486,10 @@ def getVtreeFig():
 #testApplyOrderedVsReversed()
 #testApplyOnOneVar()
 #testSddVarAppearances()
-varsUnderVtreeNode_test()
+#varsUnderVtreeNode_test()
 #varOrderTest()
 
-#testCorrectWorkingHeuristics() #RESULT SDD TERUGGEGEN IN RandomOrderApplier
+testCorrectWorkingHeuristics() #RESULT SDD TERUGGEGEN IN RandomOrderApplier
 """
 
 output_directory = "/home/gijs/school/23-24/thesisUbuntu/output"

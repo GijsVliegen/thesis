@@ -2,7 +2,7 @@ from mpi4py import MPI
 import numpy as np
 from heuristicApplier import HeuristicApply, SddVarAppearancesList, SddVtreeCountList
 from heuristicApplier import RANDOM, IVO_LR, IVO_RL, \
-    KE, VP, VP_KE, VO, EL, VP_EL
+    KE, VP, VP_KE, VO, EL, VP_EL, ELVAR, VP_ELVAR
 from heuristicApplier import AND, OR
 import timeit
 import os
@@ -48,7 +48,8 @@ def heuristicApply(nrOfVars, iterationsPerNode, vtree, overheadTime):
     comm = MPI.COMM_WORLD
     size = comm.Get_size()
     rank = comm.Get_rank()
-    heuristics = [RANDOM, VO, IVO_LR, IVO_RL, VP_KE, VP_EL]
+    heuristics = [ELVAR, VP_ELVAR, EL, VP_EL]
+    # heuristics = [RANDOM, VO, IVO_LR, IVO_RL, VP_KE, VP_EL]
     operation = OR
     nrOfSdds = 20
     # iterationsPerNode = 5
@@ -81,7 +82,7 @@ def heuristicApply(nrOfVars, iterationsPerNode, vtree, overheadTime):
             with open(fullPath, 'w') as file:
                 file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}, vtree = {vtree}, heuristiek = {heuristics}" + '\n')
                 for i in range(len(heuristics)):
-                    file.write(f"heuristiek {heuristics[i]} times: {allHeuristicTimes[i]}\n")
+                    file.write(f"heuristiek {heuristics[i]} times: {allHeuristicTimes[i].tolist()}\n")
 
 def main():
     args = sys.argv[1:]
