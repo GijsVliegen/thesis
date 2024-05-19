@@ -485,9 +485,9 @@ class HeuristicApply():
         time = 0
         newDepth = max(sdd1.getDepth(), sdd2.getDepth()) + 1
         if not timeOverhead:
-            startTime = timeit.default_timer()
+            startTime = time.time()
             newSdd = self.compiler.sddManager.apply(sdd1.getSdd(), sdd2.getSdd(), operation)
-            time += timeit.default_timer() - startTime
+            time += time.time() - startTime
         else:
             newSdd = self.compiler.sddManager.apply(sdd1.getSdd(), sdd2.getSdd(), operation)
         newSddwrapper = SDDwrapper(newSdd, newDepth)

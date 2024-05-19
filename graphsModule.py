@@ -49,32 +49,28 @@ def getListFromLine(line):
 
 def heuristicsPlot():
     vtree = "balanced"
-    heuristieken2 = [9, 10, 5, 8]
-    heuristieken = [99, 4, 6, 7, 3, 8]
+    heuristieken = [9, 10, 5, 8]
+    # heuristieken = [99, 4, 6, 7, 3, 8, 10]
     overhead = True#False#True
     testName = "test" if overhead else "noOverhead"
-    nrOfVars = 28
+    nrOfVars = 16
     operation = "OR"
     colors = ['red', 'blue', "green", "orange", "purple", "brown", "pink", "yellow"]
     nrOfClausesLists = list(range(int(nrOfVars/2), int(nrOfVars*5), int(nrOfVars/2)))
     for nrOfClauses in nrOfClausesLists:
-        heuristieken = [99, 4, 6, 7, 3, 8]
         filename = f"output/heuristic/{testName}_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken}.txt"
         with open(filename, 'r') as file:
             lines = file.readlines()
         lines = [line.strip() for line in lines]
-        filename2 = f"output/heuristic/{testName}_20_{nrOfVars}_{nrOfClauses}_{operation}_{vtree}_{heuristieken2}.txt"
-        with open(filename2, 'r') as file:
-            lines2 = file.readlines()
-        lines += [line.strip() for line in lines2][2:3]
-        heuristieken += [10]
         ratio = nrOfClauses/nrOfVars
-        for index in range(len(lines[1:])):
-            heuristiek = heuristieken[index]
-            heuristicList = getListFromLine(lines[1 + index])
+        for index, line in enumerate(lines):
+            try:
+                heuristicList = eval(line)
+            except SyntaxError:
+                print(f"Invalid list format in line: {line}")
             col = colors[index]
             counts, bins, _ = plt.hist(heuristicList, bins=20, edgecolor='black', alpha=0)  # Using alpha=0 makes bars invisible
-            plt.plot(bins[:-1], counts, linestyle='-', color = col, marker='o', label=getHeuristicName(heuristiek)) #lijn tussen de toppen van de histogram
+            plt.plot(bins[:-1], counts, linestyle='-', color = col, marker='o', label=getHeuristicName(heuristieken[index])) #lijn tussen de toppen van de histogram
 
 
 

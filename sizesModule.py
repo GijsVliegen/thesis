@@ -73,7 +73,7 @@ def heuristicsApply(heuristics, nrOfVars, vtree):
         with open(f"output/varCounts/{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
             for i in range(len(averageVarCounts)):
                 file.write(f"{averageVarCounts[i]}\n")
-        with open(f"output/depths/{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
+        with open(f"output/depth/{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
             for i in range(len(averageDepthLists)):
                 file.write(f"{averageDepthLists[i]}\n")
 
@@ -81,16 +81,17 @@ def graphHeuristicApply(heuristics, nrOfVars, vtree):
     nrOfSdds=20
     operation = OR 
     operationStr = "OR" if operation == OR else "AND"
+    overhead = True#False#True
+    testName = "test" if overhead else "noOverhead"
     colors = ['red', 'blue', "green", "orange", "purple", "brown", "yellow", "pink"]
     #sizes
-    metrics = ["sizes", "varCounts", "depths"]
-    xlabels = []
+    metrics = ["sizes", "varCounts", "depth"]
     ylabels = ['Grootte van tussenresultaat', 'aantal variabelen in tussenresultaat', 'hoogte van tussenresultaat']
     titles = ["Groottes tussenresultaten voor ratio", "aantal vars per tussenresultaat voor ratio", "diepte van tussenresultaten voor ratio"]
     yscale = ['log', 'linear', 'linear']
     for (i, metric) in enumerate(metrics):
-        for nrOfClauses in range(int(nrOfVars*0.25), nrOfVars*5, int(nrOfVars*0.25)):
-            filename = f"output/{metric}/{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt"
+        for nrOfClauses in range(int(nrOfVars*0.5), nrOfVars*5, int(nrOfVars*0.5)):
+            filename = f"output/{metric}/{testName}_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt"
             with open(filename, 'r') as file:
                 lines = file.readlines()
             lines = [line.strip() for line in lines]
@@ -107,14 +108,15 @@ def graphHeuristicApply(heuristics, nrOfVars, vtree):
             plt.legend()
             plt.xticks(range(1, 21, 2))
             plt.yscale(yscale[i])
-            plt.savefig(f"figs/{metric}/{vtree}/20_{nrOfVars}_{nrOfClauses}_{heuristics}_{operationStr}.png") #savefig moet blijkbaar voor show() komen
+            plt.savefig(f"figs/{metric}/{vtree}/{testName}_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{heuristics}_{operationStr}.png") #savefig moet blijkbaar voor show() komen
             plt.clf()
 
 
 def __main__():
-    #heuristieken: VP_EL, VO, VP_KE, IVO_LR, IVO_RL, RANDOM
-    heuristics = [RANDOM, VP_KE, VP_EL, IVO_LR, VO, IVO_RL]
-    heuristicsApply(heuristics, 16, "balanced")
+    # heuristieken: VP_EL, VO, VP_KE, IVO_LR, IVO_RL, RANDOM
+    heuristics = [9, 10, 5, 8]
+    # heuristics = [RANDOM, VP_KE, VP_EL, IVO_LR, VO, IVO_RL]
+    # heuristicsApply(heuristics, 16, "balanced")
     graphHeuristicApply(heuristics, 16, "balanced")
     #randomOrderMaxSizeVariation()
         
