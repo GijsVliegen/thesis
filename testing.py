@@ -458,9 +458,10 @@ def testCorrectWorkingHeuristics():
             print(f"aantal clauses = {nrOfClauses}, operatie = {operation}")
             randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
             for _ in range(nrOfIterations):
-                finalSdd = randomApplier.doHeuristicApply(RANDOM, operation)[0]
+                finalSdd = randomApplier.doHeuristicApply(RANDOM, operation)[0].getSdd()
                 for heuristic in heuristicsList:
-                    if finalSdd != randomApplier.doHeuristicApply(heuristic, operation)[0]:
+                    otherSdd = randomApplier.doHeuristicApply(heuristic, operation)[0].getSdd()
+                    if finalSdd != otherSdd:
                         print(f"er is iets mis met heuristic {heuristic}")
                         workingCorrect = False
                 randomApplier.renew()
