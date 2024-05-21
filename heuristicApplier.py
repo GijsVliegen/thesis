@@ -430,7 +430,7 @@ class HeuristicApply():
 
     def renew(self):
         self.compiler.sddManager.garbage_collect()
-        self.baseSdds = self.generateRandomSdds()
+        self.baseSdds = self.generateRandomSdds(self.operation)
 
     def size(self):
         return self.compiler.sddManager.size()
@@ -452,23 +452,28 @@ class HeuristicApply():
         print(f" exit dead count = {self.compiler.sddManager.dead_count()}")
         self.compiler.sddManager.garbage_collect()
 
-    def __init__(self, nrOfSdds, nrOfVars, nrOfClauses, vtree_type = "balanced"):
+    def __init__(self, nrOfSdds, nrOfVars, nrOfClauses, operation, vtree_type = "balanced"):
         self.nrOfSdds = nrOfSdds
         self.nrOfVars = nrOfVars
         self.nrOfClauses = nrOfClauses
+        self.operation = operation
         self.cnf3 = True
         """
         AND operatie -> 10 keer 50 clauses: zelfde als een cnf met 500 clauses -> skewed result?
         """ 
         self.compiler = SDDcompiler(nrOfVars=nrOfVars, vtree_type=vtree_type)
-        self.baseSdds = self.generateRandomSdds()
+        self.baseSdds = self.generateRandomSdds(operation)
+        self.collectMostGarbage()
         self.nodeCounterList = []
 
-    def generateRandomSdds(self):
+    def generateRandomSdds(self, operation):
         randomSdds = []
         for _ in range(self.nrOfSdds):
             cnf = generateRandomCnfFormula(self.nrOfClauses, self.nrOfVars, self.cnf3)
             (sdd, size) = self.compiler.compileToSdd(cnf, len(cnf))
+            #convert into dnf
+            if operation == AND:
+                sdd = self.compiler.sddManager.negate(sdd)
             sddWrapper = SDDwrapper(sdd, depth = 0)
             randomSdds.append(sddWrapper)
         return randomSdds
@@ -481,15 +486,15 @@ class HeuristicApply():
         for baseSdd in self.baseSdds:
             baseSdd.deref()
     
-    def doApply(self, sdd1, sdd2, operation, timeOverhead):
+    def doApply(self, sdd1, sdd2, timeOverhead):
         time = 0
         newDepth = max(sdd1.getDepth(), sdd2.getDepth()) + 1
         if not timeOverhead:
             startTime = time.time()
-            newSdd = self.compiler.sddManager.apply(sdd1.getSdd(), sdd2.getSdd(), operation)
+            newSdd = self.compiler.sddManager.apply(sdd1.getSdd(), sdd2.getSdd(), self.operation)
             time += time.time() - startTime
         else:
-            newSdd = self.compiler.sddManager.apply(sdd1.getSdd(), sdd2.getSdd(), operation)
+            newSdd = self.compiler.sddManager.apply(sdd1.getSdd(), sdd2.getSdd(), self.operation)
         newSddwrapper = SDDwrapper(newSdd, newDepth)
         return (newSddwrapper, time)
 
@@ -519,14 +524,14 @@ class HeuristicApply():
             return SddVarCountList(sdds, self.compiler.sddManager)
         else: print(f"heuristiek {heuristic} is nog niet geïmpleneteerd")
 
-    def doHeuristicApply2Recursive(self, parentVtreeNode, innerHeuristic, sdds, operation, timeOverhead):
+    def doHeuristicApply2Recursive(self, parentVtreeNode, innerHeuristic, sdds, timeOverhead):
         #recursively split up the children in left.children, right.children en middle.children
         # left children samen (recursief) applyen, dan right.children (recursief), en dan middle.children
         totalTime = 0
         if len(sdds) == 1:
             return (sdds[0], [], 0)
         if len(sdds) == 2:
-            (sdd, time) = self.doApply(sdds[0], sdds[1], operation, timeOverhead)
+            (sdd, time) = self.doApply(sdds[0], sdds[1], self.operation, timeOverhead)
             return (sdd, [sdd.size()], \
                     [sum(self.compiler.sddManager.sdd_variables(sdd.getSdd()))], \
                         [sdd.getDepth()], time)
@@ -548,33 +553,37 @@ class HeuristicApply():
         varCounts = []
         depthList = []
         if len(left) > 0:
-            (recursiveSdd, recurSizeList, recurVarCounts, recurDepthList, recursiveTime) = self.doHeuristicApply2Recursive(parentVtreeNode.left(), innerHeuristic, left, operation, timeOverhead)
+            (recursiveSdd, recurSizeList, recurVarCounts, recurDepthList, recursiveTime) = self.doHeuristicApply2Recursive\
+                (parentVtreeNode.left(), innerHeuristic, left, timeOverhead)
             middle.append(recursiveSdd)
             sizeList += recurSizeList
             varCounts += recurVarCounts
             depthList += recurDepthList
             totalTime += recursiveTime 
         if len(right) > 0:
-            (recursiveSdd, recurSizeList, recurVarCounts, recurDepthList,recursiveTime) = self.doHeuristicApply2Recursive(parentVtreeNode.right(), innerHeuristic, right, operation, timeOverhead)
+            (recursiveSdd, recurSizeList, recurVarCounts, recurDepthList,recursiveTime) = self.doHeuristicApply2Recursive\
+                (parentVtreeNode.right(), innerHeuristic, right, timeOverhead)
             middle.append(recursiveSdd)
             sizeList += recurSizeList
             varCounts += recurVarCounts
             depthList += recurDepthList
             totalTime += recursiveTime
-        (resultSdd, extraSizes, extraVarCounts, extraDepthList, extraTime) = self.doHeuristicApplySdds(innerHeuristic, middle, operation, timeOverhead)
+        (resultSdd, extraSizes, extraVarCounts, extraDepthList, extraTime) = self.doHeuristicApplySdds\
+            (innerHeuristic, middle, timeOverhead)
         return (resultSdd, sizeList + extraSizes, varCounts + extraVarCounts, \
                 depthList + extraDepthList, totalTime + extraTime)
 
-    def doHeuristicApplySdds(self, heuristic, sdds, operation, timeOverhead): #base value zou moeten veranderd worden naar de beste heuristiek
+    def doHeuristicApplySdds(self, heuristic, sdds, timeOverhead): #base value zou moeten veranderd worden naar de beste heuristiek
         #print(f"nu: using heuristic {heuristic}")
         totalTime = 0
         datastructure = self.getFirstDataStructure(sdds, heuristic)
         compileSizes = []
         varCounts = []
         depthList = []
+
         while len(datastructure) > 1:
             sdd1, sdd2 = datastructure.getNextSddsToApply()
-            (newSdd, applytime) = self.doApply(sdd1, sdd2, operation, timeOverhead)
+            (newSdd, applytime) = self.doApply(sdd1, sdd2, timeOverhead)
             compileSizes.append(newSdd.size())
             varCounts.append(sum(self.compiler.sddManager.sdd_variables(newSdd.getSdd())))
             depthList.append(newSdd.getDepth())
@@ -586,18 +595,22 @@ class HeuristicApply():
         finalSdd = datastructure.pop(0)
         return (finalSdd, compileSizes, varCounts, depthList, totalTime)
 
-    def doHeuristicApply(self, heuristic, operation, timeOverhead = True):
+    def doHeuristicApply(self, heuristic, timeOverhead = True):
         #print(f"using heuristic {heuristic}")
         if heuristic == VP:
-            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), RANDOM, self.baseSdds, operation, timeOverhead)
+            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApply2Recursive\
+                (self.compiler.sddManager.vtree(), RANDOM, self.baseSdds, timeOverhead)
         elif heuristic == VP_KE:
-            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), KE, self.baseSdds, operation, timeOverhead)
+            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApply2Recursive\
+                (self.compiler.sddManager.vtree(), KE, self.baseSdds, timeOverhead)
         elif heuristic == VP_EL:
-            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), EL, self.baseSdds, operation, timeOverhead)
+            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApply2Recursive\
+                (self.compiler.sddManager.vtree(), EL, self.baseSdds, timeOverhead)
         elif heuristic == VP_ELVAR:
-            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApply2Recursive(self.compiler.sddManager.vtree(), ELVAR, self.baseSdds, operation, timeOverhead)
+            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApply2Recursive\
+                (self.compiler.sddManager.vtree(), ELVAR, self.baseSdds, timeOverhead)
         else:
-            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApplySdds(heuristic, self.baseSdds, operation, timeOverhead)
+            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApplySdds(heuristic, self.baseSdds, timeOverhead)
         self.collectMostGarbage()#finalSdd) #dit toevoegen als we correctheid willen testen -> correctheid testen door sizes te vergelijken?
         return (finalSdd, compileSizes, varCounts, depthList, totalTime)
         

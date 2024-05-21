@@ -9,7 +9,7 @@ import os
 import sys
 
 
-def doHeuristicTest(heuristics, heuristicApplier, operation, overheadTime):
+def doHeuristicTest(heuristics, heuristicApplier, overheadTime):
     timeHeuristics = []
     sizeListsHeuristics = []
     varCountsHeuristics = []
@@ -17,13 +17,13 @@ def doHeuristicTest(heuristics, heuristicApplier, operation, overheadTime):
     for heur in heuristics:
         if (overheadTime):
             startTime = time.time()
-            (_, sizeList, varCounts, depthList, _) =heuristicApplier.doHeuristicApply(heur, operation)
+            (_, sizeList, varCounts, depthList, _) =heuristicApplier.doHeuristicApply(heur)
             timeHeuristics.append(time.time() - startTime)
             sizeListsHeuristics.append(sizeList)
             varCountsHeuristics.append(varCounts)
             depthListHeuristics.append(depthList)
         else:
-            (_, sizeList, varCounts, depthList, timed) = heuristicApplier.doHeuristicApply(heur, operation, overheadTime)
+            (_, sizeList, varCounts, depthList, timed) = heuristicApplier.doHeuristicApply(heur, overheadTime)
             timeHeuristics.append(timed)
             sizeListsHeuristics.append(sizeList)
             varCountsHeuristics.append(varCounts)
@@ -54,14 +54,13 @@ def doHeuristicTest(heuristics, heuristicApplier, operation, overheadTime):
 #             for i in range(len(heuristics)):
 #                 file.write(f"heuristiek {heuristics[i]} times: {heuristicsTimes[i]}\n")
                 
-def heuristicApply(nrOfVars, iterationsPerNode, vtree, overheadTime):
+def heuristicApply(nrOfVars, iterationsPerNode, operation, vtree, overheadTime):
 
     comm = MPI.COMM_WORLD
     size = comm.Get_size()
     rank = comm.Get_rank()
-    heuristics = [ELVAR, VP_ELVAR, EL, VP_EL]
-    # heuristics = [RANDOM, VO, IVO_LR, IVO_RL, VP_KE, VP_EL]
-    operation = OR
+    # heuristics = [ELVAR, VP_ELVAR, EL, VP_EL]
+    heuristics = [RANDOM, VO, IVO_LR, IVO_RL, VP_KE, VP_EL]
     nrOfSdds = 20
     # iterationsPerNode = 5
     # nrOfVars=20
@@ -71,14 +70,14 @@ def heuristicApply(nrOfVars, iterationsPerNode, vtree, overheadTime):
     for i in range(int(nrOfVars/2), int(nrOfVars*5), int(nrOfVars*0.5)):
         nrOfClauses = i
         heuristicsTimes = np.zeros((len(heuristics), iterationsPerNode))
-        heuristicApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
+        heuristicApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, operation, vtree_type=vtree)
         allSizeLists = np.zeros((len(heuristics), iterationsPerNode, nrOfSdds - 1))
         allVarCounts = np.zeros((len(heuristics), iterationsPerNode, nrOfSdds - 1))
         allDepthLists = np.zeros((len(heuristics), iterationsPerNode, nrOfSdds - 1))
         for iter in range(iterationsPerNode):
             heuristicApplier.renew()
             heuristicsTimes[:, iter], allSizeLists[:, iter], allVarCounts[:, iter], allDepthLists[:, iter] \
-                    = doHeuristicTest(heuristics, heuristicApplier, operation, overheadTime)
+                    = doHeuristicTest(heuristics, heuristicApplier, overheadTime)
         averageSizeList = np.array(allSizeLists).mean(axis = 1)
         averageVarCounts = np.array(allVarCounts).mean(axis = 1)
         averageDepthLists = np.array(allDepthLists).mean(axis = 1)
@@ -99,17 +98,17 @@ def heuristicApply(nrOfVars, iterationsPerNode, vtree, overheadTime):
         comm.Gather(averageDepthLists, heuristicDepthMatrices , root=0)
         if rank == 0:
             allHeuristicTimes = np.concatenate(heuristicTimesMatrices, axis=1)
-            averageSizeList = np.array(heuristicSizesMatrices).mean(axis = 1)
-            averageVarCounts = np.array(heuristicVarCountMatrices).mean(axis = 1)
-            averageDepthLists = np.array(heuristicDepthMatrices).mean(axis = 1)
-            name = "test" if overheadTime else "noOverhead"
+            averageSizeList = np.array(heuristicSizesMatrices).mean(axis = 0)
+            averageVarCounts = np.array(heuristicVarCountMatrices).mean(axis = 0)
+            averageDepthLists = np.array(heuristicDepthMatrices).mean(axis = 0)
+            testName = "test" if overheadTime else "noOverhead"
             operationStr = "OR" if operation == OR else "AND"
             data_directory = os.environ.get("VSC_DATA")
             if data_directory is None:
                 data_directory = ""
             results = [allHeuristicTimes, averageSizeList, averageVarCounts, averageDepthLists]
             for metric, res in zip(["heuristic", "sizes", "varCounts", "depth"], results):
-                local_file_path = f"output/{metric}/{name}_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt"
+                local_file_path = f"output/{metric}/{testName}_{nrOfSdds}_{nrOfVars}_{operationStr}_{vtree}_{heuristics}_{nrOfClauses}.txt"
                 fullPath = os.path.join(data_directory, local_file_path)
                 os.makedirs(os.path.dirname(fullPath), exist_ok=True)
                 with open(fullPath, 'w') as file:
@@ -118,16 +117,16 @@ def heuristicApply(nrOfVars, iterationsPerNode, vtree, overheadTime):
                 
 def main():
     args = sys.argv[1:]
-    baseArgs = [16, 1, "balanced", True]
-    modifier = [lambda x: int(x), lambda x: int(x), lambda x: x, lambda x: x.lower() in ('true', '1', 't', 'y', 'yes')]
+    baseArgs = [16, 1, OR, "balanced", True]
+    modifier = [lambda x: int(x), lambda x: int(x), lambda x: int(x), lambda x: x, lambda x: x.lower() in ('true', '1', 't', 'y', 'yes')]
     try:
         for i in range(len(args)):
             baseArgs[i] = modifier[i](args[i])
     except ValueError:
-        print("Error: Please provide 4 valid arguments.")
+        print("Error: Please provide 5 valid arguments.")
         return
     # print(baseArgs)
-    heuristicApply(baseArgs[0], baseArgs[1], baseArgs[2], baseArgs[3])
+    heuristicApply(baseArgs[0], baseArgs[1], baseArgs[2], baseArgs[3], baseArgs[4])
 
 if __name__ == "__main__":
     # Call main function with command line arguments excluding script name

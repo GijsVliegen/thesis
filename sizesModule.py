@@ -77,47 +77,13 @@ def heuristicsApply(heuristics, nrOfVars, vtree):
             for i in range(len(averageDepthLists)):
                 file.write(f"{averageDepthLists[i]}\n")
 
-def graphHeuristicApply(heuristics, nrOfVars, vtree):
-    nrOfSdds=20
-    operation = OR 
-    operationStr = "OR" if operation == OR else "AND"
-    overhead = True#False#True
-    testName = "test" if overhead else "noOverhead"
-    colors = ['red', 'blue', "green", "orange", "purple", "brown", "yellow", "pink"]
-    #sizes
-    metrics = ["sizes", "varCounts", "depth"]
-    ylabels = ['Grootte van tussenresultaat', 'aantal variabelen in tussenresultaat', 'hoogte van tussenresultaat']
-    titles = ["Groottes tussenresultaten voor ratio", "aantal vars per tussenresultaat voor ratio", "diepte van tussenresultaten voor ratio"]
-    yscale = ['log', 'linear', 'linear']
-    for (i, metric) in enumerate(metrics):
-        for nrOfClauses in range(int(nrOfVars*0.5), nrOfVars*5, int(nrOfVars*0.5)):
-            filename = f"output/{metric}/{testName}_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt"
-            with open(filename, 'r') as file:
-                lines = file.readlines()
-            lines = [line.strip() for line in lines]
-            for (index, line) in enumerate(lines):
-                try:
-                    current_list = eval(line)
-                except SyntaxError:
-                    print(f"Invalid list format in line: {line}")
-                plt.plot(range(1, nrOfSdds), current_list, marker='o', \
-                            linestyle='-', color = colors[index], label=getHeuristicName(heuristics[index]))
-            plt.xlabel('Index tussenresultaat')
-            plt.ylabel(ylabels[i])
-            plt.title(titles[i] + " " + str(nrOfClauses/nrOfVars))
-            plt.legend()
-            plt.xticks(range(1, 21, 2))
-            plt.yscale(yscale[i])
-            plt.savefig(f"figs/{metric}/{vtree}/{testName}_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{heuristics}_{operationStr}.png") #savefig moet blijkbaar voor show() komen
-            plt.clf()
-
 
 def __main__():
     # heuristieken: VP_EL, VO, VP_KE, IVO_LR, IVO_RL, RANDOM
     heuristics = [9, 10, 5, 8]
     # heuristics = [RANDOM, VP_KE, VP_EL, IVO_LR, VO, IVO_RL]
     # heuristicsApply(heuristics, 16, "balanced")
-    graphHeuristicApply(heuristics, 16, "balanced")
+    # 
     #randomOrderMaxSizeVariation()
         
 __main__()
