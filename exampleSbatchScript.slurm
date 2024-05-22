@@ -11,6 +11,7 @@
 NrOfVars=${NrOfVars:-5}
 Iters=${Iters:-1}
 Operation=${Operation:0}
+Heuristic=${Heuristic:"VO"}
 Vtree=${Vtree:-"balanced"}
 Overhead=${Overhead:-"true"}
 
@@ -18,4 +19,4 @@ Overhead=${Overhead:-"true"}
 #source ~/.bashrc
 source activate intelPython
 
-mpirun python3 thesisUbuntu/parallelTimerModule.py $NrOfVars $Iters $Operation $Vtree $Overhead
+mpirun python3 thesisUbuntu/parallelTimerModule.py $NrOfVars $Iters $Operation $Heuristic $Vtree $Overhead

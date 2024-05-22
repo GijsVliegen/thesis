@@ -69,12 +69,15 @@ def heuristicsPlot(heuristics, nrOfVars, vtree, operation):
                 print(f"Invalid list format in line: {line}")
             col = colors[index]
             counts, bins, _ = plt.hist(heuristicList, bins=20, edgecolor='black', alpha=0)  # Using alpha=0 makes bars invisible
-            plt.plot(bins[:-1], counts, linestyle='-', color = col, marker='o', label=getHeuristicName(heuristics[index])) #lijn tussen de toppen van de histogram
+            binIndices = []
+            for i in range(len(bins)-1):
+                binIndices.append((bins[i+1]+bins[i]) / 2)
+            plt.plot(binIndices, counts, linestyle='-', color = col, marker='o', label=getHeuristicName(heuristics[index])) #lijn tussen de toppen van de histogram
         plt.xlabel('tijd (s)')
         plt.ylabel('aantal compilaties')
         plt.xscale('log')
-        titleOperation = "disjunctie" if operation == OR else "conjunctie"
-        plt.title(f"Compilatietijd {titleOperation} voor r = {ratio}")
+        titleOperation = "Disjunctie" if operation == OR else "Conjunctie"
+        plt.title(f"{titleOperation}: compilatietijd voor r = {ratio}")
         plt.legend()
         local_file_path = f"figs/heuristics/{vtree}/{testName}_{nrOfSdds}_{nrOfVars}_{operationStr}_{heuristics}_{nrOfClauses}.png"
         fullPath = os.path.join("", local_file_path)
@@ -121,15 +124,15 @@ def otherMetricsPlot(heuristics, nrOfVars, vtree, operation):
             plt.clf()
 
 def __main__():
-    heuristics = [99, 4, 6, 7, 3, 8]
+    heuristics = [8, 3, 7, 6, 4, 99]
     nrOfVars = 28
     vtree = "balanced"
     operation = OR
     heuristicsPlot(heuristics, nrOfVars, vtree, operation) 
-    otherMetricsPlot(heuristics, nrOfVars, vtree, operation)
+    # otherMetricsPlot(heuristics, nrOfVars, vtree, operation)
     operation = AND
     heuristicsPlot(heuristics, nrOfVars, vtree, operation) 
-    otherMetricsPlot(heuristics, nrOfVars, vtree, operation)
+    # otherMetricsPlot(heuristics, nrOfVars, vtree, operation)
     # randomOrderPlot()
     #plt.show()
 

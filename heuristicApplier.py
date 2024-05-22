@@ -4,6 +4,9 @@ from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode, SddManager
 import random
 import timeit
 import ctypes
+import psutil
+import os
+import random
 
 KE = 1
 VP = 2
@@ -20,8 +23,13 @@ OR = 1
 AND = 0
 heuristicDict = {RANDOM: "Random", KE: "KE", VP: "VP", 
                  EL: "EL", VP_KE: "VP + KE", 
-                 VO: "VO", IVO_LR: "IVO-LR",
-                 IVO_RL: "IVO-RL", VP_EL:"VP + EL", ELVAR:"EL-Var", VP_ELVAR:"VP + EL-Var"}
+                 VO: "TD", IVO_LR: "BU-LR",
+                 IVO_RL: "BU-RL", VP_EL:"VP + EL", ELVAR:"EL-Var", VP_ELVAR:"VP + EL-Var"}
+
+def memory_usage_psutil():
+    process = psutil.Process(os.getpid())
+    mem_info = process.memory_info()
+    return mem_info.rss  # in bytes
 
 class SDDwrapper:
     def __init__(self, sdd, depth):
@@ -452,7 +460,8 @@ class HeuristicApply():
         print(f" exit dead count = {self.compiler.sddManager.dead_count()}")
         self.compiler.sddManager.garbage_collect()
 
-    def __init__(self, nrOfSdds, nrOfVars, nrOfClauses, operation, vtree_type = "balanced"):
+    def __init__(self, nrOfSdds, nrOfVars, nrOfClauses, operation, randomSeed, vtree_type = "balanced"):
+        random.seed(randomSeed)
         self.nrOfSdds = nrOfSdds
         self.nrOfVars = nrOfVars
         self.nrOfClauses = nrOfClauses
@@ -552,13 +561,15 @@ class HeuristicApply():
         sizeList = []
         varCounts = []
         depthList = []
+        memList = []
         if len(left) > 0:
-            (recursiveSdd, recurSizeList, recurVarCounts, recurDepthList, recursiveTime) = self.doHeuristicApply2Recursive\
+            (recursiveSdd, recurSizeList, recurVarCounts, recurDepthList, recurMemList, recursiveTime) = self.doHeuristicApply2Recursive\
                 (parentVtreeNode.left(), innerHeuristic, left, timeOverhead)
             middle.append(recursiveSdd)
             sizeList += recurSizeList
             varCounts += recurVarCounts
             depthList += recurDepthList
+            memList += recurMemList
             totalTime += recursiveTime 
         if len(right) > 0:
             (recursiveSdd, recurSizeList, recurVarCounts, recurDepthList,recursiveTime) = self.doHeuristicApply2Recursive\
@@ -567,11 +578,12 @@ class HeuristicApply():
             sizeList += recurSizeList
             varCounts += recurVarCounts
             depthList += recurDepthList
+            memList += recurMemList
             totalTime += recursiveTime
-        (resultSdd, extraSizes, extraVarCounts, extraDepthList, extraTime) = self.doHeuristicApplySdds\
+        (resultSdd, extraSizes, extraVarCounts, extraDepthList, extraMemList, extraTime) = self.doHeuristicApplySdds\
             (innerHeuristic, middle, timeOverhead)
         return (resultSdd, sizeList + extraSizes, varCounts + extraVarCounts, \
-                depthList + extraDepthList, totalTime + extraTime)
+                depthList + extraDepthList, memList + extraMemList, totalTime + extraTime)
 
     def doHeuristicApplySdds(self, heuristic, sdds, timeOverhead): #base value zou moeten veranderd worden naar de beste heuristiek
         #print(f"nu: using heuristic {heuristic}")
@@ -580,6 +592,7 @@ class HeuristicApply():
         compileSizes = []
         varCounts = []
         depthList = []
+        memUsed = []
 
         while len(datastructure) > 1:
             sdd1, sdd2 = datastructure.getNextSddsToApply()
@@ -587,30 +600,31 @@ class HeuristicApply():
             compileSizes.append(newSdd.size())
             varCounts.append(sum(self.compiler.sddManager.sdd_variables(newSdd.getSdd())))
             depthList.append(newSdd.getDepth())
+            memUsed.append(memory_usage_psutil())
             totalTime += applytime
             datastructure.update(newSdd)
             #self.nodeCounterList.append(self.compiler.sddManager.dead_size())
             # self.nodeCounterList.append((self.compiler.sddManager.count(), self.compiler.sddManager.live_count(), self.compiler.sddManager.dead_count())) #count, dead_count of live_count
             #doSomethingWithResults(rootNodeId, rootNode, newSdd, datastructure)
         finalSdd = datastructure.pop(0)
-        return (finalSdd, compileSizes, varCounts, depthList, totalTime)
+        return (finalSdd, compileSizes, varCounts, depthList, memUsed, totalTime)
 
     def doHeuristicApply(self, heuristic, timeOverhead = True):
         #print(f"using heuristic {heuristic}")
         if heuristic == VP:
-            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApply2Recursive\
+            (finalSdd, compileSizes, varCounts, depthList, memList, totalTime) = self.doHeuristicApply2Recursive\
                 (self.compiler.sddManager.vtree(), RANDOM, self.baseSdds, timeOverhead)
         elif heuristic == VP_KE:
-            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApply2Recursive\
+            (finalSdd, compileSizes, varCounts, depthList, memList, totalTime) = self.doHeuristicApply2Recursive\
                 (self.compiler.sddManager.vtree(), KE, self.baseSdds, timeOverhead)
         elif heuristic == VP_EL:
-            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApply2Recursive\
+            (finalSdd, compileSizes, varCounts, depthList, memList, totalTime) = self.doHeuristicApply2Recursive\
                 (self.compiler.sddManager.vtree(), EL, self.baseSdds, timeOverhead)
         elif heuristic == VP_ELVAR:
-            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApply2Recursive\
+            (finalSdd, compileSizes, varCounts, depthList, memList, totalTime) = self.doHeuristicApply2Recursive\
                 (self.compiler.sddManager.vtree(), ELVAR, self.baseSdds, timeOverhead)
         else:
-            (finalSdd, compileSizes, varCounts, depthList, totalTime) = self.doHeuristicApplySdds(heuristic, self.baseSdds, timeOverhead)
+            (finalSdd, compileSizes, varCounts, depthList, memList, totalTime) = self.doHeuristicApplySdds(heuristic, self.baseSdds, timeOverhead)
         self.collectMostGarbage()#finalSdd) #dit toevoegen als we correctheid willen testen -> correctheid testen door sizes te vergelijken?
-        return (finalSdd, compileSizes, varCounts, depthList, totalTime)
+        return (finalSdd, compileSizes, varCounts, depthList, memList, totalTime)
         

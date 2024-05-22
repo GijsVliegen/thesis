@@ -86,7 +86,7 @@ def doHeuristicTest(heuristics, randomApplier, operation, overheadTime):
 
 def heuristicsApply(heuristics, operation, overheadTime):
     nrOfSdds=20
-    iterations = 2000
+    iterations = 1
     nrOfVars=20
     for i in range(int(nrOfVars/2), int(nrOfVars*5), int(nrOfVars*0.5)):
         print(f"nr of clauses = {i}")
@@ -95,7 +95,7 @@ def heuristicsApply(heuristics, operation, overheadTime):
         name = "test" if overheadTime else "noOverhead"
         operationStr = "OR" if operation == OR else "AND"
         heuristicsTimes = []
-        randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
+        randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, operation, vtree_type=vtree)
         for i in heuristics:
             heuristicsTimes.append([])
         for _ in range(iterations):
@@ -120,7 +120,7 @@ def diffSizesApply(heuristics, operation):
         with open(f"output/diffSizes_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
             file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}, vtree = {vtree}, heuristiek = {heuristics}" + '\n')
             heuristicsTimes = []
-            randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
+            randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, operation, vtree_type=vtree)
             for i in heuristics:
                 heuristicsTimes.append([])
             for _ in range(iterations):
@@ -134,7 +134,7 @@ def diffSizesApply(heuristics, operation):
 
 def __main__():
     #heuristieken: VP, VP_EL, VP_KE, VO, IVO_LR, IVO_RL, RANDOM, KE,
-    heuristics = [RANDOM, VP_KE, VP_EL, IVO_LR, VO, IVO_RL]
+    heuristics = [VP_EL]#[RANDOM, VP_KE, VP_EL, IVO_LR, VO, IVO_RL]
     operation = OR 
     heuristicsApply(heuristics, operation, overheadTime=True) #false -> tijdsmeting zonder overhead
     # diffSizesApply(heuristics, operation)
