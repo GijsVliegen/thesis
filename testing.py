@@ -456,7 +456,7 @@ def testCorrectWorkingHeuristics():
     for nrOfClauses in nrOfClausesList:
         for operation in operations:
             print(f"aantal clauses = {nrOfClauses}, operatie = {operation}")
-            randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
+            randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, OR, 150, vtree_type="balanced")
             for _ in range(nrOfIterations):
                 finalSdd = randomApplier.doHeuristicApply(RANDOM, operation)[0].getSdd()
                 for heuristic in heuristicsList:

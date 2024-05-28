@@ -6,13 +6,15 @@ DISJUNCTIE = 1
 
 class SDDcompiler:
 
-    def __init__(self, nrOfVars, sddManager = None, vtree_type = "balanced"):
+    def __init__(self, nrOfVars, sddManager = None, vtree_type = "balanced", vtree = 0):
 
         self.sddManager = sddManager
         if self.sddManager is None:
             vtree = Vtree(var_count=nrOfVars, vtree_type=vtree_type) #kan nog aangepast worden voor experiment
             self.sddManager = SddManager.from_vtree(vtree)
 
+    def changeVtree(self, vtree):
+        self.sddManager = SddManager.from_vtree(vtree)
 
     """
     compiled vanaf een rootnode de formule naar een sdd, werkt recursief
