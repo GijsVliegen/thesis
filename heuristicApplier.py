@@ -627,4 +627,19 @@ class HeuristicApply():
             (finalSdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime) = self.doHeuristicApplySdds(heuristic, self.baseSdds, timeOverhead)
         self.collectMostGarbage()#finalSdd) #dit toevoegen als we correctheid willen testen -> correctheid testen door sizes te vergelijken?
         return (finalSdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime)
-        
+    
+
+    def randomRatiosApply(self, heuristic):
+        randomSdds = []
+        for _ in range(self.nrOfSdds):
+            nrOfClauses = random.randint(1, 4.5*self.nrOfVars) #wordt geseed tijdens init
+            cnf = generateRandomCnfFormula(nrOfClauses, self.nrOfVars, self.cnf3)
+            (sdd, _) = self.compiler.compileToSdd(cnf, len(cnf))
+            #convert into dnf
+            if self.operation == AND:
+                sdd = self.compiler.sddManager.negate(sdd)
+            sddWrapper = SDDwrapper(sdd, depth = 0)
+            randomSdds.append(sddWrapper)
+        self.baseSdds = randomSdds
+        return self.doHeuristicApply(heuristic)
+

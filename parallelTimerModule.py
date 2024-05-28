@@ -127,6 +127,92 @@ def heuristicApply(nrOfVars, iterationsPerNode, operation, heuristic = VO, vtree
                 file.write(f"{allNoOverheadTimes.tolist()}\n") 
         gc.collect()
 
+def randomRatiosApplyExperiment(nrOfVars, iterationsPerNode, operation, heuristic = VO, vtree_type = "balanced"):
+    comm = MPI.COMM_WORLD
+    size = comm.Get_size()
+    rank = comm.Get_rank()
+    overheadTime = True
+    # heuristics = [ELVAR, VP_ELVAR, EL, VP_EL]
+     #heuristics = [RANDOM, VO, IVO_LR, IVO_RL, VP_KE, VP_EL]
+    nrOfSdds = 20
+    # iterationsPerNode = 5
+    # nrOfVars=20
+    # vtree = "balanced"
+    
+    randomSeed = (rank+1) * 656510
+    heuristicsTimes = np.zeros((1, iterationsPerNode))
+    noOverheadTimes = np.zeros((1, iterationsPerNode))
+    heuristicApplier = HeuristicApply(nrOfSdds, nrOfVars, 1, operation, randomSeed, vtree_type=vtree_type) 
+    allSizeLists = np.zeros((1, iterationsPerNode, nrOfSdds - 1))
+    allVarCounts = np.zeros((1, iterationsPerNode, nrOfSdds - 1))
+    allDepthLists = np.zeros((1, iterationsPerNode, nrOfSdds - 1))
+    for iter in range(iterationsPerNode):
+        heuristicApplier.renew()
+        if vtree_type == "random": #moet nog getest worden
+            # vtree_nr = rank * iterationsPerNode + iter
+            # print(f"vtree_nr = {vtree_nr}: iter = {iter}, rank = {rank}")
+
+            # data_directory = os.environ.get("VSC_DATA")
+            # if data_directory is None:
+            #     data_directory = ""
+            # local_file_path = f"randomVtrees/vtree_{vtree_nr}.txt"
+            # fullPath = os.path.join(data_directory, local_file_path)
+            # vtree = Vtree.from_file(bytes(fullPath, encoding="utf-8"))
+            # heuristicApplier.setVtree(vtree)
+            pass
+        #(finalSdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime)
+        _, allSizeLists[:, iter], allVarCounts[:, iter], allDepthLists[:, iter], heuristicsTimes[:, iter], noOverheadTimes[:, iter]\
+                = heuristicApplier.randomRatiosApply(heuristic)
+    del heuristicApplier
+    gc.collect()
+
+    averageSizeList = np.array(allSizeLists).mean(axis = 1)
+
+    # print(averageSizeList)
+
+    averageVarCounts = np.array(allVarCounts).mean(axis = 1)
+    averageDepthLists = np.array(allDepthLists).mean(axis = 1)
+    if rank == 0:
+        heuristicTimesMatrices = np.empty((size, 1, iterationsPerNode))
+        noOverheadTimesMatrices = np.empty((size, 1, iterationsPerNode))
+        heuristicSizesMatrices = np.empty((size, 1, nrOfSdds-1))
+        heuristicVarCountMatrices = np.empty((size, 1, nrOfSdds-1))
+        heuristicDepthMatrices = np.empty((size, 1, nrOfSdds-1))
+    else:
+        heuristicTimesMatrices = None
+        noOverheadTimesMatrices = None
+        heuristicSizesMatrices = None
+        heuristicVarCountMatrices = None
+        heuristicDepthMatrices = None
+    comm.Gather(heuristicsTimes, heuristicTimesMatrices , root=0)
+    comm.Gather(noOverheadTimes, noOverheadTimesMatrices, root=0)
+    comm.Gather(averageSizeList, heuristicSizesMatrices , root=0)
+    comm.Gather(averageVarCounts, heuristicVarCountMatrices , root=0)
+    comm.Gather(averageDepthLists, heuristicDepthMatrices , root=0)
+    if rank == 0:
+        allHeuristicTimes = np.concatenate(heuristicTimesMatrices, axis=1)
+        allNoOverheadTimes = np.concatenate(noOverheadTimesMatrices, axis=1)
+        averageSizeList = np.array(heuristicSizesMatrices).mean(axis = 0)
+        averageVarCounts = np.array(heuristicVarCountMatrices).mean(axis = 0)
+        averageDepthLists = np.array(heuristicDepthMatrices).mean(axis = 0)
+        testName = "test" if overheadTime else "noOverhead"
+        operationStr = "OR" if operation == OR else "AND"
+        data_directory = os.environ.get("VSC_DATA")
+        if data_directory is None:
+            data_directory = ""
+        results = [allHeuristicTimes, averageSizeList, averageVarCounts, averageDepthLists]#, averageMemLists]
+        for metric, res in zip(["heuristic", "sizes", "varCounts", "depth"], results):#, "memUsage"], results):
+            local_file_path = f"output/randomRatios/{metric}/{testName}_{nrOfSdds}_{nrOfVars}_{operationStr}_{vtree_type}_{[heuristic]}.txt"
+            fullPath = os.path.join(data_directory, local_file_path)
+            os.makedirs(os.path.dirname(fullPath), exist_ok=True)
+            with open(fullPath, 'w') as file:
+                file.write(f"{res[0].tolist()}\n") 
+        local_file_path = f"output/randomRatios/heuristic/noOverhead_{nrOfSdds}_{nrOfVars}_{operationStr}_{vtree_type}_{[heuristic]}.txt"
+        fullPath = os.path.join(data_directory, local_file_path)
+        with open(fullPath, 'w') as file:
+            file.write(f"{allNoOverheadTimes.tolist()}\n") 
+    gc.collect()
+
 def main():
     args = sys.argv[1:]
     baseArgs = [16, 1, VO, "balanced"]
@@ -139,8 +225,10 @@ def main():
         print("Error: Please provide 4 valid arguments.")
         return
     # print(baseArgs)
-    heuristicApply(baseArgs[0], baseArgs[1], OR, baseArgs[2], baseArgs[3])
-    heuristicApply(baseArgs[0], baseArgs[1], AND, baseArgs[2], baseArgs[3])
+    # heuristicApply(baseArgs[0], baseArgs[1], OR, baseArgs[2], baseArgs[3])
+    # heuristicApply(baseArgs[0], baseArgs[1], AND, baseArgs[2], baseArgs[3])
+    randomRatiosApplyExperiment(baseArgs[0], baseArgs[1], OR, baseArgs[2], baseArgs[3])
+    randomRatiosApplyExperiment(baseArgs[0], baseArgs[1], AND, baseArgs[2], baseArgs[3])
 
 if __name__ == "__main__":
     # Call main function with command line arguments excluding script name

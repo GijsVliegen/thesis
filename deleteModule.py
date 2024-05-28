@@ -16,16 +16,19 @@ def removeFile(file_path):
 
 def deleteAllOutputOfExperiment(vars, heuristics):
     if True:
-        vtree = "balanced"
+        vtrees = ["balanced", "left", "right", "random"]
         metrics = ["sizes", "depth", "varCounts", "heuristic"]
-        for metric in metrics:
-            for heur in heuristics:
-                for clausules in range (int(vars/4), vars*5, int(vars/4)):
-                    file_pathAnd = f"output/{metric}/test_20_{vars}_AND_{vtree}_{[heur]}_{clausules}.txt"
-                    file_pathOr = f"output/{metric}/test_20_{vars}_OR_{vtree}_{[heur]}_{clausules}.txt"
-                    file_pathAnd = f"output/{metric}/noOverhead_20_{vars}_AND_{vtree}_{[heur]}_{clausules}.txt"
-                    file_pathOr = f"output/{metric}/noOverhead_20_{vars}_OR_{vtree}_{[heur]}_{clausules}.txt"
-                    removeFile(file_pathAnd)
-                    removeFile(file_pathOr)
+        for vtree in vtrees:
+            for metric in metrics:
+                for heur in heuristics:
+                    for clausules in range (int(vars/2), vars*5, int(vars/2)):
+                        file_pathAnd = f"output/{metric}/test_20_{vars}_AND_{vtree}_{[heur]}_{clausules}.txt"
+                        file_pathOr = f"output/{metric}/test_20_{vars}_OR_{vtree}_{[heur]}_{clausules}.txt"
+                        removeFile(file_pathAnd)
+                        removeFile(file_pathOr)
+                        file_pathAnd = f"output/{metric}/noOverhead_20_{vars}_AND_{vtree}_{[heur]}_{clausules}.txt"
+                        file_pathOr = f"output/{metric}/noOverhead_20_{vars}_OR_{vtree}_{[heur]}_{clausules}.txt"
+                        removeFile(file_pathAnd)
+                        removeFile(file_pathOr)
 
-deleteAllOutputOfExperiment(16, [10])
+deleteAllOutputOfExperiment(12, [99, 3, 4, 5, 6, 7, 8, 9, 10])
