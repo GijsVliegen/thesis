@@ -15,7 +15,7 @@ def oneVtreeGenerator(nrOfVars, nr):
     vars = list(range(1, nrOfVars+1))
     random.shuffle(vars)
     vtree = Vtree(nrOfVars, vars, "random")
-    local_file_path = f"randomVtrees/vtree_{nr}.txt"
+    local_file_path = f"randomVtrees/{nrOfVars}/vtree_{nr}.txt"
     fullPath = os.path.join(data_directory, local_file_path)
     os.makedirs(os.path.dirname(fullPath), exist_ok=True)
             
@@ -29,4 +29,4 @@ def randomVtreeGenerator(nrOfVars, iters):
         time.sleep(1)
         oneVtreeGenerator(nrOfVars, i)
 
-randomVtreeGenerator(12, 5) 
+randomVtreeGenerator(14, 100)

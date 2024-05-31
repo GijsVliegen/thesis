@@ -10,7 +10,7 @@ def chancheVarInCNF(vars, k, ratio):
 def chancheAllVarInCnf(vars, k, ratio):
     return chancheVarInCNF(vars,k , ratio) ** vars
 
-vars = 28
+vars = 10
 k = 3
 ratios = list(range(1, 20))
 for i in ratios:

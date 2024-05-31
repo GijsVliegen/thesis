@@ -60,20 +60,6 @@ def countingVSTiming(operation):
         print(f"Correlation Coefficient voor {nrOfClauses} clauses: {correlation_coefficient}")
 
 
-def randomOrderCompTimeVariation(operation):
-    nrOfSdds=20
-    nrOfVars=16
-    nrOfIterationsPerSdd = 10000
-    listNrOfClauses=list(tuple(range(5, int(nrOfVars*5), 5)))
-    operationStr = "OR" if operation == OR else "AND"
-    with open(f"output/randomOrderCompTimeVariation_{nrOfSdds}_{nrOfVars}_{operationStr}.txt", 'w') as file:
-        file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}" + '\n')
-        for nrOfClauses in listNrOfClauses:
-            print(nrOfClauses)
-            randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="balanced")
-            times = doRandomOrderTest(nrOfIterationsPerSdd, randomApplier, operation)
-            file.write(f"voor {nrOfClauses} clauses {times}\n")
-
 def doHeuristicTest(heuristics, randomApplier, operation, overheadTime):
     timeHeuristics = []
     for heur in heuristics:

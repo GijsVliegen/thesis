@@ -3,7 +3,7 @@ from randomCNFGenerator import generateRandomCnfDimacs
 from heuristicApplier import HeuristicApply, SddVarAppearancesList, SddVtreeCountList
 from heuristicApplier import RANDOM, IVO_LR, IVO_RL, \
     KE, VP, VP_KE, VO, \
-    EL, ELVAR, VP_ELVAR
+    EL, ELVAR, VP_ELVAR, IVO_RL_EL
 from heuristicApplier import AND, OR
 
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
@@ -445,9 +445,9 @@ def testVtreeFunctions():
     graphviz.Source(vtree.dot()).render(f"vtree", format='png')
 
 def testCorrectWorkingHeuristics():
-    heuristicsList = [RANDOM, KE, VP, \
-                      VP_KE, VO, \
-                        EL, IVO_LR, IVO_RL, ELVAR, VP_ELVAR]
+    heuristicsList = [IVO_RL_EL] #[RANDOM, KE, VP, \
+                    #   VP_KE, VO, \
+                    #     EL, IVO_LR, IVO_RL, ELVAR, VP_ELVAR]
     nrOfVars = 16
     nrOfClausesList = [5, 25, 40, 55, 75]
     operations = [OR, AND] #0 voor conjoin, 1 voor disjoin
