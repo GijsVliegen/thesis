@@ -1,0 +1,9 @@
+c BC-S1.2
+T g1
+T g2
+I x2
+I x1
+I x3
+G x4 := A x2 x1
+G g1 := O -x3 x4
+G g2 := O x3 -x4

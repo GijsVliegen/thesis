@@ -1,5 +1,5 @@
 #dot -Tpng -O sdd.dot
-from randomCNFGenerator import generateRandomCnfDimacs
+from randomCNFGenerator import generateRandomCnfDimacs, generateRandomCnfFormula
 from heuristicApplier import HeuristicApply, SddVarAppearancesList, SddVtreeCountList
 from heuristicApplier import RANDOM, IVO_LR, IVO_RL, \
     KE, VP, VP_KE, VO, \
@@ -10,7 +10,7 @@ from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 from flatSDDCompiler import SDDcompiler
 import ctypes
 import os
-import timeit
+import time, timeit
 import graphviz
 import itertools
 import math
@@ -459,6 +459,7 @@ def testCorrectWorkingHeuristics():
             randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, OR, 150, vtree_type="balanced")
             for _ in range(nrOfIterations):
                 finalSdd = randomApplier.doHeuristicApply(RANDOM, operation)[0].getSdd()
+                print(f"size = {finalSdd.size()}")
                 for heuristic in heuristicsList:
                     otherSdd = randomApplier.doHeuristicApply(heuristic, operation)[0].getSdd()
                     if finalSdd != otherSdd:
@@ -473,6 +474,72 @@ def getVtreeFig():
     finalSdd = randomApplier.doRandomApply()
     with open("vtree.dot", "w") as out:
         print(finalSdd.vtree().dot(), file = out)
+
+def print_stats(sdd):
+    print(f" size = {sdd.size()}")
+
+def vtree_size_at_iterative(vtree_node):
+    count = [vtree_node.size_at()]
+    if vtree_node.is_leaf() == 1:
+        return count
+    else:    
+        return vtree_size_at_iterative(vtree_node.left()) + count + vtree_size_at_iterative(vtree_node.right())
+
+
+def managerCopyTimings_test():
+    var_count = 24
+    vtree = Vtree(var_count=24, var_order=list(range(1,21)), vtree_type="balanced")
+    mgr1 = SddManager.from_vtree(vtree)
+    mgr2 = SddManager.from_vtree(vtree)
+    compiler1 = SDDcompiler(20, mgr1)
+    compiler2 = SDDcompiler(20, mgr2)
+    sddNrs = 30
+    formulas = []
+    for i in range(sddNrs):
+        formulas.append(generateRandomCnfFormula(50, 20))
+    startTime = time.time()
+    sdds = []
+    for i in range(sddNrs):
+        (sdd1, _) = compiler1.compileToSdd(formulas[i], len(formulas[i]))
+        sdds.append(sdd1)
+    for i in range(sddNrs-1):
+        sdd1 = sdds.pop(0)
+        sdd2 = sdds.pop(0)
+        sdd3 = mgr1.apply(sdd1, sdd2, OR)
+        sdds.append(sdd3)
+    compileTime = startTime - time.time()
+    print(f"compileTime = {compileTime}")
+    print_stats(sdds[0])
+    # print(vtree_size_at_iterative(mgr1.vtree()))
+
+    startTime = time.time()
+    sdd1Copy = sdds[0].copy(mgr2)
+    print(vtree_size_at_iterative(mgr2.vtree()))
+    endTime = startTime - time.time()
+    print(f"endtime = {endTime}")
+
+
+    startTime = time.time()
+    print(sdd1Copy.local_vtree_element_count())
+    endTime = startTime - time.time()
+    print(f"endtime = {endTime}")
+    pass
+
+def vtree_size_at_test():
+    var_count = 24
+    vtree = Vtree(var_count=24, var_order=list(range(1,21)), vtree_type="balanced")
+    mgr1 = SddManager.from_vtree(vtree)
+    # mgr2 = SddManager.from_vtree(vtree)
+    compiler1 = SDDcompiler(20, mgr1)
+    f1 = generateRandomCnfFormula(50, 20)
+    (sdd1, _) = compiler1.compileToSdd(f1, len(f1))
+    sdd1VtreeCount = vtree_size_at_iterative(mgr1.vtree())
+    f2 = generateRandomCnfFormula(50, 20)
+    (sdd2, _) = compiler1.compileToSdd(f2, len(f2))
+    sdd2VtreeCount = vtree_size_at_iterative(mgr1.vtree())
+
+    print(sdd1VtreeCount)
+    print(sdd1.local_vtree_element_count())
 
 #varsUnderVtreeNode_test()
 #overheadTime_test()
@@ -489,6 +556,8 @@ def getVtreeFig():
 #testSddVarAppearances()
 #varsUnderVtreeNode_test()
 #varOrderTest()
+# managerCopyTimings_test()
+# vtree_size_at_test()
 
 testCorrectWorkingHeuristics() #RESULT SDD TERUGGEGEN IN RandomOrderApplier
 """

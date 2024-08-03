@@ -1,0 +1,13 @@
+c BC-S1.2
+T asthman8
+I choice8_0_stressn3_n3
+I choice8_0_stressn8_n8
+I choice39_0_asthman8_n8
+I choice8_0_stressn4_n4
+I choice18_0_influencen4_n8_n4_n8
+I choice18_0_influencen3_n4_n3_n4
+G g6 := A choice18_0_influencen3_n4_n3_n4 choice8_0_stressn3_n3
+G smokesn4 := O choice8_0_stressn4_n4 g6
+G g8 := A choice18_0_influencen4_n8_n4_n8 smokesn4
+G smokesn8 := O choice8_0_stressn8_n8 g8
+G asthman8 := A smokesn8 choice39_0_asthman8_n8

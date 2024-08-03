@@ -1,0 +1,5 @@
+c BC-S1.2
+T asthmasalviati
+I choice39_0_asthmasalviati_salviati
+I choice8_0_stresssalviati_salviati
+G asthmasalviati := A choice8_0_stresssalviati_salviati choice39_0_asthmasalviati_salviati

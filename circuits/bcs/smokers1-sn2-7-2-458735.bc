@@ -1,0 +1,25 @@
+c BC-S1.2
+T asthman16
+I choice18_0_influencen4_n10_n4_n10
+I choice18_0_influencen6_n16_n6_n16
+I choice8_0_stressn4_n4
+I choice18_0_influencen5_n16_n5_n16
+I choice8_0_stressn16_n16
+I choice18_0_influencen5_n6_n5_n6
+I choice18_0_influencen10_n5_n10_n5
+I choice8_0_stressn5_n5
+I choice8_0_stressn10_n10
+I choice39_0_asthman16_n16
+I choice8_0_stressn6_n6
+I choice18_0_influencen4_n6_n4_n6
+G g8 := A choice18_0_influencen4_n10_n4_n10 choice8_0_stressn4_n4
+G smokesn10 := O choice8_0_stressn10_n10 g8
+G g10 := A choice18_0_influencen10_n5_n10_n5 smokesn10
+G smokesn5 := O choice8_0_stressn5_n5 g10
+G g12 := A choice18_0_influencen5_n16_n5_n16 smokesn5
+G g16 := A choice18_0_influencen4_n6_n4_n6 choice8_0_stressn4_n4
+G g18 := A choice18_0_influencen5_n6_n5_n6 smokesn5
+G problog_cv_smokes_cb_0n6 := O choice8_0_stressn6_n6 g16 g18
+G g21 := A choice18_0_influencen6_n16_n6_n16 problog_cv_smokes_cb_0n6
+G problog_cv_smokes_cb_0n16 := O choice8_0_stressn16_n16 g12 g21
+G asthman16 := A problog_cv_smokes_cb_0n16 choice39_0_asthman16_n16

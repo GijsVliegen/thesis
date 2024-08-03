@@ -1,0 +1,5 @@
+c BC-S1.2
+T asthman25
+I choice8_0_stressn25_n25
+I choice39_0_asthman25_n25
+G asthman25 := A choice8_0_stressn25_n25 choice39_0_asthman25_n25

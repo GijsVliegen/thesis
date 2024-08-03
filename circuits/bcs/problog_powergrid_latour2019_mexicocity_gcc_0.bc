@@ -1,0 +1,404 @@
+c BC-S1.2
+T g_query_or221
+T g_query_or229
+T g_query_or238
+T g_query_or246
+T g_query_or255
+T g_query_or262
+T g_query_or277
+T g_query_or282
+T g_query_or294
+T g_query_or214
+T g_query_or301
+T g_query_or313
+T g_query_or320
+T g_query_or333
+I choice55_0_power_line'4090'_'26593'_'4090'_'26593'
+I choice35_0_strengthen'13322'_'13394'_'13322'_'13394'
+I choice65_0_power_line'24441'_'27460'_'24441'_'27460'
+I choice35_0_strengthen'16119'_'16567'_'16119'_'16567'
+I choice65_0_power_line'4637'_'24442'_'4637'_'24442'
+I choice35_0_strengthen'4637'_'16631'_'4637'_'16631'
+I choice73_0_power_line'16567'_'16119'_'16567'_'16119'
+I choice65_0_power_line'3259'_'11883'_'3259'_'11883'
+I choice65_0_power_line'24441'_'24442'_'24441'_'24442'
+I choice65_0_power_line'21371'_'3259'_'21371'_'3259'
+I choice65_0_power_line'15259'_'26593'_'15259'_'26593'
+I choice65_0_power_line'26593'_'4090'_'26593'_'4090'
+I g_query_cond277
+I choice65_0_power_line'4637'_'16631'_'4637'_'16631'
+I choice55_0_power_line'3259'_'4087'_'3259'_'4087'
+I g_query_cond333
+I choice44_0_power_line'13394'_'21371'_'13394'_'21371'
+I choice65_0_power_line'13394'_'21371'_'13394'_'21371'
+I choice55_0_power_line'24442'_'24441'_'24442'_'24441'
+I choice44_0_power_line'15259'_'26593'_'15259'_'26593'
+I choice73_0_power_line'11883'_'3259'_'11883'_'3259'
+I g_query_cond229
+I choice55_0_power_line'16567'_'4637'_'16567'_'4637'
+I choice73_0_power_line'16567'_'4637'_'16567'_'4637'
+I choice44_0_power_line'10130'_'15259'_'10130'_'15259'
+I choice44_0_power_line'24442'_'27460'_'24442'_'27460'
+I choice65_0_power_line'10130'_'15259'_'10130'_'15259'
+I choice73_0_power_line'24441'_'13322'_'24441'_'13322'
+I choice35_0_strengthen'13394'_'21371'_'13394'_'21371'
+I choice65_0_power_line'4087'_'21371'_'4087'_'21371'
+I choice73_0_power_line'4090'_'4087'_'4090'_'4087'
+I choice73_0_power_line'21371'_'13394'_'21371'_'13394'
+I choice35_0_strengthen'21371'_'3259'_'21371'_'3259'
+I g_query_cond238
+I g_query_cond320
+I choice35_0_strengthen'24441'_'24442'_'24441'_'24442'
+I choice73_0_power_line'27460'_'24441'_'27460'_'24441'
+I g_query_cond313
+I g_query_cond294
+I choice44_0_power_line'4087'_'3259'_'4087'_'3259'
+I choice65_0_power_line'16563'_'27459'_'16563'_'27459'
+I choice55_0_power_line'26593'_'4090'_'26593'_'4090'
+I choice65_0_power_line'4087'_'4090'_'4087'_'4090'
+I choice65_0_power_line'16119'_'16567'_'16119'_'16567'
+I choice44_0_power_line'4087'_'4090'_'4087'_'4090'
+I choice44_0_power_line'3259'_'11883'_'3259'_'11883'
+I choice55_0_power_line'11883'_'3259'_'11883'_'3259'
+I choice55_0_power_line'16631'_'4637'_'16631'_'4637'
+I g_query_cond255
+I choice55_0_power_line'24441'_'13322'_'24441'_'13322'
+I choice35_0_strengthen'4087'_'4090'_'4087'_'4090'
+I choice55_0_power_line'27459'_'16563'_'27459'_'16563'
+I choice65_0_power_line'4637'_'16567'_'4637'_'16567'
+I choice44_0_power_line'13322'_'13394'_'13322'_'13394'
+I choice55_0_power_line'3259'_'21371'_'3259'_'21371'
+I choice44_0_power_line'4637'_'24442'_'4637'_'24442'
+I choice35_0_strengthen'27459'_'27460'_'27459'_'27460'
+I choice55_0_power_line'24441'_'16564'_'24441'_'16564'
+I choice73_0_power_line'24442'_'4637'_'24442'_'4637'
+I g_query_cond282
+I choice35_0_strengthen'4090'_'11907'_'4090'_'11907'
+I choice44_0_power_line'13322'_'24441'_'13322'_'24441'
+I choice73_0_power_line'3259'_'21371'_'3259'_'21371'
+I g_query_cond246
+I choice55_0_power_line'13394'_'13322'_'13394'_'13322'
+I choice35_0_strengthen'26593'_'4090'_'26593'_'4090'
+I choice35_0_strengthen'4087'_'3259'_'4087'_'3259'
+I choice73_0_power_line'24441'_'16564'_'24441'_'16564'
+I choice44_0_power_line'26593'_'4090'_'26593'_'4090'
+I choice73_0_power_line'27460'_'24442'_'27460'_'24442'
+I g_query_cond221
+I choice73_0_power_line'21371'_'4087'_'21371'_'4087'
+I choice65_0_power_line'4090'_'11907'_'4090'_'11907'
+I choice44_0_power_line'4090'_'11907'_'4090'_'11907'
+I choice35_0_strengthen'16563'_'27459'_'16563'_'27459'
+I choice65_0_power_line'13322'_'13394'_'13322'_'13394'
+I choice55_0_power_line'21371'_'13394'_'21371'_'13394'
+I choice35_0_strengthen'4637'_'24442'_'4637'_'24442'
+I choice44_0_power_line'4087'_'21371'_'4087'_'21371'
+I choice35_0_strengthen'10130'_'15259'_'10130'_'15259'
+I choice65_0_power_line'4087'_'3259'_'4087'_'3259'
+I choice55_0_power_line'26593'_'15259'_'26593'_'15259'
+I g_query_cond214
+I choice35_0_strengthen'24441'_'27460'_'24441'_'27460'
+I choice35_0_strengthen'4087'_'21371'_'4087'_'21371'
+I choice73_0_power_line'4090'_'26593'_'4090'_'26593'
+I choice55_0_power_line'27460'_'24441'_'27460'_'24441'
+I choice73_0_power_line'27459'_'16563'_'27459'_'16563'
+I choice44_0_power_line'4090'_'26593'_'4090'_'26593'
+I choice35_0_strengthen'4090'_'26593'_'4090'_'26593'
+I choice35_0_strengthen'15259'_'26593'_'15259'_'26593'
+I choice65_0_power_line'13322'_'24441'_'13322'_'24441'
+I choice44_0_power_line'24441'_'24442'_'24441'_'24442'
+I choice44_0_power_line'16564'_'24441'_'16564'_'24441'
+I choice65_0_power_line'4090'_'26593'_'4090'_'26593'
+I choice55_0_power_line'4090'_'4087'_'4090'_'4087'
+I choice44_0_power_line'24441'_'27460'_'24441'_'27460'
+I choice35_0_strengthen'3259'_'11883'_'3259'_'11883'
+I choice35_0_strengthen'16564'_'24441'_'16564'_'24441'
+I choice55_0_power_line'21371'_'4087'_'21371'_'4087'
+I choice73_0_power_line'26593'_'15259'_'26593'_'15259'
+I g_query_cond301
+I choice44_0_power_line'21371'_'3259'_'21371'_'3259'
+I choice65_0_power_line'24442'_'27460'_'24442'_'27460'
+I choice73_0_power_line'24442'_'24441'_'24442'_'24441'
+I choice73_0_power_line'13394'_'13322'_'13394'_'13322'
+I choice55_0_power_line'11907'_'4090'_'11907'_'4090'
+I choice73_0_power_line'15259'_'10130'_'15259'_'10130'
+I choice65_0_power_line'16564'_'24441'_'16564'_'24441'
+I choice44_0_power_line'16119'_'16567'_'16119'_'16567'
+I choice73_0_power_line'27460'_'27459'_'27460'_'27459'
+I choice55_0_power_line'15259'_'10130'_'15259'_'10130'
+I choice73_0_power_line'26593'_'4090'_'26593'_'4090'
+I choice35_0_strengthen'13322'_'24441'_'13322'_'24441'
+I choice44_0_power_line'4637'_'16567'_'4637'_'16567'
+I choice55_0_power_line'24442'_'4637'_'24442'_'4637'
+I choice44_0_power_line'27459'_'27460'_'27459'_'27460'
+I choice44_0_power_line'16563'_'27459'_'16563'_'27459'
+I choice55_0_power_line'16567'_'16119'_'16567'_'16119'
+I choice35_0_strengthen'4637'_'16567'_'4637'_'16567'
+I choice73_0_power_line'16631'_'4637'_'16631'_'4637'
+I choice35_0_strengthen'24442'_'27460'_'24442'_'27460'
+I choice73_0_power_line'11907'_'4090'_'11907'_'4090'
+I choice44_0_power_line'4637'_'16631'_'4637'_'16631'
+I choice65_0_power_line'27459'_'27460'_'27459'_'27460'
+I choice73_0_power_line'3259'_'4087'_'3259'_'4087'
+I choice55_0_power_line'27460'_'27459'_'27460'_'27459'
+I g_query_cond262
+I choice55_0_power_line'27460'_'24442'_'27460'_'24442'
+G g3 := A choice35_0_strengthen'4637'_'24442'_'4637'_'24442' choice44_0_power_line'4637'_'24442'_'4637'_'24442'
+G power_line'4637'_'24442' := O g3 choice65_0_power_line'4637'_'24442'_'4637'_'24442'
+G g8 := A choice35_0_strengthen'4637'_'16631'_'4637'_'16631' choice44_0_power_line'4637'_'16631'_'4637'_'16631'
+G power_line'4637'_'16631' := O g8 choice65_0_power_line'4637'_'16631'_'4637'_'16631'
+G g12 := A choice35_0_strengthen'4637'_'16631'_'4637'_'16631' choice55_0_power_line'16631'_'4637'_'16631'_'4637'
+G power_line'16631'_'4637' := O g12 choice73_0_power_line'16631'_'4637'_'16631'_'4637'
+G g15 := A power_line'4637'_'16631' power_line'16631'_'4637'
+G g17 := A choice35_0_strengthen'4637'_'24442'_'4637'_'24442' choice55_0_power_line'24442'_'4637'_'24442'_'4637'
+G power_line'24442'_'4637' := O g17 choice73_0_power_line'24442'_'4637'_'24442'_'4637'
+G g22 := A choice35_0_strengthen'4637'_'16567'_'4637'_'16567' choice44_0_power_line'4637'_'16567'_'4637'_'16567'
+G power_line'4637'_'16567' := O g22 choice65_0_power_line'4637'_'16567'_'4637'_'16567'
+G g27 := A choice35_0_strengthen'16119'_'16567'_'16119'_'16567' choice55_0_power_line'16567'_'16119'_'16567'_'16119'
+G power_line'16567'_'16119' := O g27 choice73_0_power_line'16567'_'16119'_'16567'_'16119'
+G g31 := A choice35_0_strengthen'16119'_'16567'_'16119'_'16567' choice44_0_power_line'16119'_'16567'_'16119'_'16567'
+G power_line'16119'_'16567' := O g31 choice65_0_power_line'16119'_'16567'_'16119'_'16567'
+G g35 := A choice35_0_strengthen'4637'_'16567'_'4637'_'16567' choice55_0_power_line'16567'_'4637'_'16567'_'4637'
+G power_line'16567'_'4637' := O g35 choice73_0_power_line'16567'_'4637'_'16567'_'4637'
+G g38 := A power_line'4637'_'16567' power_line'16567'_'4637'
+G problog_cv_connection_cb_0'4637'_'4637' := O g15 g38
+G g40 := A problog_cv_connection_cb_0'4637'_'4637' power_line'4637'_'24442'
+G g43 := A choice35_0_strengthen'24442'_'27460'_'24442'_'27460' choice55_0_power_line'27460'_'24442'_'27460'_'24442'
+G power_line'27460'_'24442' := O g43 choice73_0_power_line'27460'_'24442'_'27460'_'24442'
+G g48 := A choice35_0_strengthen'24441'_'24442'_'24441'_'24442' choice44_0_power_line'24441'_'24442'_'24441'_'24442'
+G power_line'24441'_'24442' := O g48 choice65_0_power_line'24441'_'24442'_'24441'_'24442'
+G problog_cv_connection_cb_0'4637'_'24442' := O power_line'4637'_'24442' g40
+G g53 := A choice35_0_strengthen'24442'_'27460'_'24442'_'27460' choice44_0_power_line'24442'_'27460'_'24442'_'27460'
+G power_line'24442'_'27460' := O g53 choice65_0_power_line'24442'_'27460'_'24442'_'27460'
+G problog_cv_connection_cb_0'4637'_'27460' := A problog_cv_connection_cb_0'4637'_'24442' power_line'24442'_'27460'
+G g59 := A choice35_0_strengthen'27459'_'27460'_'27459'_'27460' choice55_0_power_line'27460'_'27459'_'27460'_'27459'
+G power_line'27460'_'27459' := O g59 choice73_0_power_line'27460'_'27459'_'27460'_'27459'
+G g64 := A choice35_0_strengthen'16563'_'27459'_'16563'_'27459' choice55_0_power_line'27459'_'16563'_'27459'_'16563'
+G power_line'27459'_'16563' := O g64 choice73_0_power_line'27459'_'16563'_'27459'_'16563'
+G g68 := A choice35_0_strengthen'16563'_'27459'_'16563'_'27459' choice44_0_power_line'16563'_'27459'_'16563'_'27459'
+G power_line'16563'_'27459' := O g68 choice65_0_power_line'16563'_'27459'_'16563'_'27459'
+G g72 := A choice35_0_strengthen'27459'_'27460'_'27459'_'27460' choice44_0_power_line'27459'_'27460'_'27459'_'27460'
+G power_line'27459'_'27460' := O g72 choice65_0_power_line'27459'_'27460'_'27459'_'27460'
+G g77 := A choice35_0_strengthen'24441'_'27460'_'24441'_'27460' choice44_0_power_line'24441'_'27460'_'24441'_'27460'
+G power_line'24441'_'27460' := O g77 choice65_0_power_line'24441'_'27460'_'24441'_'27460'
+G g81 := A choice35_0_strengthen'24441'_'27460'_'24441'_'27460' choice55_0_power_line'27460'_'24441'_'27460'_'24441'
+G power_line'27460'_'24441' := O g81 choice73_0_power_line'27460'_'24441'_'27460'_'24441'
+G g84 := A problog_cv_connection_cb_0'4637'_'27460' power_line'27460'_'24441'
+G g87 := A choice35_0_strengthen'13322'_'24441'_'13322'_'24441' choice44_0_power_line'13322'_'24441'_'13322'_'24441'
+G power_line'13322'_'24441' := O g87 choice65_0_power_line'13322'_'24441'_'13322'_'24441'
+G g92 := A choice35_0_strengthen'16564'_'24441'_'16564'_'24441' choice55_0_power_line'24441'_'16564'_'24441'_'16564'
+G power_line'24441'_'16564' := O g92 choice73_0_power_line'24441'_'16564'_'24441'_'16564'
+G g96 := A choice35_0_strengthen'16564'_'24441'_'16564'_'24441' choice44_0_power_line'16564'_'24441'_'16564'_'24441'
+G power_line'16564'_'24441' := O g96 choice65_0_power_line'16564'_'24441'_'16564'_'24441'
+G g100 := A choice35_0_strengthen'24441'_'24442'_'24441'_'24442' choice55_0_power_line'24442'_'24441'_'24442'_'24441'
+G power_line'24442'_'24441' := O g100 choice73_0_power_line'24442'_'24441'_'24442'_'24441'
+G g103 := A problog_cv_connection_cb_0'4637'_'24442' power_line'24442'_'24441'
+G problog_cv_connection_cb_0'4637'_'24441' := O g84 g103
+G g106 := A choice35_0_strengthen'13322'_'24441'_'13322'_'24441' choice55_0_power_line'24441'_'13322'_'24441'_'13322'
+G power_line'24441'_'13322' := O g106 choice73_0_power_line'24441'_'13322'_'24441'_'13322'
+G problog_cv_connection_cb_0'4637'_'13322' := A problog_cv_connection_cb_0'4637'_'24441' power_line'24441'_'13322'
+G g112 := A choice35_0_strengthen'13322'_'13394'_'13322'_'13394' choice55_0_power_line'13394'_'13322'_'13394'_'13322'
+G power_line'13394'_'13322' := O g112 choice73_0_power_line'13394'_'13322'_'13394'_'13322'
+G g116 := A choice35_0_strengthen'13322'_'13394'_'13322'_'13394' choice44_0_power_line'13322'_'13394'_'13322'_'13394'
+G power_line'13322'_'13394' := O g116 choice65_0_power_line'13322'_'13394'_'13322'_'13394'
+G problog_cv_connection_cb_0'4637'_'13394' := A problog_cv_connection_cb_0'4637'_'13322' power_line'13322'_'13394'
+G g122 := A choice35_0_strengthen'13394'_'21371'_'13394'_'21371' choice55_0_power_line'21371'_'13394'_'21371'_'13394'
+G power_line'21371'_'13394' := O g122 choice73_0_power_line'21371'_'13394'_'21371'_'13394'
+G g126 := A choice35_0_strengthen'13394'_'21371'_'13394'_'21371' choice44_0_power_line'13394'_'21371'_'13394'_'21371'
+G power_line'13394'_'21371' := O g126 choice65_0_power_line'13394'_'21371'_'13394'_'21371'
+G problog_cv_connection_cb_0'4637'_'21371' := A problog_cv_connection_cb_0'4637'_'13394' power_line'13394'_'21371'
+G g132 := A choice35_0_strengthen'21371'_'3259'_'21371'_'3259' choice55_0_power_line'3259'_'21371'_'3259'_'21371'
+G power_line'3259'_'21371' := O g132 choice73_0_power_line'3259'_'21371'_'3259'_'21371'
+G g137 := A choice35_0_strengthen'4087'_'3259'_'4087'_'3259' choice55_0_power_line'3259'_'4087'_'3259'_'4087'
+G power_line'3259'_'4087' := O g137 choice73_0_power_line'3259'_'4087'_'3259'_'4087'
+G g142 := A choice35_0_strengthen'4087'_'4090'_'4087'_'4090' choice44_0_power_line'4087'_'4090'_'4087'_'4090'
+G power_line'4087'_'4090' := O g142 choice65_0_power_line'4087'_'4090'_'4087'_'4090'
+G g147 := A choice35_0_strengthen'4090'_'11907'_'4090'_'11907' choice44_0_power_line'4090'_'11907'_'4090'_'11907'
+G power_line'4090'_'11907' := O g147 choice65_0_power_line'4090'_'11907'_'4090'_'11907'
+G g151 := A choice35_0_strengthen'4090'_'11907'_'4090'_'11907' choice55_0_power_line'11907'_'4090'_'11907'_'4090'
+G power_line'11907'_'4090' := O g151 choice73_0_power_line'11907'_'4090'_'11907'_'4090'
+G g156 := A choice35_0_strengthen'4090'_'26593'_'4090'_'26593' choice44_0_power_line'4090'_'26593'_'4090'_'26593'
+G g159 := A choice35_0_strengthen'26593'_'4090'_'26593'_'4090' choice55_0_power_line'4090'_'26593'_'4090'_'26593'
+G power_line'4090'_'26593' := O g156 g159 choice65_0_power_line'4090'_'26593'_'4090'_'26593' choice73_0_power_line'4090'_'26593'_'4090'_'26593'
+G g165 := A choice35_0_strengthen'15259'_'26593'_'15259'_'26593' choice55_0_power_line'26593'_'15259'_'26593'_'15259'
+G power_line'26593'_'15259' := O g165 choice73_0_power_line'26593'_'15259'_'26593'_'15259'
+G g170 := A choice35_0_strengthen'10130'_'15259'_'10130'_'15259' choice55_0_power_line'15259'_'10130'_'15259'_'10130'
+G power_line'15259'_'10130' := O g170 choice73_0_power_line'15259'_'10130'_'15259'_'10130'
+G g174 := A choice35_0_strengthen'10130'_'15259'_'10130'_'15259' choice44_0_power_line'10130'_'15259'_'10130'_'15259'
+G power_line'10130'_'15259' := O g174 choice65_0_power_line'10130'_'15259'_'10130'_'15259'
+G g178 := A choice35_0_strengthen'15259'_'26593'_'15259'_'26593' choice44_0_power_line'15259'_'26593'_'15259'_'26593'
+G power_line'15259'_'26593' := O g178 choice65_0_power_line'15259'_'26593'_'15259'_'26593'
+G g182 := A choice35_0_strengthen'26593'_'4090'_'26593'_'4090' choice44_0_power_line'26593'_'4090'_'26593'_'4090'
+G g184 := A choice35_0_strengthen'4090'_'26593'_'4090'_'26593' choice55_0_power_line'26593'_'4090'_'26593'_'4090'
+G power_line'26593'_'4090' := O g182 g184 choice65_0_power_line'26593'_'4090'_'26593'_'4090' choice73_0_power_line'26593'_'4090'_'26593'_'4090'
+G g189 := A choice35_0_strengthen'4087'_'4090'_'4087'_'4090' choice55_0_power_line'4090'_'4087'_'4090'_'4087'
+G power_line'4090'_'4087' := O g189 choice73_0_power_line'4090'_'4087'_'4090'_'4087'
+G g194 := A choice35_0_strengthen'4087'_'21371'_'4087'_'21371' choice55_0_power_line'21371'_'4087'_'21371'_'4087'
+G power_line'21371'_'4087' := O g194 choice73_0_power_line'21371'_'4087'_'21371'_'4087'
+G g198 := A choice35_0_strengthen'4087'_'21371'_'4087'_'21371' choice44_0_power_line'4087'_'21371'_'4087'_'21371'
+G power_line'4087'_'21371' := O g198 choice65_0_power_line'4087'_'21371'_'4087'_'21371'
+G g202 := A choice35_0_strengthen'21371'_'3259'_'21371'_'3259' choice44_0_power_line'21371'_'3259'_'21371'_'3259'
+G power_line'21371'_'3259' := O g202 choice65_0_power_line'21371'_'3259'_'21371'_'3259'
+G g205 := A problog_cv_connection_cb_0'4637'_'21371' power_line'21371'_'3259'
+G g208 := A choice35_0_strengthen'3259'_'11883'_'3259'_'11883' choice44_0_power_line'3259'_'11883'_'3259'_'11883'
+G power_line'3259'_'11883' := O g208 choice65_0_power_line'3259'_'11883'_'3259'_'11883'
+G g212 := A choice35_0_strengthen'3259'_'11883'_'3259'_'11883' choice55_0_power_line'11883'_'3259'_'11883'_'3259'
+G connected'11883' := O g212 choice73_0_power_line'11883'_'3259'_'11883'_'3259'
+G problog_cv_connection_cb_1'4637'_'4087' := A problog_cv_connection_cb_0'4637'_'21371' power_line'21371'_'4087'
+G g217 := A choice35_0_strengthen'4087'_'3259'_'4087'_'3259' choice44_0_power_line'4087'_'3259'_'4087'_'3259'
+G power_line'4087'_'3259' := O g217 choice65_0_power_line'4087'_'3259'_'4087'_'3259'
+G g220 := A problog_cv_connection_cb_1'4637'_'4087' power_line'4087'_'3259'
+G connected'4637' := O g205 g220
+G problog_cv_connection_cb_1'4087'_'4087' := A power_line'4087'_'4090' power_line'4090'_'4087'
+G g223 := A power_line'4087'_'21371' power_line'21371'_'4087'
+G problog_cv_connection_cb_0'4087'_'4087' := O problog_cv_connection_cb_1'4087'_'4087' g223
+G g225 := A problog_cv_connection_cb_0'4087'_'4087' power_line'4087'_'3259'
+G g226 := A problog_cv_connection_cb_1'4087'_'4087' power_line'4087'_'21371'
+G problog_cv_connection_cb_1'4087'_'21371' := O power_line'4087'_'21371' g226
+G g228 := A problog_cv_connection_cb_1'4087'_'21371' power_line'21371'_'3259'
+G connected'4087' := O power_line'4087'_'3259' g225 g228
+G g230 := A power_line'4090'_'11907' power_line'11907'_'4090'
+G g231 := A power_line'4090'_'26593' power_line'26593'_'4090'
+G problog_cv_connection_cb_0'4090'_'4090' := O g230 g231
+G g233 := A problog_cv_connection_cb_0'4090'_'4090' power_line'4090'_'4087'
+G problog_cv_connection_cb_0'4090'_'4087' := O power_line'4090'_'4087' g233
+G problog_cv_connection_cb_0'4090'_'21371' := A problog_cv_connection_cb_0'4090'_'4087' power_line'4087'_'21371'
+G g236 := A problog_cv_connection_cb_0'4090'_'21371' power_line'21371'_'3259'
+G g237 := A problog_cv_connection_cb_0'4090'_'4087' power_line'4087'_'3259'
+G connected'4090' := O g236 g237
+G problog_cv_connection_cb_0'13322'_'13322' := A power_line'13322'_'24441' power_line'24441'_'13322'
+G g240 := A problog_cv_connection_cb_0'13322'_'13322' power_line'13322'_'13394'
+G problog_cv_connection_cb_0'13322'_'13394' := O power_line'13322'_'13394' g240
+G problog_cv_connection_cb_0'13322'_'21371' := A problog_cv_connection_cb_0'13322'_'13394' power_line'13394'_'21371'
+G g243 := A problog_cv_connection_cb_0'13322'_'21371' power_line'21371'_'3259'
+G problog_cv_connection_cb_1'13322'_'4087' := A problog_cv_connection_cb_0'13322'_'21371' power_line'21371'_'4087'
+G g245 := A problog_cv_connection_cb_1'13322'_'4087' power_line'4087'_'3259'
+G connected'13322' := O g243 g245
+G problog_cv_connection_cb_0'15259'_'15259' := A power_line'15259'_'10130' power_line'10130'_'15259'
+G g248 := A problog_cv_connection_cb_0'15259'_'15259' power_line'15259'_'26593'
+G problog_cv_connection_cb_0'15259'_'26593' := O power_line'15259'_'26593' g248
+G problog_cv_connection_cb_0'15259'_'4090' := A problog_cv_connection_cb_0'15259'_'26593' power_line'26593'_'4090'
+G problog_cv_connection_cb_0'15259'_'4087' := A problog_cv_connection_cb_0'15259'_'4090' power_line'4090'_'4087'
+G problog_cv_connection_cb_0'15259'_'21371' := A problog_cv_connection_cb_0'15259'_'4087' power_line'4087'_'21371'
+G g253 := A problog_cv_connection_cb_0'15259'_'21371' power_line'21371'_'3259'
+G g254 := A problog_cv_connection_cb_0'15259'_'4087' power_line'4087'_'3259'
+G connected'15259' := O g253 g254
+G problog_cv_connection_cb_0'13394'_'13394' := A power_line'13394'_'13322' power_line'13322'_'13394'
+G g257 := A problog_cv_connection_cb_0'13394'_'13394' power_line'13394'_'21371'
+G problog_cv_connection_cb_0'13394'_'21371' := O power_line'13394'_'21371' g257
+G g259 := A problog_cv_connection_cb_0'13394'_'21371' power_line'21371'_'3259'
+G problog_cv_connection_cb_1'13394'_'4087' := A problog_cv_connection_cb_0'13394'_'21371' power_line'21371'_'4087'
+G g261 := A problog_cv_connection_cb_1'13394'_'4087' power_line'4087'_'3259'
+G connected'13394' := O g259 g261
+G problog_cv_connection_cb_0'16567'_'16567' := A power_line'16567'_'16119' power_line'16119'_'16567'
+G g264 := A problog_cv_connection_cb_0'16567'_'16567' power_line'16567'_'4637'
+G problog_cv_connection_cb_0'16567'_'4637' := O power_line'16567'_'4637' g264
+G problog_cv_connection_cb_0'16567'_'24442' := A problog_cv_connection_cb_0'16567'_'4637' power_line'4637'_'24442'
+G problog_cv_connection_cb_0'16567'_'27460' := A problog_cv_connection_cb_0'16567'_'24442' power_line'24442'_'27460'
+G g268 := A problog_cv_connection_cb_0'16567'_'27460' power_line'27460'_'24441'
+G g269 := A problog_cv_connection_cb_0'16567'_'24442' power_line'24442'_'24441'
+G problog_cv_connection_cb_0'16567'_'24441' := O g268 g269
+G problog_cv_connection_cb_0'16567'_'13322' := A problog_cv_connection_cb_0'16567'_'24441' power_line'24441'_'13322'
+G problog_cv_connection_cb_0'16567'_'13394' := A problog_cv_connection_cb_0'16567'_'13322' power_line'13322'_'13394'
+G problog_cv_connection_cb_0'16567'_'21371' := A problog_cv_connection_cb_0'16567'_'13394' power_line'13394'_'21371'
+G g274 := A problog_cv_connection_cb_0'16567'_'21371' power_line'21371'_'3259'
+G problog_cv_connection_cb_1'16567'_'4087' := A problog_cv_connection_cb_0'16567'_'21371' power_line'21371'_'4087'
+G g276 := A problog_cv_connection_cb_1'16567'_'4087' power_line'4087'_'3259'
+G connected'16567' := O g274 g276
+G problog_cv_connection_cb_0'11907'_'4087' := A power_line'11907'_'4090' power_line'4090'_'4087'
+G problog_cv_connection_cb_0'11907'_'21371' := A problog_cv_connection_cb_0'11907'_'4087' power_line'4087'_'21371'
+G g280 := A problog_cv_connection_cb_0'11907'_'21371' power_line'21371'_'3259'
+G g281 := A problog_cv_connection_cb_0'11907'_'4087' power_line'4087'_'3259'
+G connected'11907' := O g280 g281
+G problog_cv_connection_cb_0'16631'_'24442' := A power_line'16631'_'4637' power_line'4637'_'24442'
+G problog_cv_connection_cb_0'16631'_'27460' := A problog_cv_connection_cb_0'16631'_'24442' power_line'24442'_'27460'
+G g285 := A problog_cv_connection_cb_0'16631'_'27460' power_line'27460'_'24441'
+G g286 := A problog_cv_connection_cb_0'16631'_'24442' power_line'24442'_'24441'
+G problog_cv_connection_cb_0'16631'_'24441' := O g285 g286
+G problog_cv_connection_cb_0'16631'_'13322' := A problog_cv_connection_cb_0'16631'_'24441' power_line'24441'_'13322'
+G problog_cv_connection_cb_0'16631'_'13394' := A problog_cv_connection_cb_0'16631'_'13322' power_line'13322'_'13394'
+G problog_cv_connection_cb_0'16631'_'21371' := A problog_cv_connection_cb_0'16631'_'13394' power_line'13394'_'21371'
+G g291 := A problog_cv_connection_cb_0'16631'_'21371' power_line'21371'_'3259'
+G problog_cv_connection_cb_1'16631'_'4087' := A problog_cv_connection_cb_0'16631'_'21371' power_line'21371'_'4087'
+G g293 := A problog_cv_connection_cb_1'16631'_'4087' power_line'4087'_'3259'
+G connected'16631' := O g291 g293
+G problog_cv_connection_cb_0'16564'_'13322' := A power_line'16564'_'24441' power_line'24441'_'13322'
+G problog_cv_connection_cb_0'16564'_'13394' := A problog_cv_connection_cb_0'16564'_'13322' power_line'13322'_'13394'
+G problog_cv_connection_cb_0'16564'_'21371' := A problog_cv_connection_cb_0'16564'_'13394' power_line'13394'_'21371'
+G g298 := A problog_cv_connection_cb_0'16564'_'21371' power_line'21371'_'3259'
+G problog_cv_connection_cb_1'16564'_'4087' := A problog_cv_connection_cb_0'16564'_'21371' power_line'21371'_'4087'
+G g300 := A problog_cv_connection_cb_1'16564'_'4087' power_line'4087'_'3259'
+G connected'16564' := O g298 g300
+G problog_cv_connection_cb_0'16563'_'27460' := A power_line'16563'_'27459' power_line'27459'_'27460'
+G problog_cv_connection_cb_0'16563'_'24442' := A problog_cv_connection_cb_0'16563'_'27460' power_line'27460'_'24442'
+G g304 := A problog_cv_connection_cb_0'16563'_'24442' power_line'24442'_'24441'
+G g305 := A problog_cv_connection_cb_0'16563'_'27460' power_line'27460'_'24441'
+G problog_cv_connection_cb_0'16563'_'24441' := O g304 g305
+G problog_cv_connection_cb_0'16563'_'13322' := A problog_cv_connection_cb_0'16563'_'24441' power_line'24441'_'13322'
+G problog_cv_connection_cb_0'16563'_'13394' := A problog_cv_connection_cb_0'16563'_'13322' power_line'13322'_'13394'
+G problog_cv_connection_cb_0'16563'_'21371' := A problog_cv_connection_cb_0'16563'_'13394' power_line'13394'_'21371'
+G g310 := A problog_cv_connection_cb_0'16563'_'21371' power_line'21371'_'3259'
+G problog_cv_connection_cb_1'16563'_'4087' := A problog_cv_connection_cb_0'16563'_'21371' power_line'21371'_'4087'
+G g312 := A problog_cv_connection_cb_1'16563'_'4087' power_line'4087'_'3259'
+G connected'16563' := O g310 g312
+G problog_cv_connection_cb_0'10130'_'26593' := A power_line'10130'_'15259' power_line'15259'_'26593'
+G problog_cv_connection_cb_0'10130'_'4090' := A problog_cv_connection_cb_0'10130'_'26593' power_line'26593'_'4090'
+G problog_cv_connection_cb_0'10130'_'4087' := A problog_cv_connection_cb_0'10130'_'4090' power_line'4090'_'4087'
+G problog_cv_connection_cb_0'10130'_'21371' := A problog_cv_connection_cb_0'10130'_'4087' power_line'4087'_'21371'
+G g318 := A problog_cv_connection_cb_0'10130'_'21371' power_line'21371'_'3259'
+G g319 := A problog_cv_connection_cb_0'10130'_'4087' power_line'4087'_'3259'
+G connected'10130' := O g318 g319
+G problog_cv_connection_cb_0'16119'_'4637' := A power_line'16119'_'16567' power_line'16567'_'4637'
+G problog_cv_connection_cb_0'16119'_'24442' := A problog_cv_connection_cb_0'16119'_'4637' power_line'4637'_'24442'
+G problog_cv_connection_cb_0'16119'_'27460' := A problog_cv_connection_cb_0'16119'_'24442' power_line'24442'_'27460'
+G g324 := A problog_cv_connection_cb_0'16119'_'27460' power_line'27460'_'24441'
+G g325 := A problog_cv_connection_cb_0'16119'_'24442' power_line'24442'_'24441'
+G problog_cv_connection_cb_0'16119'_'24441' := O g324 g325
+G problog_cv_connection_cb_0'16119'_'13322' := A problog_cv_connection_cb_0'16119'_'24441' power_line'24441'_'13322'
+G problog_cv_connection_cb_0'16119'_'13394' := A problog_cv_connection_cb_0'16119'_'13322' power_line'13322'_'13394'
+G problog_cv_connection_cb_0'16119'_'21371' := A problog_cv_connection_cb_0'16119'_'13394' power_line'13394'_'21371'
+G g330 := A problog_cv_connection_cb_0'16119'_'21371' power_line'21371'_'3259'
+G problog_cv_connection_cb_1'16119'_'4087' := A problog_cv_connection_cb_0'16119'_'21371' power_line'21371'_'4087'
+G g332 := A problog_cv_connection_cb_1'16119'_'4087' power_line'4087'_'3259'
+G connected'16119' := O g330 g332
+G g_query_and1221 := A connected'4637' g_query_cond221
+G g_query_and2221 := A -connected'4637' -g_query_cond221
+G g_query_or221 := O g_query_and1221 g_query_and2221
+G g_query_and1229 := A connected'4087' g_query_cond229
+G g_query_and2229 := A -connected'4087' -g_query_cond229
+G g_query_or229 := O g_query_and1229 g_query_and2229
+G g_query_and1238 := A connected'4090' g_query_cond238
+G g_query_and2238 := A -connected'4090' -g_query_cond238
+G g_query_or238 := O g_query_and1238 g_query_and2238
+G g_query_and1246 := A connected'13322' g_query_cond246
+G g_query_and2246 := A -connected'13322' -g_query_cond246
+G g_query_or246 := O g_query_and1246 g_query_and2246
+G g_query_and1255 := A connected'15259' g_query_cond255
+G g_query_and2255 := A -connected'15259' -g_query_cond255
+G g_query_or255 := O g_query_and1255 g_query_and2255
+G g_query_and1262 := A connected'13394' g_query_cond262
+G g_query_and2262 := A -connected'13394' -g_query_cond262
+G g_query_or262 := O g_query_and1262 g_query_and2262
+G g_query_and1277 := A connected'16567' g_query_cond277
+G g_query_and2277 := A -connected'16567' -g_query_cond277
+G g_query_or277 := O g_query_and1277 g_query_and2277
+G g_query_and1282 := A connected'11907' g_query_cond282
+G g_query_and2282 := A -connected'11907' -g_query_cond282
+G g_query_or282 := O g_query_and1282 g_query_and2282
+G g_query_and1294 := A connected'16631' g_query_cond294
+G g_query_and2294 := A -connected'16631' -g_query_cond294
+G g_query_or294 := O g_query_and1294 g_query_and2294
+G g_query_and1214 := A connected'11883' g_query_cond214
+G g_query_and2214 := A -connected'11883' -g_query_cond214
+G g_query_or214 := O g_query_and1214 g_query_and2214
+G g_query_and1301 := A connected'16564' g_query_cond301
+G g_query_and2301 := A -connected'16564' -g_query_cond301
+G g_query_or301 := O g_query_and1301 g_query_and2301
+G g_query_and1313 := A connected'16563' g_query_cond313
+G g_query_and2313 := A -connected'16563' -g_query_cond313
+G g_query_or313 := O g_query_and1313 g_query_and2313
+G g_query_and1320 := A connected'10130' g_query_cond320
+G g_query_and2320 := A -connected'10130' -g_query_cond320
+G g_query_or320 := O g_query_and1320 g_query_and2320
+G g_query_and1333 := A connected'16119' g_query_cond333
+G g_query_and2333 := A -connected'16119' -g_query_cond333
+G g_query_or333 := O g_query_and1333 g_query_and2333

@@ -1,0 +1,130 @@
+c BC-S1.2
+T asthman14
+I choice8_0_stressn8_n8
+I choice18_0_influencen1_n3_n1_n3
+I choice8_0_stressn11_n11
+I choice8_0_stressn7_n7
+I choice18_0_influencen2_n9_n2_n9
+I choice8_0_stressn5_n5
+I choice18_0_influencen3_n4_n3_n4
+I choice8_0_stressn9_n9
+I choice18_0_influencen1_n7_n1_n7
+I choice39_0_asthman14_n14
+I choice18_0_influencen0_n9_n0_n9
+I choice18_0_influencen4_n2_n4_n2
+I choice8_0_stressn1_n1
+I choice18_0_influencen4_n11_n4_n11
+I choice18_0_influencen0_n4_n0_n4
+I choice8_0_stressn2_n2
+I choice18_0_influencen5_n3_n5_n3
+I choice18_0_influencen4_n9_n4_n9
+I choice18_0_influencen0_n3_n0_n3
+I choice18_0_influencen8_n14_n8_n14
+I choice18_0_influencen5_n7_n5_n7
+I choice18_0_influencen2_n11_n2_n11
+I choice8_0_stressn0_n0
+I choice18_0_influencen0_n2_n0_n2
+I choice18_0_influencen3_n8_n3_n8
+I choice18_0_influencen4_n1_n4_n1
+I choice18_0_influencen2_n1_n2_n1
+I choice18_0_influencen11_n9_n11_n9
+I choice18_0_influencen1_n8_n1_n8
+I choice8_0_stressn14_n14
+I choice18_0_influencen1_n5_n1_n5
+I choice8_0_stressn3_n3
+I choice18_0_influencen9_n14_n9_n14
+I choice18_0_influencen7_n4_n7_n4
+I choice8_0_stressn4_n4
+I choice18_0_influencen8_n7_n8_n7
+I choice18_0_influencen4_n5_n4_n5
+I choice18_0_influencen2_n3_n2_n3
+G g10 := A choice18_0_influencen0_n2_n0_n2 choice8_0_stressn0_n0
+G g14 := A choice18_0_influencen0_n4_n0_n4 choice8_0_stressn0_n0
+G g18 := A choice18_0_influencen0_n3_n0_n3 choice8_0_stressn0_n0
+G g25 := A choice18_0_influencen5_n3_n5_n3 choice8_0_stressn5_n5
+G problog_cv_smokes_cb_0n3 := O choice8_0_stressn3_n3 g18 g25
+G g27 := A choice18_0_influencen3_n4_n3_n4 problog_cv_smokes_cb_0n3
+G g32 := A choice18_0_influencen5_n7_n5_n7 choice8_0_stressn5_n5
+G problog_cv_smokes_cb_0n7 := O choice8_0_stressn7_n7 g32
+G g35 := A choice18_0_influencen7_n4_n7_n4 problog_cv_smokes_cb_0n7
+G problog_cv_smokes_cb_0n4 := O choice8_0_stressn4_n4 g14 g27 g35
+G g37 := A choice18_0_influencen4_n2_n4_n2 problog_cv_smokes_cb_0n4
+G problog_cv_smokes_cb_0n2 := O choice8_0_stressn2_n2 g10 g37
+G g39 := A choice18_0_influencen2_n1_n2_n1 problog_cv_smokes_cb_0n2
+G problog_cv_smokes_cb_1n2 := O choice8_0_stressn2_n2 g10
+G g42 := A choice18_0_influencen2_n3_n2_n3 problog_cv_smokes_cb_1n2
+G problog_cv_smokes_cb_1n3 := O choice8_0_stressn3_n3 g18 g42 g25
+G g44 := A choice18_0_influencen3_n4_n3_n4 problog_cv_smokes_cb_1n3
+G problog_cv_smokes_cb_1n4 := O choice8_0_stressn4_n4 g14 g44 g35
+G g46 := A choice18_0_influencen4_n1_n4_n1 problog_cv_smokes_cb_1n4
+G problog_cv_smokes_cb_0n1 := O choice8_0_stressn1_n1 g39 g46
+G g48 := A choice18_0_influencen1_n8_n1_n8 problog_cv_smokes_cb_0n1
+G problog_cv_smokes_cb_2n4 := O choice8_0_stressn4_n4 g14 g35
+G g51 := A choice18_0_influencen4_n2_n4_n2 problog_cv_smokes_cb_2n4
+G problog_cv_smokes_cb_2n2 := O choice8_0_stressn2_n2 g10 g51
+G g53 := A choice18_0_influencen2_n1_n2_n1 problog_cv_smokes_cb_2n2
+G g54 := A choice18_0_influencen4_n1_n4_n1 problog_cv_smokes_cb_2n4
+G problog_cv_smokes_cb_1n1 := O choice8_0_stressn1_n1 g53 g54
+G g56 := A choice18_0_influencen1_n3_n1_n3 problog_cv_smokes_cb_1n1
+G g57 := A choice18_0_influencen1_n7_n1_n7 choice8_0_stressn1_n1
+G g58 := A choice18_0_influencen1_n5_n1_n5 choice8_0_stressn1_n1
+G problog_cv_smokes_cb_1n5 := O choice8_0_stressn5_n5 g58
+G g60 := A choice18_0_influencen5_n7_n5_n7 problog_cv_smokes_cb_1n5
+G problog_cv_smokes_cb_1n7 := O choice8_0_stressn7_n7 g57 g60
+G g62 := A choice18_0_influencen7_n4_n7_n4 problog_cv_smokes_cb_1n7
+G problog_cv_smokes_cb_3n4 := O choice8_0_stressn4_n4 g14 g62
+G g64 := A choice18_0_influencen4_n2_n4_n2 problog_cv_smokes_cb_3n4
+G problog_cv_smokes_cb_3n2 := O choice8_0_stressn2_n2 g10 g64
+G g66 := A choice18_0_influencen2_n3_n2_n3 problog_cv_smokes_cb_3n2
+G g67 := A choice18_0_influencen1_n5_n1_n5 problog_cv_smokes_cb_1n1
+G g68 := A choice18_0_influencen2_n1_n2_n1 problog_cv_smokes_cb_1n2
+G problog_cv_smokes_cb_4n1 := O choice8_0_stressn1_n1 g68
+G g70 := A choice18_0_influencen1_n7_n1_n7 problog_cv_smokes_cb_4n1
+G problog_cv_smokes_cb_2n7 := O choice8_0_stressn7_n7 g70
+G g72 := A choice18_0_influencen7_n4_n7_n4 problog_cv_smokes_cb_2n7
+G problog_cv_smokes_cb_4n4 := O choice8_0_stressn4_n4 g14 g72
+G g74 := A choice18_0_influencen4_n5_n4_n5 problog_cv_smokes_cb_4n4
+G problog_cv_smokes_cb_2n5 := O choice8_0_stressn5_n5 g67 g74
+G g76 := A choice18_0_influencen5_n3_n5_n3 problog_cv_smokes_cb_2n5
+G problog_cv_smokes_cb_2n3 := O choice8_0_stressn3_n3 g18 g56 g66 g76
+G g78 := A choice18_0_influencen3_n8_n3_n8 problog_cv_smokes_cb_2n3
+G problog_cv_smokes_cb_0n8 := O choice8_0_stressn8_n8 g48 g78
+G g80 := A choice18_0_influencen8_n14_n8_n14 problog_cv_smokes_cb_0n8
+G g84 := A choice18_0_influencen0_n9_n0_n9 choice8_0_stressn0_n0
+G g86 := A choice18_0_influencen1_n3_n1_n3 choice8_0_stressn1_n1
+G g87 := A choice18_0_influencen5_n3_n5_n3 problog_cv_smokes_cb_1n5
+G problog_cv_smokes_cb_3n3 := O choice8_0_stressn3_n3 g18 g86 g87
+G g89 := A choice18_0_influencen3_n4_n3_n4 problog_cv_smokes_cb_3n3
+G g90 := A choice18_0_influencen1_n8_n1_n8 choice8_0_stressn1_n1
+G g91 := A choice18_0_influencen3_n8_n3_n8 problog_cv_smokes_cb_3n3
+G problog_cv_smokes_cb_1n8 := O choice8_0_stressn8_n8 g90 g91
+G g93 := A choice18_0_influencen8_n7_n8_n7 problog_cv_smokes_cb_1n8
+G problog_cv_smokes_cb_3n7 := O choice8_0_stressn7_n7 g57 g60 g93
+G g95 := A choice18_0_influencen7_n4_n7_n4 problog_cv_smokes_cb_3n7
+G problog_cv_smokes_cb_5n4 := O choice8_0_stressn4_n4 g14 g89 g95
+G g97 := A choice18_0_influencen4_n2_n4_n2 problog_cv_smokes_cb_5n4
+G problog_cv_smokes_cb_5n2 := O choice8_0_stressn2_n2 g10 g97
+G g99 := A choice18_0_influencen2_n9_n2_n9 problog_cv_smokes_cb_5n2
+G g101 := A choice18_0_influencen1_n3_n1_n3 problog_cv_smokes_cb_4n1
+G g102 := A choice18_0_influencen1_n5_n1_n5 problog_cv_smokes_cb_4n1
+G problog_cv_smokes_cb_3n5 := O choice8_0_stressn5_n5 g102
+G g104 := A choice18_0_influencen5_n3_n5_n3 problog_cv_smokes_cb_3n5
+G problog_cv_smokes_cb_4n3 := O choice8_0_stressn3_n3 g18 g101 g42 g104
+G g106 := A choice18_0_influencen3_n4_n3_n4 problog_cv_smokes_cb_4n3
+G g107 := A choice18_0_influencen5_n7_n5_n7 problog_cv_smokes_cb_3n5
+G g108 := A choice18_0_influencen1_n8_n1_n8 problog_cv_smokes_cb_4n1
+G g109 := A choice18_0_influencen3_n8_n3_n8 problog_cv_smokes_cb_4n3
+G problog_cv_smokes_cb_2n8 := O choice8_0_stressn8_n8 g108 g109
+G g111 := A choice18_0_influencen8_n7_n8_n7 problog_cv_smokes_cb_2n8
+G problog_cv_smokes_cb_4n7 := O choice8_0_stressn7_n7 g70 g107 g111
+G g113 := A choice18_0_influencen7_n4_n7_n4 problog_cv_smokes_cb_4n7
+G problog_cv_smokes_cb_6n4 := O choice8_0_stressn4_n4 g14 g106 g113
+G g115 := A choice18_0_influencen4_n9_n4_n9 problog_cv_smokes_cb_6n4
+G g119 := A choice18_0_influencen2_n11_n2_n11 problog_cv_smokes_cb_5n2
+G g121 := A choice18_0_influencen4_n11_n4_n11 problog_cv_smokes_cb_6n4
+G problog_cv_smokes_cb_0n11 := O choice8_0_stressn11_n11 g119 g121
+G g123 := A choice18_0_influencen11_n9_n11_n9 problog_cv_smokes_cb_0n11
+G problog_cv_smokes_cb_0n9 := O choice8_0_stressn9_n9 g84 g99 g115 g123
+G g125 := A choice18_0_influencen9_n14_n9_n14 problog_cv_smokes_cb_0n9
+G problog_cv_smokes_cb_0n14 := O choice8_0_stressn14_n14 g80 g125
+G asthman14 := A problog_cv_smokes_cb_0n14 choice39_0_asthman14_n14

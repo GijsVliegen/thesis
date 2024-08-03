@@ -1,0 +1,504 @@
+c BC-S1.2
+T head_at_least_once100
+I choice19_0_biased_head45_45
+I choice19_0_biased_head51_51
+I choice10_0_unbiased_head4_4
+I choice19_0_biased_head80_80
+I choice10_0_unbiased_head84_84
+I choice19_0_biased_head94_94
+I choice10_0_unbiased_head81_81
+I choice10_0_unbiased_head43_43
+I choice19_0_biased_head11_11
+I choice19_0_biased_head19_19
+I choice10_0_unbiased_head40_40
+I choice19_0_biased_head95_95
+I choice19_0_biased_head33_33
+I choice19_0_biased_head36_36
+I choice10_0_unbiased_head1_1
+I choice10_0_unbiased_head59_59
+I choice19_0_biased_head2_2
+I choice10_0_unbiased_head90_90
+I choice19_0_biased_head99_99
+I choice19_0_biased_head97_97
+I choice19_0_biased_head53_53
+I choice10_0_unbiased_head99_99
+I choice19_0_biased_head66_66
+I choice10_0_unbiased_head12_12
+I choice10_0_unbiased_head94_94
+I choice10_0_unbiased_head46_46
+I choice10_0_unbiased_head86_86
+I choice10_0_unbiased_head39_39
+I choice10_0_unbiased_head97_97
+I choice10_0_unbiased_head35_35
+I choice19_0_biased_head29_29
+I choice19_0_biased_head41_41
+I choice19_0_biased_head65_65
+I choice19_0_biased_head57_57
+I choice19_0_biased_head87_87
+I choice10_0_unbiased_head53_53
+I choice10_0_unbiased_head55_55
+I choice19_0_biased_head9_9
+I choice19_0_biased_head55_55
+I choice19_0_biased_head13_13
+I choice19_0_biased_head38_38
+I choice19_0_biased_head93_93
+I choice19_0_biased_head20_20
+I choice10_0_unbiased_head22_22
+I choice19_0_biased_head7_7
+I choice10_0_unbiased_head61_61
+I choice10_0_unbiased_head96_96
+I choice10_0_unbiased_head10_10
+I choice19_0_biased_head31_31
+I choice10_0_unbiased_head66_66
+I choice19_0_biased_head12_12
+I choice10_0_unbiased_head11_11
+I choice19_0_biased_head84_84
+I choice10_0_unbiased_head83_83
+I choice10_0_unbiased_head60_60
+I choice19_0_biased_head10_10
+I choice19_0_biased_head70_70
+I choice10_0_unbiased_head14_14
+I choice10_0_unbiased_head49_49
+I choice10_0_unbiased_head79_79
+I choice10_0_unbiased_head2_2
+I choice10_0_unbiased_head80_80
+I choice19_0_biased_head90_90
+I choice10_0_unbiased_head89_89
+I choice10_0_unbiased_head67_67
+I coin_is_biased
+I choice10_0_unbiased_head65_65
+I choice19_0_biased_head42_42
+I choice10_0_unbiased_head82_82
+I choice10_0_unbiased_head29_29
+I choice19_0_biased_head72_72
+I choice10_0_unbiased_head51_51
+I choice19_0_biased_head91_91
+I choice10_0_unbiased_head45_45
+I choice10_0_unbiased_head62_62
+I choice10_0_unbiased_head73_73
+I choice10_0_unbiased_head95_95
+I choice10_0_unbiased_head74_74
+I choice19_0_biased_head24_24
+I choice19_0_biased_head37_37
+I choice10_0_unbiased_head63_63
+I choice10_0_unbiased_head54_54
+I choice19_0_biased_head85_85
+I choice10_0_unbiased_head98_98
+I choice10_0_unbiased_head8_8
+I choice10_0_unbiased_head58_58
+I choice19_0_biased_head82_82
+I choice10_0_unbiased_head78_78
+I choice10_0_unbiased_head6_6
+I choice10_0_unbiased_head13_13
+I choice19_0_biased_head79_79
+I choice10_0_unbiased_head30_30
+I choice10_0_unbiased_head17_17
+I choice19_0_biased_head34_34
+I choice10_0_unbiased_head57_57
+I choice10_0_unbiased_head68_68
+I choice10_0_unbiased_head85_85
+I choice19_0_biased_head25_25
+I choice10_0_unbiased_head27_27
+I choice19_0_biased_head17_17
+I choice10_0_unbiased_head70_70
+I choice19_0_biased_head6_6
+I choice19_0_biased_head50_50
+I choice10_0_unbiased_head7_7
+I choice19_0_biased_head98_98
+I choice19_0_biased_head73_73
+I choice19_0_biased_head23_23
+I choice19_0_biased_head89_89
+I choice10_0_unbiased_head92_92
+I choice10_0_unbiased_head9_9
+I choice19_0_biased_head86_86
+I choice10_0_unbiased_head18_18
+I choice19_0_biased_head39_39
+I choice19_0_biased_head21_21
+I choice10_0_unbiased_head21_21
+I choice19_0_biased_head77_77
+I choice19_0_biased_head27_27
+I choice10_0_unbiased_head71_71
+I choice10_0_unbiased_head33_33
+I choice10_0_unbiased_head19_19
+I choice19_0_biased_head43_43
+I choice19_0_biased_head3_3
+I choice10_0_unbiased_head23_23
+I choice19_0_biased_head81_81
+I choice19_0_biased_head28_28
+I choice10_0_unbiased_head41_41
+I choice10_0_unbiased_head32_32
+I choice19_0_biased_head8_8
+I choice19_0_biased_head15_15
+I choice10_0_unbiased_head75_75
+I choice10_0_unbiased_head69_69
+I choice19_0_biased_head32_32
+I choice19_0_biased_head35_35
+I choice10_0_unbiased_head15_15
+I choice19_0_biased_head18_18
+I choice10_0_unbiased_head38_38
+I choice19_0_biased_head49_49
+I choice10_0_unbiased_head3_3
+I choice19_0_biased_head62_62
+I choice19_0_biased_head67_67
+I choice19_0_biased_head75_75
+I choice10_0_unbiased_head88_88
+I choice19_0_biased_head71_71
+I choice19_0_biased_head100_100
+I choice19_0_biased_head47_47
+I choice10_0_unbiased_head25_25
+I choice10_0_unbiased_head5_5
+I choice19_0_biased_head48_48
+I choice10_0_unbiased_head52_52
+I choice19_0_biased_head83_83
+I choice10_0_unbiased_head64_64
+I choice10_0_unbiased_head31_31
+I choice10_0_unbiased_head91_91
+I choice19_0_biased_head59_59
+I choice10_0_unbiased_head48_48
+I choice19_0_biased_head4_4
+I choice10_0_unbiased_head28_28
+I choice19_0_biased_head5_5
+I choice19_0_biased_head54_54
+I choice19_0_biased_head76_76
+I choice10_0_unbiased_head26_26
+I choice19_0_biased_head40_40
+I choice19_0_biased_head61_61
+I choice10_0_unbiased_head56_56
+I choice19_0_biased_head64_64
+I choice19_0_biased_head96_96
+I choice19_0_biased_head22_22
+I choice10_0_unbiased_head47_47
+I choice10_0_unbiased_head36_36
+I choice19_0_biased_head1_1
+I choice10_0_unbiased_head87_87
+I choice10_0_unbiased_head93_93
+I choice19_0_biased_head14_14
+I choice19_0_biased_head30_30
+I choice10_0_unbiased_head24_24
+I choice19_0_biased_head78_78
+I choice19_0_biased_head74_74
+I choice10_0_unbiased_head42_42
+I choice10_0_unbiased_head50_50
+I choice19_0_biased_head58_58
+I choice10_0_unbiased_head100_100
+I choice10_0_unbiased_head76_76
+I choice19_0_biased_head44_44
+I choice19_0_biased_head56_56
+I choice19_0_biased_head52_52
+I choice10_0_unbiased_head77_77
+I choice19_0_biased_head92_92
+I choice19_0_biased_head88_88
+I choice10_0_unbiased_head16_16
+I choice10_0_unbiased_head72_72
+I choice19_0_biased_head63_63
+I choice10_0_unbiased_head20_20
+I choice19_0_biased_head68_68
+I choice19_0_biased_head60_60
+I choice19_0_biased_head69_69
+I choice19_0_biased_head46_46
+I choice10_0_unbiased_head37_37
+I choice19_0_biased_head26_26
+I choice10_0_unbiased_head44_44
+I choice10_0_unbiased_head34_34
+I choice19_0_biased_head16_16
+G g3 := A coin_is_biased choice19_0_biased_head1_1
+G g5 := A -coin_is_biased choice10_0_unbiased_head1_1
+G head1 := O g3 g5
+G g8 := A coin_is_biased choice19_0_biased_head2_2
+G g10 := A -coin_is_biased choice10_0_unbiased_head2_2
+G head2 := O g8 g10
+G g13 := A coin_is_biased choice19_0_biased_head3_3
+G g15 := A -coin_is_biased choice10_0_unbiased_head3_3
+G head3 := O g13 g15
+G g18 := A coin_is_biased choice19_0_biased_head4_4
+G g20 := A -coin_is_biased choice10_0_unbiased_head4_4
+G head4 := O g18 g20
+G g23 := A coin_is_biased choice19_0_biased_head5_5
+G g25 := A -coin_is_biased choice10_0_unbiased_head5_5
+G head5 := O g23 g25
+G g28 := A coin_is_biased choice19_0_biased_head6_6
+G g30 := A -coin_is_biased choice10_0_unbiased_head6_6
+G head6 := O g28 g30
+G g33 := A coin_is_biased choice19_0_biased_head7_7
+G g35 := A -coin_is_biased choice10_0_unbiased_head7_7
+G head7 := O g33 g35
+G g38 := A coin_is_biased choice19_0_biased_head8_8
+G g40 := A -coin_is_biased choice10_0_unbiased_head8_8
+G head8 := O g38 g40
+G g43 := A coin_is_biased choice19_0_biased_head9_9
+G g45 := A -coin_is_biased choice10_0_unbiased_head9_9
+G head9 := O g43 g45
+G g48 := A coin_is_biased choice19_0_biased_head10_10
+G g50 := A -coin_is_biased choice10_0_unbiased_head10_10
+G head10 := O g48 g50
+G g53 := A coin_is_biased choice19_0_biased_head11_11
+G g55 := A -coin_is_biased choice10_0_unbiased_head11_11
+G head11 := O g53 g55
+G g58 := A coin_is_biased choice19_0_biased_head12_12
+G g60 := A -coin_is_biased choice10_0_unbiased_head12_12
+G head12 := O g58 g60
+G g63 := A coin_is_biased choice19_0_biased_head13_13
+G g65 := A -coin_is_biased choice10_0_unbiased_head13_13
+G head13 := O g63 g65
+G g68 := A coin_is_biased choice19_0_biased_head14_14
+G g70 := A -coin_is_biased choice10_0_unbiased_head14_14
+G head14 := O g68 g70
+G g73 := A coin_is_biased choice19_0_biased_head15_15
+G g75 := A -coin_is_biased choice10_0_unbiased_head15_15
+G head15 := O g73 g75
+G g78 := A coin_is_biased choice19_0_biased_head16_16
+G g80 := A -coin_is_biased choice10_0_unbiased_head16_16
+G head16 := O g78 g80
+G g83 := A coin_is_biased choice19_0_biased_head17_17
+G g85 := A -coin_is_biased choice10_0_unbiased_head17_17
+G head17 := O g83 g85
+G g88 := A coin_is_biased choice19_0_biased_head18_18
+G g90 := A -coin_is_biased choice10_0_unbiased_head18_18
+G head18 := O g88 g90
+G g93 := A coin_is_biased choice19_0_biased_head19_19
+G g95 := A -coin_is_biased choice10_0_unbiased_head19_19
+G head19 := O g93 g95
+G g98 := A coin_is_biased choice19_0_biased_head20_20
+G g100 := A -coin_is_biased choice10_0_unbiased_head20_20
+G head20 := O g98 g100
+G g103 := A coin_is_biased choice19_0_biased_head21_21
+G g105 := A -coin_is_biased choice10_0_unbiased_head21_21
+G head21 := O g103 g105
+G g108 := A coin_is_biased choice19_0_biased_head22_22
+G g110 := A -coin_is_biased choice10_0_unbiased_head22_22
+G head22 := O g108 g110
+G g113 := A coin_is_biased choice19_0_biased_head23_23
+G g115 := A -coin_is_biased choice10_0_unbiased_head23_23
+G head23 := O g113 g115
+G g118 := A coin_is_biased choice19_0_biased_head24_24
+G g120 := A -coin_is_biased choice10_0_unbiased_head24_24
+G head24 := O g118 g120
+G g123 := A coin_is_biased choice19_0_biased_head25_25
+G g125 := A -coin_is_biased choice10_0_unbiased_head25_25
+G head25 := O g123 g125
+G g128 := A coin_is_biased choice19_0_biased_head26_26
+G g130 := A -coin_is_biased choice10_0_unbiased_head26_26
+G head26 := O g128 g130
+G g133 := A coin_is_biased choice19_0_biased_head27_27
+G g135 := A -coin_is_biased choice10_0_unbiased_head27_27
+G head27 := O g133 g135
+G g138 := A coin_is_biased choice19_0_biased_head28_28
+G g140 := A -coin_is_biased choice10_0_unbiased_head28_28
+G head28 := O g138 g140
+G g143 := A coin_is_biased choice19_0_biased_head29_29
+G g145 := A -coin_is_biased choice10_0_unbiased_head29_29
+G head29 := O g143 g145
+G g148 := A coin_is_biased choice19_0_biased_head30_30
+G g150 := A -coin_is_biased choice10_0_unbiased_head30_30
+G head30 := O g148 g150
+G g153 := A coin_is_biased choice19_0_biased_head31_31
+G g155 := A -coin_is_biased choice10_0_unbiased_head31_31
+G head31 := O g153 g155
+G g158 := A coin_is_biased choice19_0_biased_head32_32
+G g160 := A -coin_is_biased choice10_0_unbiased_head32_32
+G head32 := O g158 g160
+G g163 := A coin_is_biased choice19_0_biased_head33_33
+G g165 := A -coin_is_biased choice10_0_unbiased_head33_33
+G head33 := O g163 g165
+G g168 := A coin_is_biased choice19_0_biased_head34_34
+G g170 := A -coin_is_biased choice10_0_unbiased_head34_34
+G head34 := O g168 g170
+G g173 := A coin_is_biased choice19_0_biased_head35_35
+G g175 := A -coin_is_biased choice10_0_unbiased_head35_35
+G head35 := O g173 g175
+G g178 := A coin_is_biased choice19_0_biased_head36_36
+G g180 := A -coin_is_biased choice10_0_unbiased_head36_36
+G head36 := O g178 g180
+G g183 := A coin_is_biased choice19_0_biased_head37_37
+G g185 := A -coin_is_biased choice10_0_unbiased_head37_37
+G head37 := O g183 g185
+G g188 := A coin_is_biased choice19_0_biased_head38_38
+G g190 := A -coin_is_biased choice10_0_unbiased_head38_38
+G head38 := O g188 g190
+G g193 := A coin_is_biased choice19_0_biased_head39_39
+G g195 := A -coin_is_biased choice10_0_unbiased_head39_39
+G head39 := O g193 g195
+G g198 := A coin_is_biased choice19_0_biased_head40_40
+G g200 := A -coin_is_biased choice10_0_unbiased_head40_40
+G head40 := O g198 g200
+G g203 := A coin_is_biased choice19_0_biased_head41_41
+G g205 := A -coin_is_biased choice10_0_unbiased_head41_41
+G head41 := O g203 g205
+G g208 := A coin_is_biased choice19_0_biased_head42_42
+G g210 := A -coin_is_biased choice10_0_unbiased_head42_42
+G head42 := O g208 g210
+G g213 := A coin_is_biased choice19_0_biased_head43_43
+G g215 := A -coin_is_biased choice10_0_unbiased_head43_43
+G head43 := O g213 g215
+G g218 := A coin_is_biased choice19_0_biased_head44_44
+G g220 := A -coin_is_biased choice10_0_unbiased_head44_44
+G head44 := O g218 g220
+G g223 := A coin_is_biased choice19_0_biased_head45_45
+G g225 := A -coin_is_biased choice10_0_unbiased_head45_45
+G head45 := O g223 g225
+G g228 := A coin_is_biased choice19_0_biased_head46_46
+G g230 := A -coin_is_biased choice10_0_unbiased_head46_46
+G head46 := O g228 g230
+G g233 := A coin_is_biased choice19_0_biased_head47_47
+G g235 := A -coin_is_biased choice10_0_unbiased_head47_47
+G head47 := O g233 g235
+G g238 := A coin_is_biased choice19_0_biased_head48_48
+G g240 := A -coin_is_biased choice10_0_unbiased_head48_48
+G head48 := O g238 g240
+G g243 := A coin_is_biased choice19_0_biased_head49_49
+G g245 := A -coin_is_biased choice10_0_unbiased_head49_49
+G head49 := O g243 g245
+G g248 := A coin_is_biased choice19_0_biased_head50_50
+G g250 := A -coin_is_biased choice10_0_unbiased_head50_50
+G head50 := O g248 g250
+G g253 := A coin_is_biased choice19_0_biased_head51_51
+G g255 := A -coin_is_biased choice10_0_unbiased_head51_51
+G head51 := O g253 g255
+G g258 := A coin_is_biased choice19_0_biased_head52_52
+G g260 := A -coin_is_biased choice10_0_unbiased_head52_52
+G head52 := O g258 g260
+G g263 := A coin_is_biased choice19_0_biased_head53_53
+G g265 := A -coin_is_biased choice10_0_unbiased_head53_53
+G head53 := O g263 g265
+G g268 := A coin_is_biased choice19_0_biased_head54_54
+G g270 := A -coin_is_biased choice10_0_unbiased_head54_54
+G head54 := O g268 g270
+G g273 := A coin_is_biased choice19_0_biased_head55_55
+G g275 := A -coin_is_biased choice10_0_unbiased_head55_55
+G head55 := O g273 g275
+G g278 := A coin_is_biased choice19_0_biased_head56_56
+G g280 := A -coin_is_biased choice10_0_unbiased_head56_56
+G head56 := O g278 g280
+G g283 := A coin_is_biased choice19_0_biased_head57_57
+G g285 := A -coin_is_biased choice10_0_unbiased_head57_57
+G head57 := O g283 g285
+G g288 := A coin_is_biased choice19_0_biased_head58_58
+G g290 := A -coin_is_biased choice10_0_unbiased_head58_58
+G head58 := O g288 g290
+G g293 := A coin_is_biased choice19_0_biased_head59_59
+G g295 := A -coin_is_biased choice10_0_unbiased_head59_59
+G head59 := O g293 g295
+G g298 := A coin_is_biased choice19_0_biased_head60_60
+G g300 := A -coin_is_biased choice10_0_unbiased_head60_60
+G head60 := O g298 g300
+G g303 := A coin_is_biased choice19_0_biased_head61_61
+G g305 := A -coin_is_biased choice10_0_unbiased_head61_61
+G head61 := O g303 g305
+G g308 := A coin_is_biased choice19_0_biased_head62_62
+G g310 := A -coin_is_biased choice10_0_unbiased_head62_62
+G head62 := O g308 g310
+G g313 := A coin_is_biased choice19_0_biased_head63_63
+G g315 := A -coin_is_biased choice10_0_unbiased_head63_63
+G head63 := O g313 g315
+G g318 := A coin_is_biased choice19_0_biased_head64_64
+G g320 := A -coin_is_biased choice10_0_unbiased_head64_64
+G head64 := O g318 g320
+G g323 := A coin_is_biased choice19_0_biased_head65_65
+G g325 := A -coin_is_biased choice10_0_unbiased_head65_65
+G head65 := O g323 g325
+G g328 := A coin_is_biased choice19_0_biased_head66_66
+G g330 := A -coin_is_biased choice10_0_unbiased_head66_66
+G head66 := O g328 g330
+G g333 := A coin_is_biased choice19_0_biased_head67_67
+G g335 := A -coin_is_biased choice10_0_unbiased_head67_67
+G head67 := O g333 g335
+G g338 := A coin_is_biased choice19_0_biased_head68_68
+G g340 := A -coin_is_biased choice10_0_unbiased_head68_68
+G head68 := O g338 g340
+G g343 := A coin_is_biased choice19_0_biased_head69_69
+G g345 := A -coin_is_biased choice10_0_unbiased_head69_69
+G head69 := O g343 g345
+G g348 := A coin_is_biased choice19_0_biased_head70_70
+G g350 := A -coin_is_biased choice10_0_unbiased_head70_70
+G head70 := O g348 g350
+G g353 := A coin_is_biased choice19_0_biased_head71_71
+G g355 := A -coin_is_biased choice10_0_unbiased_head71_71
+G head71 := O g353 g355
+G g358 := A coin_is_biased choice19_0_biased_head72_72
+G g360 := A -coin_is_biased choice10_0_unbiased_head72_72
+G head72 := O g358 g360
+G g363 := A coin_is_biased choice19_0_biased_head73_73
+G g365 := A -coin_is_biased choice10_0_unbiased_head73_73
+G head73 := O g363 g365
+G g368 := A coin_is_biased choice19_0_biased_head74_74
+G g370 := A -coin_is_biased choice10_0_unbiased_head74_74
+G head74 := O g368 g370
+G g373 := A coin_is_biased choice19_0_biased_head75_75
+G g375 := A -coin_is_biased choice10_0_unbiased_head75_75
+G head75 := O g373 g375
+G g378 := A coin_is_biased choice19_0_biased_head76_76
+G g380 := A -coin_is_biased choice10_0_unbiased_head76_76
+G head76 := O g378 g380
+G g383 := A coin_is_biased choice19_0_biased_head77_77
+G g385 := A -coin_is_biased choice10_0_unbiased_head77_77
+G head77 := O g383 g385
+G g388 := A coin_is_biased choice19_0_biased_head78_78
+G g390 := A -coin_is_biased choice10_0_unbiased_head78_78
+G head78 := O g388 g390
+G g393 := A coin_is_biased choice19_0_biased_head79_79
+G g395 := A -coin_is_biased choice10_0_unbiased_head79_79
+G head79 := O g393 g395
+G g398 := A coin_is_biased choice19_0_biased_head80_80
+G g400 := A -coin_is_biased choice10_0_unbiased_head80_80
+G head80 := O g398 g400
+G g403 := A coin_is_biased choice19_0_biased_head81_81
+G g405 := A -coin_is_biased choice10_0_unbiased_head81_81
+G head81 := O g403 g405
+G g408 := A coin_is_biased choice19_0_biased_head82_82
+G g410 := A -coin_is_biased choice10_0_unbiased_head82_82
+G head82 := O g408 g410
+G g413 := A coin_is_biased choice19_0_biased_head83_83
+G g415 := A -coin_is_biased choice10_0_unbiased_head83_83
+G head83 := O g413 g415
+G g418 := A coin_is_biased choice19_0_biased_head84_84
+G g420 := A -coin_is_biased choice10_0_unbiased_head84_84
+G head84 := O g418 g420
+G g423 := A coin_is_biased choice19_0_biased_head85_85
+G g425 := A -coin_is_biased choice10_0_unbiased_head85_85
+G head85 := O g423 g425
+G g428 := A coin_is_biased choice19_0_biased_head86_86
+G g430 := A -coin_is_biased choice10_0_unbiased_head86_86
+G head86 := O g428 g430
+G g433 := A coin_is_biased choice19_0_biased_head87_87
+G g435 := A -coin_is_biased choice10_0_unbiased_head87_87
+G head87 := O g433 g435
+G g438 := A coin_is_biased choice19_0_biased_head88_88
+G g440 := A -coin_is_biased choice10_0_unbiased_head88_88
+G head88 := O g438 g440
+G g443 := A coin_is_biased choice19_0_biased_head89_89
+G g445 := A -coin_is_biased choice10_0_unbiased_head89_89
+G head89 := O g443 g445
+G g448 := A coin_is_biased choice19_0_biased_head90_90
+G g450 := A -coin_is_biased choice10_0_unbiased_head90_90
+G head90 := O g448 g450
+G g453 := A coin_is_biased choice19_0_biased_head91_91
+G g455 := A -coin_is_biased choice10_0_unbiased_head91_91
+G head91 := O g453 g455
+G g458 := A coin_is_biased choice19_0_biased_head92_92
+G g460 := A -coin_is_biased choice10_0_unbiased_head92_92
+G head92 := O g458 g460
+G g463 := A coin_is_biased choice19_0_biased_head93_93
+G g465 := A -coin_is_biased choice10_0_unbiased_head93_93
+G head93 := O g463 g465
+G g468 := A coin_is_biased choice19_0_biased_head94_94
+G g470 := A -coin_is_biased choice10_0_unbiased_head94_94
+G head94 := O g468 g470
+G g473 := A coin_is_biased choice19_0_biased_head95_95
+G g475 := A -coin_is_biased choice10_0_unbiased_head95_95
+G head95 := O g473 g475
+G g478 := A coin_is_biased choice19_0_biased_head96_96
+G g480 := A -coin_is_biased choice10_0_unbiased_head96_96
+G head96 := O g478 g480
+G g483 := A coin_is_biased choice19_0_biased_head97_97
+G g485 := A -coin_is_biased choice10_0_unbiased_head97_97
+G head97 := O g483 g485
+G g488 := A coin_is_biased choice19_0_biased_head98_98
+G g490 := A -coin_is_biased choice10_0_unbiased_head98_98
+G head98 := O g488 g490
+G g493 := A coin_is_biased choice19_0_biased_head99_99
+G g495 := A -coin_is_biased choice10_0_unbiased_head99_99
+G head99 := O g493 g495
+G g498 := A coin_is_biased choice19_0_biased_head100_100
+G g500 := A -coin_is_biased choice10_0_unbiased_head100_100
+G head100 := O g498 g500
+G head_at_least_once100 := O head1 head2 head3 head4 head5 head6 head7 head8 head9 head10 head11 head12 head13 head14 head15 head16 head17 head18 head19 head20 head21 head22 head23 head24 head25 head26 head27 head28 head29 head30 head31 head32 head33 head34 head35 head36 head37 head38 head39 head40 head41 head42 head43 head44 head45 head46 head47 head48 head49 head50 head51 head52 head53 head54 head55 head56 head57 head58 head59 head60 head61 head62 head63 head64 head65 head66 head67 head68 head69 head70 head71 head72 head73 head74 head75 head76 head77 head78 head79 head80 head81 head82 head83 head84 head85 head86 head87 head88 head89 head90 head91 head92 head93 head94 head95 head96 head97 head98 head99 head100

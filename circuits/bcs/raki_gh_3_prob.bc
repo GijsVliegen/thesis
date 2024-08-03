@@ -1,0 +1,33 @@
+c BC-S1.2
+T g1
+T g2
+T g3
+T g4
+T g5
+T g6
+T g7
+T g8
+T g9
+I x6
+I x1
+I x5
+I x4
+I x3
+I x7
+G x2 := O x9 x10
+G x8 := O x13 x14
+G x9 := I x1
+G x10 := A x7 -x6 x5
+G x11 := A x6 x5
+G x12 := A x3 x2
+G x13 := I x7
+G x14 := I x6
+G g1 := O x9 -x1
+G g2 := O -x9 x1
+G g3 := O -x4 x11 x12
+G g4 := O x4 -x11
+G g5 := O x4 -x12
+G g6 := O x13 -x7
+G g7 := O -x13 x7
+G g8 := O x14 -x6
+G g9 := O -x14 x6

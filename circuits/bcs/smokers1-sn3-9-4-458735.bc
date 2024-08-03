@@ -1,0 +1,9 @@
+c BC-S1.2
+T asthmapazzi
+I choice8_0_stresspazzi_pazzi
+I choice18_0_influencesalviati_pazzi_salviati_pazzi
+I choice39_0_asthmapazzi_pazzi
+I choice8_0_stresssalviati_salviati
+G g5 := A choice18_0_influencesalviati_pazzi_salviati_pazzi choice8_0_stresssalviati_salviati
+G problog_cv_smokes_cb_0pazzi := O choice8_0_stresspazzi_pazzi g5
+G asthmapazzi := A problog_cv_smokes_cb_0pazzi choice39_0_asthmapazzi_pazzi

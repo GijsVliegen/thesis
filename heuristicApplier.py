@@ -1,6 +1,6 @@
 from randomCNFGenerator import generateRandomCnfFormula
 from flatSDDCompiler import SDDcompiler
-from pysdd.sdd import Vtree
+from pysdd.sdd import Vtree, SddManager
 import random
 import time
 import os
@@ -404,7 +404,7 @@ class SddVarAppearancesList(ExtendedList):
 class combinedHeuristicListSize(ExtendedList):
     def __init__(self, sdds, sddManager, nrOfVariables, threshold):
         self.ratio = threshold
-        print(self.ratio)
+        # print(self.ratio)
         self.nrOfVars = nrOfVariables
         self.mgr = sddManager
         variabelenvolgordeLijst = []
@@ -449,7 +449,7 @@ class combinedHeuristicListSize(ExtendedList):
 class combinedHeuristicList(ExtendedList):
     def __init__(self, sdds, sddManager, nrOfVariables, threshold):
         self.ratio = threshold
-        print(self.ratio)
+        # print(self.ratio)
         self.nrOfVars = nrOfVariables
         self.mgr = sddManager
         variabelenvolgordeLijst = []
@@ -524,35 +524,46 @@ class HeuristicApply():
         return temp
 
     def renew(self):
-        self.compiler.sddManager.garbage_collect()
+        self.sddManager.garbage_collect()
         self.baseSdds = self.generateRandomSdds(self.operation)
 
     def size(self):
-        return self.compiler.sddManager.size()
+        return self.sddManager.size()
     
     def collectMostGarbage(self, sdd = None):
         self.saveBaseSdds()
         if sdd is not None: sdd.ref()
-        self.compiler.sddManager.garbage_collect()
+        self.sddManager.garbage_collect()
         if sdd is not None: sdd.deref()
         self.unsaveBaseSdds()
 
     def collectAllGarbage(self):
-        self.compiler.sddManager.garbage_collect()
+        self.sddManager.garbage_collect()
 
     def __enter__(self):
-        print(f" entry dead count = {self.compiler.sddManager.dead_count()}")
+        print(f" entry dead count = {self.sddManager.dead_count()}")
         return self #needed to return object to variable after 'as'
     def __exit__(self, exc_type, exc_value, traceback):
-        print(f" exit dead count = {self.compiler.sddManager.dead_count()}")
-        self.compiler.sddManager.garbage_collect()
+        print(f" exit dead count = {self.sddManager.dead_count()}")
+        self.sddManager.garbage_collect()
 
     def setVtree(self, vtree):
-        self.compiler.changeVtree(vtree)
+        self.sddManager = SddManager.from_vtree(vtree)
         self.baseSdds = self.generateRandomSdds(self.operation)
         self.collectMostGarbage()
 
-    def __init__(self, nrOfSdds, nrOfVars, nrOfClauses, operation, randomSeed, vtree_type = "balanced", vtree = -1, threshold = 0.75):
+    def setManuelApply(self, sdds, nrOfVars, operation):
+        self.nrOfSdds = len(sdds)
+        self.nrOfVars = nrOfVars
+        self.baseSdds = []
+        for sdd in sdds:
+            self.baseSdds.append(SDDwrapper(sdd, 0))
+        self.operation = operation
+
+    def getBaseApplier():
+        return HeuristicApply(1, 3, 1, 1, -1)
+
+    def __init__(self, nrOfSdds, nrOfVars, nrOfClauses, operation, randomSeed, vtree_type = "balanced", vtree = -1, threshold = 0.70):
         random.seed(randomSeed)
         self.nrOfSdds = nrOfSdds
         self.nrOfVars = nrOfVars
@@ -562,11 +573,14 @@ class HeuristicApply():
         """
         AND operatie -> 10 keer 50 clauses: zelfde als een cnf met 500 clauses -> skewed result?
         """ 
-        self.compiler = SDDcompiler(nrOfVars=nrOfVars, vtree_type=vtree_type)
         if vtree_type == "random":
-            self.compiler.changeVtree(vtree)
+            self.sddManager = SddManager.from_vtree(vtree)
+        else:
+            vtree = Vtree(var_count=nrOfVars, vtree_type=vtree_type) #kan nog aangepast worden voor experiment
+            self.sddManager = SddManager.from_vtree(vtree)
+        self.compiler = SDDcompiler(nrOfVars=nrOfVars, sddManager=self.sddManager)
         self.baseSdds = self.generateRandomSdds(operation)
-        self.collectMostGarbage()
+        # self.collectMostGarbage()
         self.nodeCounterList = []
         self.threshold = threshold
 
@@ -574,10 +588,10 @@ class HeuristicApply():
         randomSdds = []
         for _ in range(self.nrOfSdds):
             cnf = generateRandomCnfFormula(self.nrOfClauses, self.nrOfVars, self.cnf3)
-            (sdd, size) = self.compiler.compileToSdd(cnf, len(cnf))
+            (sdd, size) = self.compiler.compileToSdd(cnf, len(cnf), self.sddManager)
             #convert into dnf
             if operation == AND:
-                sdd = self.compiler.sddManager.negate(sdd)
+                sdd = self.sddManager.negate(sdd)
             sddWrapper = SDDwrapper(sdd, depth = 0)
             randomSdds.append(sddWrapper)
         return randomSdds
@@ -592,7 +606,7 @@ class HeuristicApply():
     
     def doApply(self, sdd1, sdd2):
         newDepth = max(sdd1.getDepth(), sdd2.getDepth()) + 1
-        newSdd = self.compiler.sddManager.apply(sdd1.getSdd(), sdd2.getSdd(), self.operation)
+        newSdd = self.sddManager.apply(sdd1.getSdd(), sdd2.getSdd(), self.operation)
         newSddwrapper = SDDwrapper(newSdd, newDepth)
         return newSddwrapper
 
@@ -610,25 +624,25 @@ class HeuristicApply():
         if heuristic == KE:
             res = SddSizeList(sdds)
         if heuristic == VO:
-            res = SddVarAppearancesList(sdds, self.compiler.sddManager)
+            res = SddVarAppearancesList(sdds, self.sddManager)
         if heuristic == IVO_LR:
-            res = SddVarAppearancesList(sdds, self.compiler.sddManager, inverse=True, LR=True)
+            res = SddVarAppearancesList(sdds, self.sddManager, inverse=True, LR=True)
         if heuristic == IVO_RL:
-            res = SddVarAppearancesList(sdds, self.compiler.sddManager, inverse=True, LR=False)
+            res = SddVarAppearancesList(sdds, self.sddManager, inverse=True, LR=False)
         if heuristic == EL:
-            res = SddVtreeCountList(sdds, self.compiler.sddManager)
+            res = SddVtreeCountList(sdds, self.sddManager)
         if heuristic == RANDOM:
             if seed != -1:
                 print(f"seed given = {seed}")
                 res = RandomList(sdds, seed)
             else: 
-                res = RandomList(sdds, sdds[0].size()*sdds[1].size())
+                res = RandomList(sdds, sdds[0].size())#*sdds[1].size())
         if heuristic == ELVAR:
-            res = SddVarCountList(sdds, self.compiler.sddManager)
+            res = SddVarCountList(sdds, self.sddManager)
         if heuristic == IVO_RL_EL_Size:
-            res = combinedHeuristicListSize(sdds, self.compiler.sddManager, self.nrOfVars, self.threshold)
+            res = combinedHeuristicListSize(sdds, self.sddManager, self.nrOfVars, self.threshold)
         if heuristic == IVO_RL_EL:
-            res = combinedHeuristicList(sdds, self.compiler.sddManager, self.nrOfVars, self.threshold)
+            res = combinedHeuristicList(sdds, self.sddManager, self.nrOfVars, self.threshold)
         return (res, time.time() - startTime)
         #else: print(f"heuristiek {heuristic} is nog niet geïmpleneteerd")
 
@@ -642,7 +656,7 @@ class HeuristicApply():
             newSdd = self.doApply(sdds[0], sdds[1])
             timed = time.time() - startTime
             return (newSdd, [newSdd.size()], \
-                    [sum(self.compiler.sddManager.sdd_variables(newSdd.getSdd()))], \
+                    [sum(self.sddManager.sdd_variables(newSdd.getSdd()))], \
                         [newSdd.getDepth()], timed, timed)
         if parentVtreeNode is None: #bijvoorbeeld omdat
             print("iets geks met parentVtreeNode, is None...")
@@ -706,37 +720,38 @@ class HeuristicApply():
             totalTime += time.time() - overheadStartTime
 
             compileSizes.append(newSdd.size())
-            varCounts.append(sum(self.compiler.sddManager.sdd_variables(newSdd.getSdd())))
+            varCounts.append(sum(self.sddManager.sdd_variables(newSdd.getSdd())))
             depthList.append(newSdd.getDepth())
-            #self.nodeCounterList.append(self.compiler.sddManager.dead_size())
-            # self.nodeCounterList.append((self.compiler.sddManager.count(), self.compiler.sddManager.live_count(), self.compiler.sddManager.dead_count())) #count, dead_count of live_count
+            #self.nodeCounterList.append(self.sddManager.dead_size())
+            # self.nodeCounterList.append((self.sddManager.count(), self.sddManager.live_count(), self.sddManager.dead_count())) #count, dead_count of live_count
             #doSomethingWithResults(rootNodeId, rootNode, newSdd, datastructure)
         finalSdd = datastructure.pop(0)
         return (finalSdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime)
 
+    #seed used for Random heuristic to reproduce results
     def doHeuristicApply(self, heuristic, timeOverhead = True, seed = -1):
         #print(f"using heuristic {heuristic}")
         if heuristic == VP:
             (finalSdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime) = self.doHeuristicApply2Recursive\
-                (self.compiler.sddManager.vtree(), RANDOM, self.baseSdds, timeOverhead)
+                (self.sddManager.vtree(), RANDOM, self.baseSdds, timeOverhead)
         elif heuristic == VP_KE:
             (finalSdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime) = self.doHeuristicApply2Recursive\
-                (self.compiler.sddManager.vtree(), KE, self.baseSdds, timeOverhead)
+                (self.sddManager.vtree(), KE, self.baseSdds, timeOverhead)
         elif heuristic == VP_EL:
             (finalSdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime) = self.doHeuristicApply2Recursive\
-                (self.compiler.sddManager.vtree(), EL, self.baseSdds, timeOverhead)
+                (self.sddManager.vtree(), EL, self.baseSdds, timeOverhead)
         elif heuristic == VP_ELVAR:
             (finalSdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime) = self.doHeuristicApply2Recursive\
-                (self.compiler.sddManager.vtree(), ELVAR, self.baseSdds, timeOverhead)
+                (self.sddManager.vtree(), ELVAR, self.baseSdds, timeOverhead)
         elif heuristic == IVO_RL_EL:
             (finalSdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime) = self.doHeuristicApply2Recursive\
-                (self.compiler.sddManager.vtree(), IVO_RL_EL, self.baseSdds, timeOverhead)
+                (self.sddManager.vtree(), IVO_RL_EL, self.baseSdds, timeOverhead)
         elif heuristic == IVO_RL_EL_Size:
             (finalSdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime) = self.doHeuristicApply2Recursive\
-                (self.compiler.sddManager.vtree(), IVO_RL_EL_Size, self.baseSdds, timeOverhead)
+                (self.sddManager.vtree(), IVO_RL_EL_Size, self.baseSdds, timeOverhead)
         else:
             (finalSdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime) = self.doHeuristicApplySdds(heuristic, self.baseSdds, timeOverhead, seed = seed)
-        self.collectMostGarbage(finalSdd) #dit toevoegen als we correctheid willen testen -> correctheid testen door sizes te vergelijken?
+        # self.collectMostGarbage(finalSdd) #dit toevoegen als we correctheid willen testen -> correctheid testen door sizes te vergelijken?
         return (finalSdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime)
 
     def randomRatiosApply(self, heuristic, renew = True, seed = -1):
@@ -748,7 +763,7 @@ class HeuristicApply():
                 (sdd, _) = self.compiler.compileToSdd(cnf, len(cnf))
                 #convert into dnf
                 if self.operation == AND:
-                    sdd = self.compiler.sddManager.negate(sdd)
+                    sdd = self.sddManager.negate(sdd)
                 sddWrapper = SDDwrapper(sdd, depth = 0)
                 randomSdds.append(sddWrapper)
             self.baseSdds = randomSdds

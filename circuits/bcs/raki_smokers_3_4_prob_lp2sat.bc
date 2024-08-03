@@ -1,0 +1,16 @@
+c BC-S1.2
+T x5
+T x6
+T x7
+T -x1
+T -x1
+T -x2
+T -x3
+T -x4
+I x6
+I x2
+I x1
+I x5
+I x4
+I x3
+I x7

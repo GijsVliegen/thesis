@@ -1,0 +1,348 @@
+c BC-S1.2
+T g1
+T g2
+T g3
+T g4
+T g5
+T g6
+T g7
+T g8
+T g9
+T g10
+T g11
+T g12
+T g13
+T g14
+T g15
+T g16
+T g17
+T g18
+T g19
+T g20
+T g21
+T g22
+T g23
+T g24
+T g25
+T g26
+T g27
+T g28
+T g29
+T g30
+T g31
+T g32
+T g33
+T g34
+T g35
+T g36
+T g37
+T g38
+T g39
+T g40
+T g41
+T g42
+T g43
+T g44
+T g45
+T g46
+T g47
+T g48
+T g49
+T g50
+T g51
+T g52
+T g53
+T g54
+T g55
+T g56
+T g57
+T g58
+T g59
+T g60
+T g61
+T g62
+T g63
+T g64
+T g65
+T g66
+T g67
+T g68
+T g69
+T g70
+T g71
+T g72
+T g73
+T g74
+T g75
+T g76
+T g77
+T g78
+T g79
+T g80
+T g81
+T g82
+T g83
+T g84
+T g85
+T g86
+T g87
+T g88
+T g89
+T g90
+T g91
+T g92
+T g93
+T g94
+T g95
+T g96
+T g97
+T g98
+T g99
+T g100
+T g101
+T g102
+T g103
+T g104
+I x59
+I x12
+I x61
+I x3
+I x53
+I x1
+I x5
+I x35
+I x48
+I x37
+I x50
+I x8
+I x43
+I x14
+I x15
+I x57
+I x17
+I x47
+I x62
+I x21
+I x32
+I x39
+I x30
+I x51
+I x55
+I x4
+I x41
+I x23
+I x10
+I x45
+I x28
+I x7
+I x34
+I x26
+I x24
+I x19
+G x2 := O x64 x65 x66 x67 x68 x69 x70
+G x6 := O x78 x79 x80 x81 x82 x83
+G x9 := O x84 x85
+G x11 := O x86 x87 x88 x89 x90
+G x13 := O x91 x92
+G x16 := O x93 x94
+G x18 := O x95 x96 x97 x98
+G x20 := O x99 x100
+G x22 := O x101 x102
+G x25 := O x103 x104
+G x27 := O x105 x106 x107
+G x29 := O x108 x109
+G x31 := O x110 x111
+G x33 := O x112 x113
+G x36 := O x114 x115
+G x38 := O x116 x117
+G x40 := O x118 x119
+G x42 := O x120 x121
+G x44 := O x122 x123
+G x46 := O x124 x125
+G x49 := O x126 x127
+G x52 := O x128 x129
+G x54 := O x130 x131
+G x56 := O x132 x133
+G x58 := O x134 x135
+G x60 := O x136 x137
+G x63 := O x138 x139
+G x64 := A x14 -x12 x11
+G x65 := A x41 -x39 x38
+G x66 := I x1
+G x67 := A x53 -x51 x50
+G x68 := A x21 -x19 x18
+G x69 := A x8 -x7 x6
+G x70 := A x30 -x28 x27
+G x71 := A x19 x18
+G x72 := A x39 x38
+G x73 := A x3 x2
+G x74 := A x7 x6
+G x75 := A x51 x50
+G x76 := A x28 x27
+G x77 := A x12 x11
+G x78 := A x15 -x13 x11
+G x79 := I x5
+G x80 := A x43 -x40 x38
+G x81 := A x55 -x52 x50
+G x82 := A x23 -x20 x18
+G x83 := A x32 -x29 x27
+G x84 := I x8
+G x85 := I x7
+G x86 := A x34 -x31 x27
+G x87 := A x57 -x54 x50
+G x88 := I x10
+G x89 := A x45 -x42 x38
+G x90 := A x24 -x22 x18
+G x91 := I x12
+G x92 := I x14
+G x93 := I x15
+G x94 := I x13
+G x95 := A x35 -x33 x27
+G x96 := A x47 -x44 x38
+G x97 := I x17
+G x98 := A x59 -x56 x50
+G x99 := I x19
+G x100 := I x21
+G x101 := I x23
+G x102 := I x20
+G x103 := I x22
+G x104 := I x24
+G x105 := A x61 -x58 x50
+G x106 := I x26
+G x107 := A x48 -x46 x38
+G x108 := I x28
+G x109 := I x30
+G x110 := I x32
+G x111 := I x29
+G x112 := I x31
+G x113 := I x34
+G x114 := I x35
+G x115 := I x33
+G x116 := A x62 -x60 x50
+G x117 := I x37
+G x118 := I x39
+G x119 := I x41
+G x120 := I x40
+G x121 := I x43
+G x122 := I x45
+G x123 := I x42
+G x124 := I x47
+G x125 := I x44
+G x126 := I x46
+G x127 := I x48
+G x128 := I x51
+G x129 := I x53
+G x130 := I x55
+G x131 := I x52
+G x132 := I x57
+G x133 := I x54
+G x134 := I x56
+G x135 := I x59
+G x136 := I x58
+G x137 := I x61
+G x138 := I x62
+G x139 := I x60
+G g1 := O x66 -x1
+G g2 := O -x66 x1
+G g3 := O -x4 x71 x72 x73 x74 x75 x76 x77
+G g4 := O x4 -x71
+G g5 := O x4 -x72
+G g6 := O x4 -x73
+G g7 := O x4 -x74
+G g8 := O x4 -x75
+G g9 := O x4 -x76
+G g10 := O x4 -x77
+G g11 := O x79 -x5
+G g12 := O -x79 x5
+G g13 := O x84 -x8
+G g14 := O -x84 x8
+G g15 := O x85 -x7
+G g16 := O -x85 x7
+G g17 := O x88 -x10
+G g18 := O -x88 x10
+G g19 := O x91 -x12
+G g20 := O -x91 x12
+G g21 := O x92 -x14
+G g22 := O -x92 x14
+G g23 := O x93 -x15
+G g24 := O -x93 x15
+G g25 := O x94 -x13
+G g26 := O -x94 x13
+G g27 := O x97 -x17
+G g28 := O -x97 x17
+G g29 := O x99 -x19
+G g30 := O -x99 x19
+G g31 := O x100 -x21
+G g32 := O -x100 x21
+G g33 := O x101 -x23
+G g34 := O -x101 x23
+G g35 := O x102 -x20
+G g36 := O -x102 x20
+G g37 := O x103 -x22
+G g38 := O -x103 x22
+G g39 := O x104 -x24
+G g40 := O -x104 x24
+G g41 := O x106 -x26
+G g42 := O -x106 x26
+G g43 := O x108 -x28
+G g44 := O -x108 x28
+G g45 := O x109 -x30
+G g46 := O -x109 x30
+G g47 := O x110 -x32
+G g48 := O -x110 x32
+G g49 := O x111 -x29
+G g50 := O -x111 x29
+G g51 := O x112 -x31
+G g52 := O -x112 x31
+G g53 := O x113 -x34
+G g54 := O -x113 x34
+G g55 := O x114 -x35
+G g56 := O -x114 x35
+G g57 := O x115 -x33
+G g58 := O -x115 x33
+G g59 := O x117 -x37
+G g60 := O -x117 x37
+G g61 := O x118 -x39
+G g62 := O -x118 x39
+G g63 := O x119 -x41
+G g64 := O -x119 x41
+G g65 := O x120 -x40
+G g66 := O -x120 x40
+G g67 := O x121 -x43
+G g68 := O -x121 x43
+G g69 := O x122 -x45
+G g70 := O -x122 x45
+G g71 := O x123 -x42
+G g72 := O -x123 x42
+G g73 := O x124 -x47
+G g74 := O -x124 x47
+G g75 := O x125 -x44
+G g76 := O -x125 x44
+G g77 := O x126 -x46
+G g78 := O -x126 x46
+G g79 := O x127 -x48
+G g80 := O -x127 x48
+G g81 := O x128 -x51
+G g82 := O -x128 x51
+G g83 := O x129 -x53
+G g84 := O -x129 x53
+G g85 := O x130 -x55
+G g86 := O -x130 x55
+G g87 := O x131 -x52
+G g88 := O -x131 x52
+G g89 := O x132 -x57
+G g90 := O -x132 x57
+G g91 := O x133 -x54
+G g92 := O -x133 x54
+G g93 := O x134 -x56
+G g94 := O -x134 x56
+G g95 := O x135 -x59
+G g96 := O -x135 x59
+G g97 := O x136 -x58
+G g98 := O -x136 x58
+G g99 := O x137 -x61
+G g100 := O -x137 x61
+G g101 := O x138 -x62
+G g102 := O -x138 x62
+G g103 := O x139 -x60
+G g104 := O -x139 x60

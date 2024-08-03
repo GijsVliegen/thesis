@@ -1,6 +1,7 @@
 from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
 from problog_formulas.propositional_formula import FormulaContainer, FormulaOp, RefFormula
 import random
+from flatSDDCompiler import SDDcompiler
 
 def generateRandomCnfDimacs(nrOfVars, nrOfClauses, cnf3 = True):
     cnf_formula = []
@@ -28,8 +29,9 @@ def getAsDimacsString(cnf_formula,  nrOfVars):
     return string
 
 
-def generateRandomCnfFormula(nrOfClauses, nrOfVars, cnf3 = False):
-
+def generateRandomCnfFormula(nrOfClauses, nrOfVars, cnf3 = True):
+    if (nrOfVars < 3):
+        nrOfVars = 3
     formula = FormulaContainer()
 
     for i in range(1, nrOfVars+1):
@@ -62,6 +64,8 @@ def generateRandomCnfFormula(nrOfClauses, nrOfVars, cnf3 = False):
 
     formula.add_formula(RefFormula(FormulaOp.CONJ, tuple(range(beginIndexClauses, endIndexClauses))))
     return formula
+
+
 """
 formula = generateRandomCnf(40, 10, True)
 print(f"Number of variables: {formula.get_nb_vars()}")

@@ -1,0 +1,155 @@
+c BC-S1.2
+T g1
+T g2
+T g3
+T g4
+T g5
+T g6
+T g7
+T g8
+T g9
+T g10
+T g11
+T g12
+T g13
+T g14
+T g15
+T g16
+T g17
+T g18
+T g19
+T g20
+T g21
+T g22
+T g23
+T g24
+T g25
+T g26
+T g27
+T g28
+T g29
+T g30
+T g31
+T g32
+T g33
+T g34
+T g35
+T g36
+T g37
+T g38
+T g39
+T g40
+T g41
+T g42
+T g43
+T g44
+T g45
+T g46
+T g47
+T g48
+T g49
+T g50
+T x26
+T x27
+T x28
+T x29
+T x30
+T x31
+T x32
+T x33
+T x34
+I x12
+I x15
+I x23
+I x20
+I x18
+I x13
+I x16
+I x17
+I x10
+I x21
+I x14
+I x22
+I x19
+I x11
+G x1 := I x26
+G x2 := I x27
+G x3 := I x28
+G x4 := I x29
+G x5 := I x30
+G x6 := I x31
+G x7 := I x32
+G x8 := I x33
+G x9 := I x34
+G x24 := I x42
+G x25 := I x36
+G x26 := I x1
+G x27 := I x2
+G x28 := I x3
+G x29 := I x4
+G x30 := I x5
+G x31 := I x6
+G x32 := I x7
+G x33 := I x8
+G x34 := I x9
+G x35 := A x21 x15
+G x36 := I x25
+G x37 := I x12
+G x38 := I x14
+G x39 := A x20 x24
+G x40 := A x23 x25
+G x41 := A x22 x15
+G x42 := I x24
+G x43 := I x19
+G x44 := I x16
+G x45 := I x11
+G g1 := O -x1 x26
+G g2 := O x1 -x26
+G g3 := O -x2 x27
+G g4 := O x2 -x27
+G g5 := O -x3 x28
+G g6 := O x3 -x28
+G g7 := O -x4 x29
+G g8 := O x4 -x29
+G g9 := O -x5 x30
+G g10 := O x5 -x30
+G g11 := O -x6 x31
+G g12 := O x6 -x31
+G g13 := O -x7 x32
+G g14 := O x7 -x32
+G g15 := O -x8 x33
+G g16 := O x8 -x33
+G g17 := O -x9 x34
+G g18 := O x9 -x34
+G g19 := O x36 -x25
+G g20 := O -x36 x25
+G g21 := O -x10 x35 x36
+G g22 := O x10 -x35
+G g23 := O x10 -x36
+G g24 := O x37 -x12
+G g25 := O -x37 x12
+G g26 := O -x13 x37
+G g27 := O x13 -x37
+G g28 := O x38 -x14
+G g29 := O -x38 x14
+G g30 := O -x15 x38 x39 x40
+G g31 := O x15 -x38
+G g32 := O x15 -x39
+G g33 := O x15 -x40
+G g34 := O x42 -x24
+G g35 := O -x42 x24
+G g36 := O -x17 x41 x42
+G g37 := O x17 -x41
+G g38 := O x17 -x42
+G g39 := O x43 -x19
+G g40 := O -x43 x19
+G g41 := O -x18 x43
+G g42 := O x18 -x43
+G g43 := O x44 -x16
+G g44 := O -x44 x16
+G g45 := O -x24 x44
+G g46 := O x24 -x44
+G g47 := O x45 -x11
+G g48 := O -x45 x11
+G g49 := O -x25 x45
+G g50 := O x25 -x45
