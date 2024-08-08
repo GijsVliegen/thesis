@@ -1,9 +1,0 @@
-c BC-S1.2
-T asthmasalviati
-I choice8_0_stresspazzi_pazzi
-I choice18_0_influencepazzi_salviati_pazzi_salviati
-I choice8_0_stresssalviati_salviati
-I choice39_0_asthmasalviati_salviati
-G g5 := A choice18_0_influencepazzi_salviati_pazzi_salviati choice8_0_stresspazzi_pazzi
-G problog_cv_smokes_cb_0salviati := O choice8_0_stresssalviati_salviati g5
-G asthmasalviati := A problog_cv_smokes_cb_0salviati choice39_0_asthmasalviati_salviati

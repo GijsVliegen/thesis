@@ -13,7 +13,8 @@ class SDDcompiler:
             print("oei! alert!")
             vtree = Vtree(var_count=nrOfVars, vtree_type=vtree_type) #kan nog aangepast worden voor experiment
             self.sddManager = SddManager.from_vtree(vtree)
-
+        self.dynamicCache = {}
+    
     def changeVtree(self, vtree):
         self.sddManager = SddManager.from_vtree(vtree)
 
@@ -24,33 +25,43 @@ class SDDcompiler:
     def compileToSdd(self, formula, rootNodeId, sddManager):
         rootNode = formula.get_formula(rootNodeId)
         if(rootNode.op == FormulaOp.ATOM):
-            return (sddManager.literal(rootNodeId), 1)
+            return sddManager.literal(rootNodeId)
         if(rootNode.op == FormulaOp.NEG): #neg telt niet mee tot het aantal elementen in de DAG imo
-            (sdd, totalNodesInDag) = self.compileToSdd(formula, rootNode.children[0], sddManager)
-            return (sddManager.negate(sdd), totalNodesInDag)
-        childrenSdd, sizeOfChildrenDag = map(list, zip(*map(lambda child: self.compileToSdd(formula, child, sddManager), rootNode.children)))
+            sdd = self.compileToSdd(formula, rootNode.children[0], sddManager)
+            return sddManager.negate(sdd)
+        childrenSdd = list(map(lambda child: self.compileToSdd(formula, child, sddManager), rootNode.children))
         operationInt = CONJUNCTIE if rootNode.op == FormulaOp.CONJ else DISJUNCTIE
+
         while len(childrenSdd) > 1:
             sdd1 = childrenSdd.pop(0)
             sdd2 = childrenSdd.pop(0)
             newSdd = sddManager.apply(sdd1, sdd2, operationInt)
             childrenSdd.append(newSdd)
-        return (childrenSdd[0], sum(sizeOfChildrenDag) + 1)
+        return childrenSdd[0]
     
 
     #TODO: add dynamyic programming: store noteID + sdd als ooit gecompileerd, aangezien we met DAGs werken
     def compileToSddHeuristic(self, formula, rootNodeId, heuristic, applier):
         rootNode = formula.get_formula(rootNodeId)
+        if(rootNodeId in self.dynamicCache):
+            return self.dynamicCache[rootNodeId]
+        
         if(rootNode.op == FormulaOp.ATOM):
-            return (self.sddManager.literal(rootNodeId), 1)
+            sdd = self.sddManager.literal(rootNodeId)
+            self.dynamicCache[rootNodeId] = sdd 
+            return sdd
         if(rootNode.op == FormulaOp.NEG): #neg telt niet mee tot het aantal elementen in de DAG imo
-            (sdd, totalNodesInDag) = self.compileToSddHeuristic(formula, rootNode.children[0], heuristic, applier)
-            return (self.sddManager.negate(sdd), totalNodesInDag)
-        childrenSdds, sizeOfChildrenDag = map(list, 
-                    zip(*map(lambda child: self.compileToSddHeuristic(formula, child, heuristic, applier), rootNode.children)))
+            sdd = self.sddManager.negate(self.compileToSddHeuristic(formula, rootNode.children[0], heuristic, applier))
+            self.dynamicCache[rootNodeId] = sdd
+            return sdd
+        childrenSdds = list(map(lambda child: self.compileToSddHeuristic(formula, child, heuristic, applier), rootNode.children))
         operationInt = CONJUNCTIE if rootNode.op == FormulaOp.CONJ else DISJUNCTIE
         
+        if (len(childrenSdds) == 1):
+            return childrenSdds[0]
         applier.setManuelApply(childrenSdds, self.nrOfVars, operationInt)
         (sdd, compileSizes, varCounts, depthList, totalTime, noOverheadTime) = applier.doHeuristicApply(heuristic, timeOverhead = True) #true -> overhead erbij
-
-        return (sdd.getSdd(), sum(sizeOfChildrenDag) + 1)
+        print(f"rootnodeId = {rootNodeId}, sdd = {sdd}, size = {sdd.size()}")
+        print(f"cache = {self.dynamicCache}")
+        self.dynamicCache[rootNodeId] = sdd
+        return sdd

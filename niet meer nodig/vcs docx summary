@@ -2,6 +2,9 @@ jobs in vsc
 
 job in sbatch zetten: sbatch --export=NrOfVars=28,Iters=1,Vtree="balanced",Overhead="true" exampleSbatchScript.slurm
 
+sbatch --array=1-549 --export=Heuristic=8 BCCompilerScript.slurm
+accounts: intro_vsc36004, lp_edu_alg_parallel_comp, lp_dtai1
+
 requesting compute resources
 
 	nrOfTasks --ntasks=<number of tasks>

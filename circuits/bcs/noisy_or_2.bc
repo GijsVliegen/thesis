@@ -1,9 +1,0 @@
-c BC-S1.2
-T x
-I choice11_0_aux1_1
-I a1
-I a0
-I choice11_0_aux0_0
-G g3 := A a0 choice11_0_aux0_0
-G g6 := A a1 choice11_0_aux1_1
-G x := O g3 g6

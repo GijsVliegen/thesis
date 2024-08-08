@@ -74,6 +74,7 @@ I x21
 I x24
 I x14
 I x19
+G x2 := O x36 x37 x38 x39 x40
 G x6 := O x46 x47 x48 x49
 G x9 := O x50 x51
 G x11 := O x52 x53 x54
@@ -88,7 +89,6 @@ G x30 := O x69 x70
 G x32 := O x71 x72
 G x35 := O x73 x74
 G x36 := A x14 -x12 x11
-G x2 := O x36 x37 x38 x39 x40
 G x37 := I x1
 G x38 := A x21 -x19 x18
 G x39 := A x29 -x27 x26
