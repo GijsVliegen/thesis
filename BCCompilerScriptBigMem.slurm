@@ -4,8 +4,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --time=30:00
-#SBATCH --account=intro_vsc36004
-#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --account=lp_dtai1
+#SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=r0810400@kuleuven.be
 
 Heuristic=${Heuristic:-8}

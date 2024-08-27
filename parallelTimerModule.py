@@ -15,31 +15,9 @@ import random
 def doHeuristicTest(heur, heuristicApplier, overheadTime):
     (_, sizeList, varCounts, depthList, timed, noOverheadTimed) = heuristicApplier.doHeuristicApply(heur, overheadTime)
     return timed, noOverheadTimed, sizeList, varCounts, depthList
-# def heuristicsApply(heuristics, operation, overheadTime):
-#     nrOfSdds=20
-#     iterations = 2000
-#     nrOfVars=20
-#     for i in range(int(nrOfVars/2), int(nrOfVars*5), int(nrOfVars*0.5)):
-#         print(f"nr of clauses = {i}")
-#         nrOfClauses = i
-#         vtree = "balanced"
-#         name = "test" if overheadTime else "noOverhead"
-#         operationStr = "OR" if operation == OR else "AND"
-#         heuristicsTimes = []
-#         randomApplier = RandomOrderApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type=vtree)
-#         for i in heuristics:
-#             heuristicsTimes.append([])
-#         for _ in range(iterations):
-#             randomApplier.renew()
-#             timeHeuristics = doHeuristicTest(heuristics, randomApplier, operation, overheadTime)
-#             for i in range(len(timeHeuristics)):
-#                 heuristicsTimes[i].append(timeHeuristics[i])
-#         with open(f"output/heuristic/{name}_{nrOfSdds}_{nrOfVars}_{nrOfClauses}_{operationStr}_{vtree}_{heuristics}.txt", 'w') as file:
-#             file.write(f"experiment: sdds: {nrOfSdds}, vars: {nrOfVars}, operation = {operationStr}, vtree = {vtree}, heuristiek = {heuristics}" + '\n')
-#             for i in range(len(heuristics)):
-#                 file.write(f"heuristiek {heuristics[i]} times: {heuristicsTimes[i]}\n")
-                
-def heuristicApply(nrOfVars, iterationsPerNode, operation, heuristic = VO, vtree_type = "balanced", overheadTime = True):
+
+#experimenten voor thesissectie 6.3 - 6.5           
+def heuristicApplyExperiment(nrOfVars, iterationsPerNode, operation, heuristic = VO, vtree_type = "balanced", overheadTime = True):
 
     comm = MPI.COMM_WORLD
     size = comm.Get_size()
@@ -128,6 +106,7 @@ def heuristicApply(nrOfVars, iterationsPerNode, operation, heuristic = VO, vtree
                 file.write(f"{allNoOverheadTimes.tolist()}\n") 
         gc.collect()
 
+#experimenten voor thesissectie 6.7    
 def randomRatiosApplyExperiment(nrOfVars, iterationsPerNode, operation, heuristic = VO, vtree_type = "balanced"):
     comm = MPI.COMM_WORLD
     size = comm.Get_size()
@@ -214,6 +193,7 @@ def randomRatiosApplyExperiment(nrOfVars, iterationsPerNode, operation, heuristi
             file.write(f"{allNoOverheadTimes.tolist()}\n") 
     gc.collect()
 
+#experiment voor variatie in compilatietijd omwille van willekeurige apply volgordes
 def randomOrderCompTimeVariation(nrOfVars, randomSeed, iteration, heuristics, operation, vtree_type = "balanced", vtree = -1):
     fullComm = MPI.COMM_WORLD
     size = fullComm.Get_size()
@@ -314,6 +294,7 @@ def randomOrderCompTimeVariation(nrOfVars, randomSeed, iteration, heuristics, op
     # MPI.Finalize()
     gc.collect()
 
+#extra experiment voor de combo heuristieken, met parameters zodat sdds overeenkomen met eerder gerunde experimenten
 def combinedHeuristicTest(nrOfVars, heur, randomSeeds, iter, operation, threshold, vtree_type = "balanced"):
     fullComm = MPI.COMM_WORLD
     size = fullComm.Get_size()
@@ -359,6 +340,15 @@ def combinedHeuristicTest(nrOfVars, heur, randomSeeds, iter, operation, threshol
         with open(fullPath, 'w') as file:
             file.write(f"{[noOverheadTime]}\n")
     
+#parameters:
+#   -nrOfVars
+#   -nr of iterations per node
+#   -heuristic
+#   -vtree type
+#   -threshold (voor combo heuristieken, size)
+#   -type experiment size
+#       -> threshold in percentage als experiment 4
+#       -> threshold op size als experiment 5
 def main():
     args = sys.argv[1:]
     baseArgs = [16, 2, VO, "balanced", 80, 4]
@@ -374,8 +364,8 @@ def main():
     print(baseArgs)
 
     if baseArgs[5] == 1: #heuristicApply experiment
-        heuristicApply(baseArgs[0], baseArgs[1], OR, baseArgs[2], baseArgs[3])
-        heuristicApply(baseArgs[0], baseArgs[1], AND, baseArgs[2], baseArgs[3])
+        heuristicApplyExperiment(baseArgs[0], baseArgs[1], OR, baseArgs[2], baseArgs[3])
+        heuristicApplyExperiment(baseArgs[0], baseArgs[1], AND, baseArgs[2], baseArgs[3])
     if baseArgs[5] == 2: #random ratios experiment, niet gebruiken!
         # randomRatiosApplyExperiment(baseArgs[0], baseArgs[1], OR, baseArgs[2], baseArgs[3])
         # randomRatiosApplyExperiment(baseArgs[0], baseArgs[1], AND, baseArgs[2], baseArgs[3])
@@ -399,7 +389,7 @@ def main():
                 print(f"sanity check: vars left = {vtree.left().var_count()}, vars right = {vtree.right().var_count()}")
             randomOrderCompTimeVariation(baseArgs[0], randomSeed, i, heuristics, AND, baseArgs[3], vtree)
 
-    if baseArgs[5] == 4: #extra ratios experiment met gecombineerde heuristiek
+    if baseArgs[5] == 4: #extra ratios experiment met gecombineerde heuristiek op basis van variabelen
         randomSeeds = []
         randomizer = random.Random(50512)
         for i in range(100):
@@ -407,7 +397,7 @@ def main():
         for i in range((baseArgs[1] // 72)+1): 
             combinedHeuristicTest(baseArgs[0], IVO_RL_EL, randomSeeds, i, AND, baseArgs[4]/100, baseArgs[3])
 
-    if baseArgs[5] == 5: #extra ratios experiment met gecombineerde heuristiek
+    if baseArgs[5] == 5: #extra ratios experiment met gecombineerde heuristiek op basis van sizes
         randomSeeds = []
         randomizer = random.Random(50512)
         for i in range(100):

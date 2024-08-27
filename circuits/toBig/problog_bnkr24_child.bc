@@ -1,0 +1,865 @@
+c BC-S1.2
+T lowerBodyO2_12+_
+T c0_0
+T c0_1
+T c0_2
+T c0_3
+T c0_4
+T c0_5
+T c0_6
+T c0_7
+T c0_8
+T c0_9
+T c0_10
+T c0_11
+T c0_12
+T c0_13
+T c0_14
+T c0_15
+T c0_16
+T c0_17
+T c0_18
+T c0_19
+T c0_20
+T c0_21
+T c1_0
+T c1_1
+T c1_2
+T c1_3
+T c1_4
+T c1_5
+T c1_6
+T c1_7
+T c1_8
+T c1_9
+T c1_10
+T c1_11
+T c1_12
+T c1_13
+T c1_14
+T c1_15
+T c1_16
+T c1_17
+T c1_18
+T c1_19
+T c1_20
+T c1_21
+T c2_0
+T c2_1
+T c2_2
+T c2_3
+T c2_4
+T c2_5
+T c2_6
+T c3_0
+T c3_1
+T c3_2
+T c3_3
+T c3_4
+T c3_5
+T c3_6
+T c4_0
+T c4_1
+T c4_2
+T c4_3
+T c5_0
+T c5_1
+T c5_2
+T c5_3
+T c5_4
+T c5_5
+T c5_6
+T c6_0
+T c6_1
+T c6_2
+T c6_3
+T c6_4
+T c6_5
+T c6_6
+T c7_0
+T c7_1
+T c7_2
+T c7_3
+T c7_4
+T c7_5
+T c7_6
+T c7_7
+T c7_8
+T c7_9
+T c7_10
+T c8_0
+T c8_1
+T c8_2
+T c8_3
+T c8_4
+T c8_5
+T c8_6
+T c8_7
+T c8_8
+T c8_9
+T c8_10
+T c9_0
+T c9_1
+T c9_2
+T c9_3
+T c9_4
+T c9_5
+T c9_6
+T c9_7
+T c9_8
+T c9_9
+T c9_10
+T c10_0
+T c10_1
+T c10_2
+T c10_3
+T c10_4
+T c10_5
+T c10_6
+T c10_7
+T c10_8
+T c10_9
+T c10_10
+T c11_0
+T c11_1
+T c11_2
+T c11_3
+T c11_4
+T c11_5
+T c11_6
+T c11_7
+T c11_8
+T c11_9
+T c11_10
+T c12_0
+T c12_1
+T c12_2
+T c12_3
+T c12_4
+T c12_5
+T c12_6
+T c12_7
+T c12_8
+T c12_9
+T c12_10
+T c25_0
+T c25_1
+T c25_2
+T c25_3
+T c25_4
+T c25_5
+T c25_6
+T c26_0
+T c26_1
+T c26_2
+T c26_3
+T c26_4
+T c26_5
+T c26_6
+T c27_0
+T c27_1
+T c27_2
+T c27_3
+T c27_4
+T c27_5
+T c27_6
+T c28_0
+T c28_1
+T c28_2
+T c28_3
+T c28_4
+T c28_5
+T c28_6
+T c29_0
+T c29_1
+T c29_2
+T c29_3
+T c29_4
+T c29_5
+T c29_6
+T c30_0
+T c30_1
+T c30_2
+T c30_3
+T c30_4
+T c30_5
+T c30_6
+T c31_0
+T c31_1
+T c31_2
+T c31_3
+T c31_4
+T c31_5
+T c31_6
+T c32_0
+T c32_1
+T c32_2
+T c32_3
+T c32_4
+T c32_5
+T c32_6
+T c33_0
+T c33_1
+T c33_2
+T c33_3
+T c33_4
+T c33_5
+T c33_6
+T c34_0
+T c34_1
+T c34_2
+T c34_3
+T c34_4
+T c34_5
+T c34_6
+T c35_0
+T c35_1
+T c35_2
+T c35_3
+T c35_4
+T c35_5
+T c35_6
+T c36_0
+T c36_1
+T c36_2
+T c36_3
+T c36_4
+T c36_5
+T c36_6
+T c37_0
+T c37_1
+T c37_2
+T c37_3
+T c37_4
+T c37_5
+T c37_6
+T c38_0
+T c38_1
+T c38_2
+T c38_3
+T c38_4
+T c38_5
+T c38_6
+T c39_0
+T c39_1
+T c39_2
+T c39_3
+T c39_4
+T c39_5
+T c39_6
+T c40_0
+T c40_1
+T c40_2
+T c40_3
+T c40_4
+T c40_5
+T c40_6
+T c41_0
+T c41_1
+T c41_2
+T c41_3
+T c41_4
+T c41_5
+T c41_6
+T c42_0
+T c42_1
+T c42_2
+T c42_3
+T c42_4
+T c42_5
+T c42_6
+I choice1377_1_hypoxiaInO2_Moderate_
+I choice217_2_lungParench_Abnormal_
+I choice422_3_cardiacMixing_Transp._
+I choice1417_2_hypoxiaInO2_Severe_
+I choice290_1_lungParench_Congested_
+I choice1237_0_hypoxiaInO2_Mild_
+I choice46_2_disease_Fallot_
+I choice1397_0_hypoxiaInO2_Mild_
+I choice1196_2_hypoxiaInO2_Severe_
+I choice150_2_ductFlow_Rt_to_Lt_
+I choice375_3_cardiacMixing_Transp._
+I choice1217_1_hypoxiaInO2_Moderate_
+I choice117_0_ductFlow_Lt_to_Rt_
+I choice1237_1_hypoxiaInO2_Moderate_
+I choice12_2_disease_Fallot_
+I choice1277_2_hypoxiaInO2_Severe_
+I choice150_0_ductFlow_Lt_to_Rt_
+I choice1357_e_null
+I choice422_2_cardiacMixing_Complete_
+I choice236_2_lungParench_Abnormal_
+I choice236_0_lungParench_Normal_
+I choice1506_0_hypDistrib
+I choice1297_0_hypoxiaInO2_Mild_
+I choice80_0_ductFlow_Lt_to_Rt_
+I choice1486_0_hypDistrib
+I choice1397_2_hypoxiaInO2_Severe_
+I choice1277_e_null
+I choice12_0_disease_PFC_
+I choice132_0_ductFlow_Lt_to_Rt_
+I choice1257_0_hypoxiaInO2_Mild_
+I choice1257_1_hypoxiaInO2_Moderate_
+I choice491_1_cardiacMixing_Mild_
+I choice99_0_ductFlow_Lt_to_Rt_
+I choice1337_e_null
+I choice1496_0_hypDistrib
+I choice1297_e_null
+I choice1536_0_hypDistrib
+I choice375_2_cardiacMixing_Complete_
+I choice1297_2_hypoxiaInO2_Severe_
+I choice46_4_disease_TAPVD_
+I choice80_2_ductFlow_Rt_to_Lt_
+I choice254_1_lungParench_Congested_
+I choice1760_2_lowerBodyO2_12+_
+I choice217_e_null
+I choice1337_0_hypoxiaInO2_Mild_
+I choice1516_0_hypDistrib
+I choice99_2_ductFlow_Rt_to_Lt_
+I choice1546_0_hypDistrib
+I choice1317_e_null
+I choice217_1_lungParench_Congested_
+I choice491_2_cardiacMixing_Complete_
+I choice1526_0_hypDistrib
+I choice1196_e_null
+I choice1802_2_lowerBodyO2_12+_
+I choice308_2_lungParench_Abnormal_
+I choice1257_e_null
+I choice46_5_disease_Lung_
+I choice491_0_cardiacMixing_None_
+I choice1277_1_hypoxiaInO2_Moderate_
+I choice150_1_ductFlow_None_
+I choice422_1_cardiacMixing_Mild_
+I choice1466_0_hypDistrib
+I choice1377_e_null
+I choice1397_e_null
+I choice99_1_ductFlow_None_
+I choice1842_2_lowerBodyO2_12+_
+I choice1196_0_hypoxiaInO2_Mild_
+I choice254_e_null
+I choice1357_2_hypoxiaInO2_Severe_
+I choice399_1_cardiacMixing_Mild_
+I choice254_0_lungParench_Normal_
+I choice1397_1_hypoxiaInO2_Moderate_
+I choice1257_2_hypoxiaInO2_Severe_
+I choice12_5_disease_Lung_
+I choice445_0_cardiacMixing_None_
+I choice236_e_null
+I choice445_3_cardiacMixing_Transp._
+I choice12_4_disease_TAPVD_
+I choice1277_0_hypoxiaInO2_Mild_
+I choice117_1_ductFlow_None_
+I choice290_2_lungParench_Abnormal_
+I choice399_0_cardiacMixing_None_
+I choice1317_1_hypoxiaInO2_Moderate_
+I choice491_e_null
+I choice1217_2_hypoxiaInO2_Severe_
+I choice375_e_null
+I choice422_0_cardiacMixing_None_
+I choice272_0_lungParench_Normal_
+I choice150_e_null
+I choice1357_1_hypoxiaInO2_Moderate_
+I choice468_0_cardiacMixing_None_
+I choice117_e_null
+I choice468_3_cardiacMixing_Transp._
+I choice445_1_cardiacMixing_Mild_
+I choice217_0_lungParench_Normal_
+I choice1377_2_hypoxiaInO2_Severe_
+I choice12_e_null
+I choice491_3_cardiacMixing_Transp._
+I choice1237_2_hypoxiaInO2_Severe_
+I choice422_e_null
+I choice290_e_null
+I choice46_0_disease_PFC_
+I choice1196_1_hypoxiaInO2_Moderate_
+I choice1217_0_hypoxiaInO2_Mild_
+I choice1217_e_null
+I choice1357_0_hypoxiaInO2_Mild_
+I choice1822_2_lowerBodyO2_12+_
+I choice399_e_null
+I choice46_3_disease_PAIVS_
+I choice1738_2_lowerBodyO2_12+_
+I choice12_1_disease_TGA_
+I birthAsphyxia
+I choice272_2_lungParench_Abnormal_
+I choice399_3_cardiacMixing_Transp._
+I choice1476_0_hypDistrib
+I choice80_1_ductFlow_None_
+I choice80_e_null
+I choice254_2_lungParench_Abnormal_
+I choice236_1_lungParench_Congested_
+I choice1781_2_lowerBodyO2_12+_
+I choice1237_e_null
+I choice1417_e_null
+I choice1317_0_hypoxiaInO2_Mild_
+I choice308_e_null
+I choice1455_0_hypDistrib
+I choice468_2_cardiacMixing_Complete_
+I choice1377_0_hypoxiaInO2_Mild_
+I choice1556_0_hypDistrib
+I choice375_1_cardiacMixing_Mild_
+I choice99_e_null
+I choice272_e_null
+I choice1337_1_hypoxiaInO2_Moderate_
+I choice132_1_ductFlow_None_
+I choice12_3_disease_PAIVS_
+I choice468_e_null
+I choice445_2_cardiacMixing_Complete_
+I choice308_0_lungParench_Normal_
+I choice375_0_cardiacMixing_None_
+I choice132_2_ductFlow_Rt_to_Lt_
+I choice46_e_null
+I choice1317_2_hypoxiaInO2_Severe_
+I choice46_1_disease_TGA_
+I choice468_1_cardiacMixing_Mild_
+I choice1417_0_hypoxiaInO2_Mild_
+I choice399_2_cardiacMixing_Complete_
+I choice1566_0_hypDistrib
+I choice308_1_lungParench_Congested_
+I choice1297_1_hypoxiaInO2_Moderate_
+I choice272_1_lungParench_Congested_
+I choice445_e_null
+I choice290_0_lungParench_Normal_
+I choice132_e_null
+I choice1417_1_hypoxiaInO2_Moderate_
+I choice1337_2_hypoxiaInO2_Severe_
+G g3 := A birthAsphyxia choice12_0_disease_PFC_
+G g5 := A -birthAsphyxia choice46_0_disease_PFC_
+G disease_PFC_ := O g3 g5
+G g8 := A disease_PFC_ choice80_0_ductFlow_Lt_to_Rt_
+G g11 := A birthAsphyxia choice12_1_disease_TGA_
+G g14 := A -birthAsphyxia choice46_1_disease_TGA_
+G disease_TGA_ := O g11 g14
+G g17 := A disease_TGA_ choice99_0_ductFlow_Lt_to_Rt_
+G g19 := A birthAsphyxia choice12_2_disease_Fallot_
+G g21 := A -birthAsphyxia choice46_2_disease_Fallot_
+G disease_Fallot_ := O g19 g21
+G g24 := A disease_Fallot_ choice117_0_ductFlow_Lt_to_Rt_
+G g26 := A birthAsphyxia choice12_3_disease_PAIVS_
+G g28 := A -birthAsphyxia choice46_3_disease_PAIVS_
+G disease_PAIVS_ := O g26 g28
+G g31 := A birthAsphyxia choice12_4_disease_TAPVD_
+G g33 := A -birthAsphyxia choice46_4_disease_TAPVD_
+G disease_TAPVD_ := O g31 g33
+G g36 := A disease_TAPVD_ choice132_0_ductFlow_Lt_to_Rt_
+G g38 := A birthAsphyxia choice12_5_disease_Lung_
+G g40 := A -birthAsphyxia choice46_5_disease_Lung_
+G disease_Lung_ := O g38 g40
+G g43 := A disease_Lung_ choice150_0_ductFlow_Lt_to_Rt_
+G ductFlow_Lt_to_Rt_ := O g8 g17 g24 disease_PAIVS_ g36 g43
+G g46 := A disease_PFC_ choice375_0_cardiacMixing_None_
+G g48 := A disease_TGA_ choice399_0_cardiacMixing_None_
+G g50 := A disease_Fallot_ choice422_0_cardiacMixing_None_
+G g52 := A disease_PAIVS_ choice445_0_cardiacMixing_None_
+G g54 := A disease_TAPVD_ choice468_0_cardiacMixing_None_
+G g56 := A disease_Lung_ choice491_0_cardiacMixing_None_
+G cardiacMixing_None_ := O g46 g48 g50 g52 g54 g56
+G body_14581455_hypDistrib := A ductFlow_Lt_to_Rt_ cardiacMixing_None_
+G g60 := A body_14581455_hypDistrib choice1455_0_hypDistrib
+G g63 := A disease_PFC_ choice375_1_cardiacMixing_Mild_
+G g66 := A disease_TGA_ choice399_1_cardiacMixing_Mild_
+G g69 := A disease_Fallot_ choice422_1_cardiacMixing_Mild_
+G g72 := A disease_PAIVS_ choice445_1_cardiacMixing_Mild_
+G g75 := A disease_TAPVD_ choice468_1_cardiacMixing_Mild_
+G g78 := A disease_Lung_ choice491_1_cardiacMixing_Mild_
+G cardiacMixing_Mild_ := O g63 g66 g69 g72 g75 g78
+G body_14691466_hypDistrib := A ductFlow_Lt_to_Rt_ cardiacMixing_Mild_
+G g82 := A body_14691466_hypDistrib choice1466_0_hypDistrib
+G g84 := A disease_PFC_ choice375_2_cardiacMixing_Complete_
+G g86 := A disease_TGA_ choice399_2_cardiacMixing_Complete_
+G g88 := A disease_Fallot_ choice422_2_cardiacMixing_Complete_
+G g90 := A disease_PAIVS_ choice445_2_cardiacMixing_Complete_
+G g92 := A disease_TAPVD_ choice468_2_cardiacMixing_Complete_
+G g94 := A disease_Lung_ choice491_2_cardiacMixing_Complete_
+G cardiacMixing_Complete_ := O g84 g86 g88 g90 g92 g94
+G body_14791476_hypDistrib := A ductFlow_Lt_to_Rt_ cardiacMixing_Complete_
+G g98 := A body_14791476_hypDistrib choice1476_0_hypDistrib
+G g100 := A disease_PFC_ choice375_3_cardiacMixing_Transp._
+G g102 := A disease_TGA_ choice399_3_cardiacMixing_Transp._
+G g104 := A disease_Fallot_ choice422_3_cardiacMixing_Transp._
+G g106 := A disease_PAIVS_ choice445_3_cardiacMixing_Transp._
+G g108 := A disease_TAPVD_ choice468_3_cardiacMixing_Transp._
+G g110 := A disease_Lung_ choice491_3_cardiacMixing_Transp._
+G cardiacMixing_Transp._ := O g100 g102 g104 g106 g108 g110
+G body_14891486_hypDistrib := A ductFlow_Lt_to_Rt_ cardiacMixing_Transp._
+G g114 := A body_14891486_hypDistrib choice1486_0_hypDistrib
+G g117 := A disease_PFC_ choice80_1_ductFlow_None_
+G g120 := A disease_TGA_ choice99_1_ductFlow_None_
+G g123 := A disease_Fallot_ choice117_1_ductFlow_None_
+G g126 := A disease_TAPVD_ choice132_1_ductFlow_None_
+G g129 := A disease_Lung_ choice150_1_ductFlow_None_
+G ductFlow_None_ := O g117 g120 g123 g126 g129
+G body_14991496_hypDistrib := A ductFlow_None_ cardiacMixing_None_
+G g133 := A body_14991496_hypDistrib choice1496_0_hypDistrib
+G body_15091506_hypDistrib := A ductFlow_None_ cardiacMixing_Mild_
+G g136 := A body_15091506_hypDistrib choice1506_0_hypDistrib
+G body_15191516_hypDistrib := A ductFlow_None_ cardiacMixing_Complete_
+G g139 := A body_15191516_hypDistrib choice1516_0_hypDistrib
+G body_15291526_hypDistrib := A ductFlow_None_ cardiacMixing_Transp._
+G g142 := A body_15291526_hypDistrib choice1526_0_hypDistrib
+G g144 := A disease_PFC_ choice80_2_ductFlow_Rt_to_Lt_
+G g146 := A disease_TGA_ choice99_2_ductFlow_Rt_to_Lt_
+G g148 := A disease_TAPVD_ choice132_2_ductFlow_Rt_to_Lt_
+G g150 := A disease_Lung_ choice150_2_ductFlow_Rt_to_Lt_
+G ductFlow_Rt_to_Lt_ := O g144 g146 g148 g150
+G body_15391536_hypDistrib := A ductFlow_Rt_to_Lt_ cardiacMixing_None_
+G g154 := A body_15391536_hypDistrib choice1536_0_hypDistrib
+G body_15491546_hypDistrib := A ductFlow_Rt_to_Lt_ cardiacMixing_Mild_
+G g157 := A body_15491546_hypDistrib choice1546_0_hypDistrib
+G body_15591556_hypDistrib := A ductFlow_Rt_to_Lt_ cardiacMixing_Complete_
+G g160 := A body_15591556_hypDistrib choice1556_0_hypDistrib
+G body_15691566_hypDistrib := A ductFlow_Rt_to_Lt_ cardiacMixing_Transp._
+G g163 := A body_15691566_hypDistrib choice1566_0_hypDistrib
+G hypDistrib := O g60 g82 g98 g114 g133 g136 g139 g142 g154 g157 g160 g163
+G g166 := A disease_PFC_ choice217_0_lungParench_Normal_
+G g168 := A disease_TGA_ choice236_0_lungParench_Normal_
+G g170 := A disease_Fallot_ choice254_0_lungParench_Normal_
+G g172 := A disease_PAIVS_ choice272_0_lungParench_Normal_
+G g174 := A disease_TAPVD_ choice290_0_lungParench_Normal_
+G g176 := A disease_Lung_ choice308_0_lungParench_Normal_
+G lungParench_Normal_ := O g166 g168 g170 g172 g174 g176
+G body_11991196_multi := A cardiacMixing_None_ lungParench_Normal_
+G g180 := A body_11991196_multi choice1196_0_hypoxiaInO2_Mild_
+G g183 := A disease_PFC_ choice217_1_lungParench_Congested_
+G g186 := A disease_TGA_ choice236_1_lungParench_Congested_
+G g189 := A disease_Fallot_ choice254_1_lungParench_Congested_
+G g192 := A disease_PAIVS_ choice272_1_lungParench_Congested_
+G g195 := A disease_TAPVD_ choice290_1_lungParench_Congested_
+G g198 := A disease_Lung_ choice308_1_lungParench_Congested_
+G lungParench_Congested_ := O g183 g186 g189 g192 g195 g198
+G body_12201217_multi := A cardiacMixing_None_ lungParench_Congested_
+G g202 := A body_12201217_multi choice1217_0_hypoxiaInO2_Mild_
+G g204 := A disease_PFC_ choice217_2_lungParench_Abnormal_
+G g206 := A disease_TGA_ choice236_2_lungParench_Abnormal_
+G g208 := A disease_Fallot_ choice254_2_lungParench_Abnormal_
+G g210 := A disease_PAIVS_ choice272_2_lungParench_Abnormal_
+G g212 := A disease_TAPVD_ choice290_2_lungParench_Abnormal_
+G g214 := A disease_Lung_ choice308_2_lungParench_Abnormal_
+G lungParench_Abnormal_ := O g204 g206 g208 g210 g212 g214
+G body_12401237_multi := A cardiacMixing_None_ lungParench_Abnormal_
+G g218 := A body_12401237_multi choice1237_0_hypoxiaInO2_Mild_
+G body_12601257_multi := A cardiacMixing_Mild_ lungParench_Normal_
+G g221 := A body_12601257_multi choice1257_0_hypoxiaInO2_Mild_
+G body_12801277_multi := A cardiacMixing_Mild_ lungParench_Congested_
+G g224 := A body_12801277_multi choice1277_0_hypoxiaInO2_Mild_
+G body_13001297_multi := A cardiacMixing_Mild_ lungParench_Abnormal_
+G g227 := A body_13001297_multi choice1297_0_hypoxiaInO2_Mild_
+G body_13201317_multi := A cardiacMixing_Complete_ lungParench_Normal_
+G g230 := A body_13201317_multi choice1317_0_hypoxiaInO2_Mild_
+G body_13401337_multi := A cardiacMixing_Complete_ lungParench_Congested_
+G g233 := A body_13401337_multi choice1337_0_hypoxiaInO2_Mild_
+G body_13601357_multi := A cardiacMixing_Complete_ lungParench_Abnormal_
+G g236 := A body_13601357_multi choice1357_0_hypoxiaInO2_Mild_
+G body_13801377_multi := A cardiacMixing_Transp._ lungParench_Normal_
+G g239 := A body_13801377_multi choice1377_0_hypoxiaInO2_Mild_
+G body_14001397_multi := A cardiacMixing_Transp._ lungParench_Congested_
+G g242 := A body_14001397_multi choice1397_0_hypoxiaInO2_Mild_
+G body_14201417_multi := A cardiacMixing_Transp._ lungParench_Abnormal_
+G g245 := A body_14201417_multi choice1417_0_hypoxiaInO2_Mild_
+G hypoxiaInO2_Mild_ := O g180 g202 g218 g221 g224 g227 g230 g233 g236 g239 g242 g245
+G body_17421738_multi := A -hypDistrib hypoxiaInO2_Mild_
+G g249 := A body_17421738_multi choice1738_2_lowerBodyO2_12+_
+G g252 := A body_11991196_multi choice1196_1_hypoxiaInO2_Moderate_
+G g255 := A body_12201217_multi choice1217_1_hypoxiaInO2_Moderate_
+G g258 := A body_12401237_multi choice1237_1_hypoxiaInO2_Moderate_
+G g261 := A body_12601257_multi choice1257_1_hypoxiaInO2_Moderate_
+G g264 := A body_12801277_multi choice1277_1_hypoxiaInO2_Moderate_
+G g267 := A body_13001297_multi choice1297_1_hypoxiaInO2_Moderate_
+G g270 := A body_13201317_multi choice1317_1_hypoxiaInO2_Moderate_
+G g273 := A body_13401337_multi choice1337_1_hypoxiaInO2_Moderate_
+G g276 := A body_13601357_multi choice1357_1_hypoxiaInO2_Moderate_
+G g279 := A body_13801377_multi choice1377_1_hypoxiaInO2_Moderate_
+G g282 := A body_14001397_multi choice1397_1_hypoxiaInO2_Moderate_
+G g285 := A body_14201417_multi choice1417_1_hypoxiaInO2_Moderate_
+G hypoxiaInO2_Moderate_ := O g252 g255 g258 g261 g264 g267 g270 g273 g276 g279 g282 g285
+G body_17641760_multi := A -hypDistrib hypoxiaInO2_Moderate_
+G g289 := A body_17641760_multi choice1760_2_lowerBodyO2_12+_
+G g291 := A body_11991196_multi choice1196_2_hypoxiaInO2_Severe_
+G g293 := A body_12201217_multi choice1217_2_hypoxiaInO2_Severe_
+G g295 := A body_12401237_multi choice1237_2_hypoxiaInO2_Severe_
+G g297 := A body_12601257_multi choice1257_2_hypoxiaInO2_Severe_
+G g299 := A body_12801277_multi choice1277_2_hypoxiaInO2_Severe_
+G g301 := A body_13001297_multi choice1297_2_hypoxiaInO2_Severe_
+G g303 := A body_13201317_multi choice1317_2_hypoxiaInO2_Severe_
+G g305 := A body_13401337_multi choice1337_2_hypoxiaInO2_Severe_
+G g307 := A body_13601357_multi choice1357_2_hypoxiaInO2_Severe_
+G g309 := A body_13801377_multi choice1377_2_hypoxiaInO2_Severe_
+G g311 := A body_14001397_multi choice1397_2_hypoxiaInO2_Severe_
+G g313 := A body_14201417_multi choice1417_2_hypoxiaInO2_Severe_
+G hypoxiaInO2_Severe_ := O g291 g293 g295 g297 g299 g301 g303 g305 g307 g309 g311 g313
+G body_17851781_multi := A -hypDistrib hypoxiaInO2_Severe_
+G g317 := A body_17851781_multi choice1781_2_lowerBodyO2_12+_
+G body_18051802_multi := A hypDistrib hypoxiaInO2_Mild_
+G g320 := A body_18051802_multi choice1802_2_lowerBodyO2_12+_
+G body_18251822_multi := A hypDistrib hypoxiaInO2_Moderate_
+G g323 := A body_18251822_multi choice1822_2_lowerBodyO2_12+_
+G body_18451842_multi := A hypDistrib hypoxiaInO2_Severe_
+G g326 := A body_18451842_multi choice1842_2_lowerBodyO2_12+_
+G lowerBodyO2_12+_ := O g249 g289 g317 g320 g323 g326
+G c0_0 := O -choice12_0_disease_PFC_ -choice12_5_disease_Lung_
+G c0_1 := O -choice12_0_disease_PFC_ -choice12_1_disease_TGA_
+G c0_2 := O -choice12_0_disease_PFC_ -choice12_2_disease_Fallot_
+G c0_3 := O -choice12_0_disease_PFC_ -choice12_3_disease_PAIVS_
+G c0_4 := O -choice12_0_disease_PFC_ -choice12_4_disease_TAPVD_
+G c0_5 := O -choice12_0_disease_PFC_ -choice12_e_null
+G c0_6 := O -choice12_5_disease_Lung_ -choice12_1_disease_TGA_
+G c0_7 := O -choice12_5_disease_Lung_ -choice12_2_disease_Fallot_
+G c0_8 := O -choice12_5_disease_Lung_ -choice12_3_disease_PAIVS_
+G c0_9 := O -choice12_5_disease_Lung_ -choice12_4_disease_TAPVD_
+G c0_10 := O -choice12_5_disease_Lung_ -choice12_e_null
+G c0_11 := O -choice12_1_disease_TGA_ -choice12_2_disease_Fallot_
+G c0_12 := O -choice12_1_disease_TGA_ -choice12_3_disease_PAIVS_
+G c0_13 := O -choice12_1_disease_TGA_ -choice12_4_disease_TAPVD_
+G c0_14 := O -choice12_1_disease_TGA_ -choice12_e_null
+G c0_15 := O -choice12_2_disease_Fallot_ -choice12_3_disease_PAIVS_
+G c0_16 := O -choice12_2_disease_Fallot_ -choice12_4_disease_TAPVD_
+G c0_17 := O -choice12_2_disease_Fallot_ -choice12_e_null
+G c0_18 := O -choice12_3_disease_PAIVS_ -choice12_4_disease_TAPVD_
+G c0_19 := O -choice12_3_disease_PAIVS_ -choice12_e_null
+G c0_20 := O -choice12_4_disease_TAPVD_ -choice12_e_null
+G c0_21 := O choice12_0_disease_PFC_ choice12_5_disease_Lung_ choice12_1_disease_TGA_ choice12_2_disease_Fallot_ choice12_3_disease_PAIVS_ choice12_4_disease_TAPVD_ choice12_e_null
+G c1_0 := O -choice46_4_disease_TAPVD_ -choice46_0_disease_PFC_
+G c1_1 := O -choice46_4_disease_TAPVD_ -choice46_5_disease_Lung_
+G c1_2 := O -choice46_4_disease_TAPVD_ -choice46_1_disease_TGA_
+G c1_3 := O -choice46_4_disease_TAPVD_ -choice46_2_disease_Fallot_
+G c1_4 := O -choice46_4_disease_TAPVD_ -choice46_3_disease_PAIVS_
+G c1_5 := O -choice46_4_disease_TAPVD_ -choice46_e_null
+G c1_6 := O -choice46_0_disease_PFC_ -choice46_5_disease_Lung_
+G c1_7 := O -choice46_0_disease_PFC_ -choice46_1_disease_TGA_
+G c1_8 := O -choice46_0_disease_PFC_ -choice46_2_disease_Fallot_
+G c1_9 := O -choice46_0_disease_PFC_ -choice46_3_disease_PAIVS_
+G c1_10 := O -choice46_0_disease_PFC_ -choice46_e_null
+G c1_11 := O -choice46_5_disease_Lung_ -choice46_1_disease_TGA_
+G c1_12 := O -choice46_5_disease_Lung_ -choice46_2_disease_Fallot_
+G c1_13 := O -choice46_5_disease_Lung_ -choice46_3_disease_PAIVS_
+G c1_14 := O -choice46_5_disease_Lung_ -choice46_e_null
+G c1_15 := O -choice46_1_disease_TGA_ -choice46_2_disease_Fallot_
+G c1_16 := O -choice46_1_disease_TGA_ -choice46_3_disease_PAIVS_
+G c1_17 := O -choice46_1_disease_TGA_ -choice46_e_null
+G c1_18 := O -choice46_2_disease_Fallot_ -choice46_3_disease_PAIVS_
+G c1_19 := O -choice46_2_disease_Fallot_ -choice46_e_null
+G c1_20 := O -choice46_3_disease_PAIVS_ -choice46_e_null
+G c1_21 := O choice46_4_disease_TAPVD_ choice46_0_disease_PFC_ choice46_5_disease_Lung_ choice46_1_disease_TGA_ choice46_2_disease_Fallot_ choice46_3_disease_PAIVS_ choice46_e_null
+G c2_0 := O -choice80_2_ductFlow_Rt_to_Lt_ -choice80_1_ductFlow_None_
+G c2_1 := O -choice80_2_ductFlow_Rt_to_Lt_ -choice80_0_ductFlow_Lt_to_Rt_
+G c2_2 := O -choice80_2_ductFlow_Rt_to_Lt_ -choice80_e_null
+G c2_3 := O -choice80_1_ductFlow_None_ -choice80_0_ductFlow_Lt_to_Rt_
+G c2_4 := O -choice80_1_ductFlow_None_ -choice80_e_null
+G c2_5 := O -choice80_0_ductFlow_Lt_to_Rt_ -choice80_e_null
+G c2_6 := O choice80_2_ductFlow_Rt_to_Lt_ choice80_1_ductFlow_None_ choice80_0_ductFlow_Lt_to_Rt_ choice80_e_null
+G c3_0 := O -choice99_0_ductFlow_Lt_to_Rt_ -choice99_2_ductFlow_Rt_to_Lt_
+G c3_1 := O -choice99_0_ductFlow_Lt_to_Rt_ -choice99_1_ductFlow_None_
+G c3_2 := O -choice99_0_ductFlow_Lt_to_Rt_ -choice99_e_null
+G c3_3 := O -choice99_2_ductFlow_Rt_to_Lt_ -choice99_1_ductFlow_None_
+G c3_4 := O -choice99_2_ductFlow_Rt_to_Lt_ -choice99_e_null
+G c3_5 := O -choice99_1_ductFlow_None_ -choice99_e_null
+G c3_6 := O choice99_0_ductFlow_Lt_to_Rt_ choice99_2_ductFlow_Rt_to_Lt_ choice99_1_ductFlow_None_ choice99_e_null
+G c4_0 := O -choice117_1_ductFlow_None_ -choice117_0_ductFlow_Lt_to_Rt_
+G c4_1 := O -choice117_1_ductFlow_None_ -choice117_e_null
+G c4_2 := O -choice117_0_ductFlow_Lt_to_Rt_ -choice117_e_null
+G c4_3 := O choice117_1_ductFlow_None_ choice117_0_ductFlow_Lt_to_Rt_ choice117_e_null
+G c5_0 := O -choice132_0_ductFlow_Lt_to_Rt_ -choice132_1_ductFlow_None_
+G c5_1 := O -choice132_0_ductFlow_Lt_to_Rt_ -choice132_2_ductFlow_Rt_to_Lt_
+G c5_2 := O -choice132_0_ductFlow_Lt_to_Rt_ -choice132_e_null
+G c5_3 := O -choice132_1_ductFlow_None_ -choice132_2_ductFlow_Rt_to_Lt_
+G c5_4 := O -choice132_1_ductFlow_None_ -choice132_e_null
+G c5_5 := O -choice132_2_ductFlow_Rt_to_Lt_ -choice132_e_null
+G c5_6 := O choice132_0_ductFlow_Lt_to_Rt_ choice132_1_ductFlow_None_ choice132_2_ductFlow_Rt_to_Lt_ choice132_e_null
+G c6_0 := O -choice150_0_ductFlow_Lt_to_Rt_ -choice150_2_ductFlow_Rt_to_Lt_
+G c6_1 := O -choice150_0_ductFlow_Lt_to_Rt_ -choice150_1_ductFlow_None_
+G c6_2 := O -choice150_0_ductFlow_Lt_to_Rt_ -choice150_e_null
+G c6_3 := O -choice150_2_ductFlow_Rt_to_Lt_ -choice150_1_ductFlow_None_
+G c6_4 := O -choice150_2_ductFlow_Rt_to_Lt_ -choice150_e_null
+G c6_5 := O -choice150_1_ductFlow_None_ -choice150_e_null
+G c6_6 := O choice150_0_ductFlow_Lt_to_Rt_ choice150_2_ductFlow_Rt_to_Lt_ choice150_1_ductFlow_None_ choice150_e_null
+G c7_0 := O -choice375_3_cardiacMixing_Transp._ -choice375_2_cardiacMixing_Complete_
+G c7_1 := O -choice375_3_cardiacMixing_Transp._ -choice375_1_cardiacMixing_Mild_
+G c7_2 := O -choice375_3_cardiacMixing_Transp._ -choice375_0_cardiacMixing_None_
+G c7_3 := O -choice375_3_cardiacMixing_Transp._ -choice375_e_null
+G c7_4 := O -choice375_2_cardiacMixing_Complete_ -choice375_1_cardiacMixing_Mild_
+G c7_5 := O -choice375_2_cardiacMixing_Complete_ -choice375_0_cardiacMixing_None_
+G c7_6 := O -choice375_2_cardiacMixing_Complete_ -choice375_e_null
+G c7_7 := O -choice375_1_cardiacMixing_Mild_ -choice375_0_cardiacMixing_None_
+G c7_8 := O -choice375_1_cardiacMixing_Mild_ -choice375_e_null
+G c7_9 := O -choice375_0_cardiacMixing_None_ -choice375_e_null
+G c7_10 := O choice375_3_cardiacMixing_Transp._ choice375_2_cardiacMixing_Complete_ choice375_1_cardiacMixing_Mild_ choice375_0_cardiacMixing_None_ choice375_e_null
+G c8_0 := O -choice399_1_cardiacMixing_Mild_ -choice399_3_cardiacMixing_Transp._
+G c8_1 := O -choice399_1_cardiacMixing_Mild_ -choice399_2_cardiacMixing_Complete_
+G c8_2 := O -choice399_1_cardiacMixing_Mild_ -choice399_0_cardiacMixing_None_
+G c8_3 := O -choice399_1_cardiacMixing_Mild_ -choice399_e_null
+G c8_4 := O -choice399_3_cardiacMixing_Transp._ -choice399_2_cardiacMixing_Complete_
+G c8_5 := O -choice399_3_cardiacMixing_Transp._ -choice399_0_cardiacMixing_None_
+G c8_6 := O -choice399_3_cardiacMixing_Transp._ -choice399_e_null
+G c8_7 := O -choice399_2_cardiacMixing_Complete_ -choice399_0_cardiacMixing_None_
+G c8_8 := O -choice399_2_cardiacMixing_Complete_ -choice399_e_null
+G c8_9 := O -choice399_0_cardiacMixing_None_ -choice399_e_null
+G c8_10 := O choice399_1_cardiacMixing_Mild_ choice399_3_cardiacMixing_Transp._ choice399_2_cardiacMixing_Complete_ choice399_0_cardiacMixing_None_ choice399_e_null
+G c9_0 := O -choice422_0_cardiacMixing_None_ -choice422_1_cardiacMixing_Mild_
+G c9_1 := O -choice422_0_cardiacMixing_None_ -choice422_3_cardiacMixing_Transp._
+G c9_2 := O -choice422_0_cardiacMixing_None_ -choice422_2_cardiacMixing_Complete_
+G c9_3 := O -choice422_0_cardiacMixing_None_ -choice422_e_null
+G c9_4 := O -choice422_1_cardiacMixing_Mild_ -choice422_3_cardiacMixing_Transp._
+G c9_5 := O -choice422_1_cardiacMixing_Mild_ -choice422_2_cardiacMixing_Complete_
+G c9_6 := O -choice422_1_cardiacMixing_Mild_ -choice422_e_null
+G c9_7 := O -choice422_3_cardiacMixing_Transp._ -choice422_2_cardiacMixing_Complete_
+G c9_8 := O -choice422_3_cardiacMixing_Transp._ -choice422_e_null
+G c9_9 := O -choice422_2_cardiacMixing_Complete_ -choice422_e_null
+G c9_10 := O choice422_0_cardiacMixing_None_ choice422_1_cardiacMixing_Mild_ choice422_3_cardiacMixing_Transp._ choice422_2_cardiacMixing_Complete_ choice422_e_null
+G c10_0 := O -choice445_2_cardiacMixing_Complete_ -choice445_0_cardiacMixing_None_
+G c10_1 := O -choice445_2_cardiacMixing_Complete_ -choice445_1_cardiacMixing_Mild_
+G c10_2 := O -choice445_2_cardiacMixing_Complete_ -choice445_3_cardiacMixing_Transp._
+G c10_3 := O -choice445_2_cardiacMixing_Complete_ -choice445_e_null
+G c10_4 := O -choice445_0_cardiacMixing_None_ -choice445_1_cardiacMixing_Mild_
+G c10_5 := O -choice445_0_cardiacMixing_None_ -choice445_3_cardiacMixing_Transp._
+G c10_6 := O -choice445_0_cardiacMixing_None_ -choice445_e_null
+G c10_7 := O -choice445_1_cardiacMixing_Mild_ -choice445_3_cardiacMixing_Transp._
+G c10_8 := O -choice445_1_cardiacMixing_Mild_ -choice445_e_null
+G c10_9 := O -choice445_3_cardiacMixing_Transp._ -choice445_e_null
+G c10_10 := O choice445_2_cardiacMixing_Complete_ choice445_0_cardiacMixing_None_ choice445_1_cardiacMixing_Mild_ choice445_3_cardiacMixing_Transp._ choice445_e_null
+G c11_0 := O -choice468_3_cardiacMixing_Transp._ -choice468_1_cardiacMixing_Mild_
+G c11_1 := O -choice468_3_cardiacMixing_Transp._ -choice468_2_cardiacMixing_Complete_
+G c11_2 := O -choice468_3_cardiacMixing_Transp._ -choice468_0_cardiacMixing_None_
+G c11_3 := O -choice468_3_cardiacMixing_Transp._ -choice468_e_null
+G c11_4 := O -choice468_1_cardiacMixing_Mild_ -choice468_2_cardiacMixing_Complete_
+G c11_5 := O -choice468_1_cardiacMixing_Mild_ -choice468_0_cardiacMixing_None_
+G c11_6 := O -choice468_1_cardiacMixing_Mild_ -choice468_e_null
+G c11_7 := O -choice468_2_cardiacMixing_Complete_ -choice468_0_cardiacMixing_None_
+G c11_8 := O -choice468_2_cardiacMixing_Complete_ -choice468_e_null
+G c11_9 := O -choice468_0_cardiacMixing_None_ -choice468_e_null
+G c11_10 := O choice468_3_cardiacMixing_Transp._ choice468_1_cardiacMixing_Mild_ choice468_2_cardiacMixing_Complete_ choice468_0_cardiacMixing_None_ choice468_e_null
+G c12_0 := O -choice491_3_cardiacMixing_Transp._ -choice491_1_cardiacMixing_Mild_
+G c12_1 := O -choice491_3_cardiacMixing_Transp._ -choice491_2_cardiacMixing_Complete_
+G c12_2 := O -choice491_3_cardiacMixing_Transp._ -choice491_0_cardiacMixing_None_
+G c12_3 := O -choice491_3_cardiacMixing_Transp._ -choice491_e_null
+G c12_4 := O -choice491_1_cardiacMixing_Mild_ -choice491_2_cardiacMixing_Complete_
+G c12_5 := O -choice491_1_cardiacMixing_Mild_ -choice491_0_cardiacMixing_None_
+G c12_6 := O -choice491_1_cardiacMixing_Mild_ -choice491_e_null
+G c12_7 := O -choice491_2_cardiacMixing_Complete_ -choice491_0_cardiacMixing_None_
+G c12_8 := O -choice491_2_cardiacMixing_Complete_ -choice491_e_null
+G c12_9 := O -choice491_0_cardiacMixing_None_ -choice491_e_null
+G c12_10 := O choice491_3_cardiacMixing_Transp._ choice491_1_cardiacMixing_Mild_ choice491_2_cardiacMixing_Complete_ choice491_0_cardiacMixing_None_ choice491_e_null
+G c25_0 := O -choice217_2_lungParench_Abnormal_ -choice217_0_lungParench_Normal_
+G c25_1 := O -choice217_2_lungParench_Abnormal_ -choice217_1_lungParench_Congested_
+G c25_2 := O -choice217_2_lungParench_Abnormal_ -choice217_e_null
+G c25_3 := O -choice217_0_lungParench_Normal_ -choice217_1_lungParench_Congested_
+G c25_4 := O -choice217_0_lungParench_Normal_ -choice217_e_null
+G c25_5 := O -choice217_1_lungParench_Congested_ -choice217_e_null
+G c25_6 := O choice217_2_lungParench_Abnormal_ choice217_0_lungParench_Normal_ choice217_1_lungParench_Congested_ choice217_e_null
+G c26_0 := O -choice236_1_lungParench_Congested_ -choice236_2_lungParench_Abnormal_
+G c26_1 := O -choice236_1_lungParench_Congested_ -choice236_0_lungParench_Normal_
+G c26_2 := O -choice236_1_lungParench_Congested_ -choice236_e_null
+G c26_3 := O -choice236_2_lungParench_Abnormal_ -choice236_0_lungParench_Normal_
+G c26_4 := O -choice236_2_lungParench_Abnormal_ -choice236_e_null
+G c26_5 := O -choice236_0_lungParench_Normal_ -choice236_e_null
+G c26_6 := O choice236_1_lungParench_Congested_ choice236_2_lungParench_Abnormal_ choice236_0_lungParench_Normal_ choice236_e_null
+G c27_0 := O -choice254_0_lungParench_Normal_ -choice254_1_lungParench_Congested_
+G c27_1 := O -choice254_0_lungParench_Normal_ -choice254_2_lungParench_Abnormal_
+G c27_2 := O -choice254_0_lungParench_Normal_ -choice254_e_null
+G c27_3 := O -choice254_1_lungParench_Congested_ -choice254_2_lungParench_Abnormal_
+G c27_4 := O -choice254_1_lungParench_Congested_ -choice254_e_null
+G c27_5 := O -choice254_2_lungParench_Abnormal_ -choice254_e_null
+G c27_6 := O choice254_0_lungParench_Normal_ choice254_1_lungParench_Congested_ choice254_2_lungParench_Abnormal_ choice254_e_null
+G c28_0 := O -choice272_2_lungParench_Abnormal_ -choice272_0_lungParench_Normal_
+G c28_1 := O -choice272_2_lungParench_Abnormal_ -choice272_1_lungParench_Congested_
+G c28_2 := O -choice272_2_lungParench_Abnormal_ -choice272_e_null
+G c28_3 := O -choice272_0_lungParench_Normal_ -choice272_1_lungParench_Congested_
+G c28_4 := O -choice272_0_lungParench_Normal_ -choice272_e_null
+G c28_5 := O -choice272_1_lungParench_Congested_ -choice272_e_null
+G c28_6 := O choice272_2_lungParench_Abnormal_ choice272_0_lungParench_Normal_ choice272_1_lungParench_Congested_ choice272_e_null
+G c29_0 := O -choice290_1_lungParench_Congested_ -choice290_2_lungParench_Abnormal_
+G c29_1 := O -choice290_1_lungParench_Congested_ -choice290_0_lungParench_Normal_
+G c29_2 := O -choice290_1_lungParench_Congested_ -choice290_e_null
+G c29_3 := O -choice290_2_lungParench_Abnormal_ -choice290_0_lungParench_Normal_
+G c29_4 := O -choice290_2_lungParench_Abnormal_ -choice290_e_null
+G c29_5 := O -choice290_0_lungParench_Normal_ -choice290_e_null
+G c29_6 := O choice290_1_lungParench_Congested_ choice290_2_lungParench_Abnormal_ choice290_0_lungParench_Normal_ choice290_e_null
+G c30_0 := O -choice308_1_lungParench_Congested_ -choice308_2_lungParench_Abnormal_
+G c30_1 := O -choice308_1_lungParench_Congested_ -choice308_0_lungParench_Normal_
+G c30_2 := O -choice308_1_lungParench_Congested_ -choice308_e_null
+G c30_3 := O -choice308_2_lungParench_Abnormal_ -choice308_0_lungParench_Normal_
+G c30_4 := O -choice308_2_lungParench_Abnormal_ -choice308_e_null
+G c30_5 := O -choice308_0_lungParench_Normal_ -choice308_e_null
+G c30_6 := O choice308_1_lungParench_Congested_ choice308_2_lungParench_Abnormal_ choice308_0_lungParench_Normal_ choice308_e_null
+G c31_0 := O -choice1196_1_hypoxiaInO2_Moderate_ -choice1196_0_hypoxiaInO2_Mild_
+G c31_1 := O -choice1196_1_hypoxiaInO2_Moderate_ -choice1196_2_hypoxiaInO2_Severe_
+G c31_2 := O -choice1196_1_hypoxiaInO2_Moderate_ -choice1196_e_null
+G c31_3 := O -choice1196_0_hypoxiaInO2_Mild_ -choice1196_2_hypoxiaInO2_Severe_
+G c31_4 := O -choice1196_0_hypoxiaInO2_Mild_ -choice1196_e_null
+G c31_5 := O -choice1196_2_hypoxiaInO2_Severe_ -choice1196_e_null
+G c31_6 := O choice1196_1_hypoxiaInO2_Moderate_ choice1196_0_hypoxiaInO2_Mild_ choice1196_2_hypoxiaInO2_Severe_ choice1196_e_null
+G c32_0 := O -choice1217_0_hypoxiaInO2_Mild_ -choice1217_2_hypoxiaInO2_Severe_
+G c32_1 := O -choice1217_0_hypoxiaInO2_Mild_ -choice1217_1_hypoxiaInO2_Moderate_
+G c32_2 := O -choice1217_0_hypoxiaInO2_Mild_ -choice1217_e_null
+G c32_3 := O -choice1217_2_hypoxiaInO2_Severe_ -choice1217_1_hypoxiaInO2_Moderate_
+G c32_4 := O -choice1217_2_hypoxiaInO2_Severe_ -choice1217_e_null
+G c32_5 := O -choice1217_1_hypoxiaInO2_Moderate_ -choice1217_e_null
+G c32_6 := O choice1217_0_hypoxiaInO2_Mild_ choice1217_2_hypoxiaInO2_Severe_ choice1217_1_hypoxiaInO2_Moderate_ choice1217_e_null
+G c33_0 := O -choice1237_1_hypoxiaInO2_Moderate_ -choice1237_0_hypoxiaInO2_Mild_
+G c33_1 := O -choice1237_1_hypoxiaInO2_Moderate_ -choice1237_2_hypoxiaInO2_Severe_
+G c33_2 := O -choice1237_1_hypoxiaInO2_Moderate_ -choice1237_e_null
+G c33_3 := O -choice1237_0_hypoxiaInO2_Mild_ -choice1237_2_hypoxiaInO2_Severe_
+G c33_4 := O -choice1237_0_hypoxiaInO2_Mild_ -choice1237_e_null
+G c33_5 := O -choice1237_2_hypoxiaInO2_Severe_ -choice1237_e_null
+G c33_6 := O choice1237_1_hypoxiaInO2_Moderate_ choice1237_0_hypoxiaInO2_Mild_ choice1237_2_hypoxiaInO2_Severe_ choice1237_e_null
+G c34_0 := O -choice1257_2_hypoxiaInO2_Severe_ -choice1257_1_hypoxiaInO2_Moderate_
+G c34_1 := O -choice1257_2_hypoxiaInO2_Severe_ -choice1257_0_hypoxiaInO2_Mild_
+G c34_2 := O -choice1257_2_hypoxiaInO2_Severe_ -choice1257_e_null
+G c34_3 := O -choice1257_1_hypoxiaInO2_Moderate_ -choice1257_0_hypoxiaInO2_Mild_
+G c34_4 := O -choice1257_1_hypoxiaInO2_Moderate_ -choice1257_e_null
+G c34_5 := O -choice1257_0_hypoxiaInO2_Mild_ -choice1257_e_null
+G c34_6 := O choice1257_2_hypoxiaInO2_Severe_ choice1257_1_hypoxiaInO2_Moderate_ choice1257_0_hypoxiaInO2_Mild_ choice1257_e_null
+G c35_0 := O -choice1277_2_hypoxiaInO2_Severe_ -choice1277_1_hypoxiaInO2_Moderate_
+G c35_1 := O -choice1277_2_hypoxiaInO2_Severe_ -choice1277_0_hypoxiaInO2_Mild_
+G c35_2 := O -choice1277_2_hypoxiaInO2_Severe_ -choice1277_e_null
+G c35_3 := O -choice1277_1_hypoxiaInO2_Moderate_ -choice1277_0_hypoxiaInO2_Mild_
+G c35_4 := O -choice1277_1_hypoxiaInO2_Moderate_ -choice1277_e_null
+G c35_5 := O -choice1277_0_hypoxiaInO2_Mild_ -choice1277_e_null
+G c35_6 := O choice1277_2_hypoxiaInO2_Severe_ choice1277_1_hypoxiaInO2_Moderate_ choice1277_0_hypoxiaInO2_Mild_ choice1277_e_null
+G c36_0 := O -choice1297_1_hypoxiaInO2_Moderate_ -choice1297_0_hypoxiaInO2_Mild_
+G c36_1 := O -choice1297_1_hypoxiaInO2_Moderate_ -choice1297_2_hypoxiaInO2_Severe_
+G c36_2 := O -choice1297_1_hypoxiaInO2_Moderate_ -choice1297_e_null
+G c36_3 := O -choice1297_0_hypoxiaInO2_Mild_ -choice1297_2_hypoxiaInO2_Severe_
+G c36_4 := O -choice1297_0_hypoxiaInO2_Mild_ -choice1297_e_null
+G c36_5 := O -choice1297_2_hypoxiaInO2_Severe_ -choice1297_e_null
+G c36_6 := O choice1297_1_hypoxiaInO2_Moderate_ choice1297_0_hypoxiaInO2_Mild_ choice1297_2_hypoxiaInO2_Severe_ choice1297_e_null
+G c37_0 := O -choice1317_1_hypoxiaInO2_Moderate_ -choice1317_0_hypoxiaInO2_Mild_
+G c37_1 := O -choice1317_1_hypoxiaInO2_Moderate_ -choice1317_2_hypoxiaInO2_Severe_
+G c37_2 := O -choice1317_1_hypoxiaInO2_Moderate_ -choice1317_e_null
+G c37_3 := O -choice1317_0_hypoxiaInO2_Mild_ -choice1317_2_hypoxiaInO2_Severe_
+G c37_4 := O -choice1317_0_hypoxiaInO2_Mild_ -choice1317_e_null
+G c37_5 := O -choice1317_2_hypoxiaInO2_Severe_ -choice1317_e_null
+G c37_6 := O choice1317_1_hypoxiaInO2_Moderate_ choice1317_0_hypoxiaInO2_Mild_ choice1317_2_hypoxiaInO2_Severe_ choice1317_e_null
+G c38_0 := O -choice1337_0_hypoxiaInO2_Mild_ -choice1337_2_hypoxiaInO2_Severe_
+G c38_1 := O -choice1337_0_hypoxiaInO2_Mild_ -choice1337_1_hypoxiaInO2_Moderate_
+G c38_2 := O -choice1337_0_hypoxiaInO2_Mild_ -choice1337_e_null
+G c38_3 := O -choice1337_2_hypoxiaInO2_Severe_ -choice1337_1_hypoxiaInO2_Moderate_
+G c38_4 := O -choice1337_2_hypoxiaInO2_Severe_ -choice1337_e_null
+G c38_5 := O -choice1337_1_hypoxiaInO2_Moderate_ -choice1337_e_null
+G c38_6 := O choice1337_0_hypoxiaInO2_Mild_ choice1337_2_hypoxiaInO2_Severe_ choice1337_1_hypoxiaInO2_Moderate_ choice1337_e_null
+G c39_0 := O -choice1357_1_hypoxiaInO2_Moderate_ -choice1357_0_hypoxiaInO2_Mild_
+G c39_1 := O -choice1357_1_hypoxiaInO2_Moderate_ -choice1357_2_hypoxiaInO2_Severe_
+G c39_2 := O -choice1357_1_hypoxiaInO2_Moderate_ -choice1357_e_null
+G c39_3 := O -choice1357_0_hypoxiaInO2_Mild_ -choice1357_2_hypoxiaInO2_Severe_
+G c39_4 := O -choice1357_0_hypoxiaInO2_Mild_ -choice1357_e_null
+G c39_5 := O -choice1357_2_hypoxiaInO2_Severe_ -choice1357_e_null
+G c39_6 := O choice1357_1_hypoxiaInO2_Moderate_ choice1357_0_hypoxiaInO2_Mild_ choice1357_2_hypoxiaInO2_Severe_ choice1357_e_null
+G c40_0 := O -choice1377_2_hypoxiaInO2_Severe_ -choice1377_1_hypoxiaInO2_Moderate_
+G c40_1 := O -choice1377_2_hypoxiaInO2_Severe_ -choice1377_0_hypoxiaInO2_Mild_
+G c40_2 := O -choice1377_2_hypoxiaInO2_Severe_ -choice1377_e_null
+G c40_3 := O -choice1377_1_hypoxiaInO2_Moderate_ -choice1377_0_hypoxiaInO2_Mild_
+G c40_4 := O -choice1377_1_hypoxiaInO2_Moderate_ -choice1377_e_null
+G c40_5 := O -choice1377_0_hypoxiaInO2_Mild_ -choice1377_e_null
+G c40_6 := O choice1377_2_hypoxiaInO2_Severe_ choice1377_1_hypoxiaInO2_Moderate_ choice1377_0_hypoxiaInO2_Mild_ choice1377_e_null
+G c41_0 := O -choice1397_1_hypoxiaInO2_Moderate_ -choice1397_0_hypoxiaInO2_Mild_
+G c41_1 := O -choice1397_1_hypoxiaInO2_Moderate_ -choice1397_2_hypoxiaInO2_Severe_
+G c41_2 := O -choice1397_1_hypoxiaInO2_Moderate_ -choice1397_e_null
+G c41_3 := O -choice1397_0_hypoxiaInO2_Mild_ -choice1397_2_hypoxiaInO2_Severe_
+G c41_4 := O -choice1397_0_hypoxiaInO2_Mild_ -choice1397_e_null
+G c41_5 := O -choice1397_2_hypoxiaInO2_Severe_ -choice1397_e_null
+G c41_6 := O choice1397_1_hypoxiaInO2_Moderate_ choice1397_0_hypoxiaInO2_Mild_ choice1397_2_hypoxiaInO2_Severe_ choice1397_e_null
+G c42_0 := O -choice1417_2_hypoxiaInO2_Severe_ -choice1417_1_hypoxiaInO2_Moderate_
+G c42_1 := O -choice1417_2_hypoxiaInO2_Severe_ -choice1417_0_hypoxiaInO2_Mild_
+G c42_2 := O -choice1417_2_hypoxiaInO2_Severe_ -choice1417_e_null
+G c42_3 := O -choice1417_1_hypoxiaInO2_Moderate_ -choice1417_0_hypoxiaInO2_Mild_
+G c42_4 := O -choice1417_1_hypoxiaInO2_Moderate_ -choice1417_e_null
+G c42_5 := O -choice1417_0_hypoxiaInO2_Mild_ -choice1417_e_null
+G c42_6 := O choice1417_2_hypoxiaInO2_Severe_ choice1417_1_hypoxiaInO2_Moderate_ choice1417_0_hypoxiaInO2_Mild_ choice1417_e_null

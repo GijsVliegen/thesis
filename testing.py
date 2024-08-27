@@ -26,13 +26,13 @@ def varOrderTest():
     #nrOfIterations = 10
     operation = OR
     randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, vtree_type="random")
-    vtree = randomApplier.compiler.sddManager.vtree() 
+    vtree = randomApplier.compilerForCNFs.sddManager.vtree() 
     sdds = randomApplier.baseSdds
-    varAppList = SddVarAppearancesList(sdds, randomApplier.compiler.sddManager)
+    varAppList = SddVarAppearancesList(sdds, randomApplier.compilerForCNFs.sddManager)
     varAppOrder = varAppList.var_order
-    ReverseLRvarAppList = SddVarAppearancesList(sdds, randomApplier.compiler.sddManager, inverse=True, LR = True)
+    ReverseLRvarAppList = SddVarAppearancesList(sdds, randomApplier.compilerForCNFs.sddManager, inverse=True, LR = True)
     ReverseLRvarAppOrder = ReverseLRvarAppList.var_order
-    ReverseRLvarAppList = SddVarAppearancesList(sdds, randomApplier.compiler.sddManager, inverse=True, LR = False)
+    ReverseRLvarAppList = SddVarAppearancesList(sdds, randomApplier.compilerForCNFs.sddManager, inverse=True, LR = False)
     ReverseRLvarAppOrder = ReverseRLvarAppList.var_order
     print(f"var order = {varAppOrder}")
     print(f"inverse var order LR = {ReverseLRvarAppOrder}")
@@ -56,7 +56,7 @@ def varsUnderVtreeNode_test():
     print(SddVtreeCountList.varsUnderVtreeNode(f3vars, vtree))
 
     randomApplier = HeuristicApply(nrOfSdds, 15, 75, vtree_type="random")
-    mgr = randomApplier.compiler.sddManager
+    mgr = randomApplier.compilerForCNFs.sddManager
     vtree = mgr.vtree() 
     sdds = randomApplier.baseSdds
     varCounts = [sum(mgr.sdd_variables(sdd)) for sdd in sdds]
@@ -256,16 +256,6 @@ def sdd_graphical_research_test():
         #     print(sdd.dot(), file = out)
         # graphviz.Source(sdd.dot()).render("vtree_count_implementation_test_sdds/"+fileName, format='png')
 
-def countingTests():
-    nrOfSdds = 10
-    nrOfVars = 16
-    nrOfClauses = 10
-    randApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, operation="OR", vtree_type="random")
-    finalSdd = randApplier.doHeuristicApply(4)
-    counts = randApplier.extractCounts()
-    for i in counts:
-        (c, lc, dc) = i
-        print(f"live count = {lc}, dead count = {dc}, total count = {c}")
 
 def testSddVarAppearances():
     #werking van varpriority testen
@@ -383,12 +373,12 @@ def testApplyOnOneVar():
     randomApplier = HeuristicApply(nrOfIterations, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
     vars = []
     for i in range(nrOfVars):
-        vars.append(randomApplier.compiler.sddManager.literal(i+1))
+        vars.append(randomApplier.compilerForCNFs.sddManager.literal(i+1))
 
     sizeComparisons = [0]*nrOfVars
     for i in range(nrOfIterations):
         baseSdd = randomApplier.baseSdds[i]
-        sizes = getSizes(randomApplier.compiler.sddManager, vars, baseSdd, operation)
+        sizes = getSizes(randomApplier.compilerForCNFs.sddManager, vars, baseSdd, operation)
         #print(f"ordered sizes : {orderedSizes}")
         for i in range(nrOfVars):
             sizeComparisons[i] += sizes[i]/baseSdd.size() #lager getal geeft aan dat sdd algemeen kleiner wordt
@@ -407,39 +397,39 @@ def testDimacs():
 def testMinimization():
     randomApplier = HeuristicApply(nrOfSdds, nrOfVars, nrOfClauses, cnf3=True, operation="OR")
     baseSdd0 = randomApplier.baseSdds[0]
-    print(f"grootte: base sdd heeft size {baseSdd0.count()} en {randomApplier.compiler.sddManager.count()} nodes in de sddManager")
+    print(f"grootte: base sdd heeft size {baseSdd0.count()} en {randomApplier.compilerForCNFs.sddManager.count()} nodes in de sddManager")
 
     output_directory = "/home/gijs/school/23-24/thesisUbuntu/output"
     file_path_vtree0 = os.path.join(output_directory, "vtree0.dot")
     with open(file_path_vtree0, "w") as out:
-        print(randomApplier.compiler.sddManager.vtree().dot(), file=out)
+        print(randomApplier.compilerForCNFs.sddManager.vtree().dot(), file=out)
 
     randomApplier.minimize_base_sdds()
-    print(f"grootte: base sdd heeft size {baseSdd0.count()} en {randomApplier.compiler.sddManager.count()} nodes in de sddManager")
+    print(f"grootte: base sdd heeft size {baseSdd0.count()} en {randomApplier.compilerForCNFs.sddManager.count()} nodes in de sddManager")
 
     file_path_vtree1 = os.path.join(output_directory, "vtree1.dot")
     with open(file_path_vtree1, "w") as out:
-        print(randomApplier.compiler.sddManager.vtree().dot(), file=out)
+        print(randomApplier.compilerForCNFs.sddManager.vtree().dot(), file=out)
 
 
     sdd = randomApplier.doRandomApply()
-    print(f"grootte: sdd heeft size {sdd.count()} en {randomApplier.compiler.sddManager.count()} nodes in de sddManager")
+    print(f"grootte: sdd heeft size {sdd.count()} en {randomApplier.compilerForCNFs.sddManager.count()} nodes in de sddManager")
 
     randomApplier.minimize_with_all()
-    print(f"grootte: sdd heeft size {sdd.count()} en {randomApplier.compiler.sddManager.count()} nodes in de sddManager")
+    print(f"grootte: sdd heeft size {sdd.count()} en {randomApplier.compilerForCNFs.sddManager.count()} nodes in de sddManager")
     file_path_vtree2 = os.path.join(output_directory, "vtree2.dot")
     with open(file_path_vtree2, "w") as out:
-        print(randomApplier.compiler.sddManager.vtree().dot(), file=out)
+        print(randomApplier.compilerForCNFs.sddManager.vtree().dot(), file=out)
 
     randomApplier.minimize_only_final()
-    print(f"grootte: sdd heeft size {sdd.count()} en {randomApplier.compiler.sddManager.count()} nodes in de sddManager")
+    print(f"grootte: sdd heeft size {sdd.count()} en {randomApplier.compilerForCNFs.sddManager.count()} nodes in de sddManager")
     file_path_vtree3 = os.path.join(output_directory, "vtree3.dot")
     with open(file_path_vtree3, "w") as out:
-        print(randomApplier.compiler.sddManager.vtree().dot(), file=out)
+        print(randomApplier.compilerForCNFs.sddManager.vtree().dot(), file=out)
 
 def testVtreeFunctions():
     randomApplier = HeuristicApply(1, 16, 5, vtree_type="random")
-    vtree = randomApplier.compiler.sddManager.vtree()
+    vtree = randomApplier.compilerForCNFs.sddManager.vtree()
     with open("vtree", "w") as out:
         print(vtree.dot(), file=out)
     graphviz.Source(vtree.dot()).render(f"vtree", format='png')

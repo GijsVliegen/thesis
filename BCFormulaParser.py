@@ -1,12 +1,50 @@
-from pysdd.sdd import SddManager, Vtree, WmcManager, SddNode
+from pysdd.sdd import SddManager, Vtree
 from problog_formulas.propositional_formula import FormulaContainer, FormulaOp, RefFormula
-import random, time
-from flatSDDCompiler import SDDcompiler
-from heuristicApplier import HeuristicApply, SddVarAppearancesList, SddVtreeCountList, heuristicApplyCustom
+import sys
+import os, signal
+from heuristicApplier import HeuristicApply, heuristicApplyCustom
 from heuristicApplier import RANDOM, IVO_LR, IVO_RL, \
     KE, VP, VP_KE, VO, EL, VP_EL, ELVAR, VP_ELVAR, IVO_RL_EL, IVO_RL_EL_Size, \
     OR, AND
 
+#detects deadlocks in DAG formulas, deadlocked formulas cannot be compiled
+def deadlockDetector(filename):
+    with open(filename, 'r') as file:
+        lines = file.readlines()
+
+    childDict = {}
+    lineNr = -1
+    while lineNr < len(lines)-1:
+        lineNr += 1
+        i = lines[lineNr]
+        i = i[:-1]  #removes \n
+        if i[0] == "T":
+            pass
+        if i[0] == "I":
+            childDict[i[2:]] = []
+        if i[0] == "G":
+            gName, rest = i[2:].split(" := ")
+            children = rest[2:].split(" ")
+            for index, child in enumerate(children):
+                if child.startswith("-"):
+                    children[index] = child[1:]
+            childDict[gName] = children
+    for node in childDict.keys():
+        for child in childDict[node]:
+            if node in childDict[child]:
+                print("deadlock detected")
+                return True
+
+#used to check which formulas were not able to compile in half an hour using vsc, and remove them
+def noResultsOOT(filename):
+    actualFileName = filename.split("/")[-1]
+    folder = "outputPaper"
+    if actualFileName[:-3] not in os.listdir(folder):
+        # os.remove(filename)
+        print(f"{filename} langer dan 30 minuten of OOM")
+
+#deadlock mogelijk
+#parses a file to a formula object, returning the formula and id of the root node
 def parseBCToFormula(filename):
     with open(filename, 'r') as file:
         lines = file.readlines()
@@ -22,9 +60,7 @@ def parseBCToFormula(filename):
         i = i[:-1]  #removes \n
         if i[0] == "T":
             TrueStmts.append(i[2:])
-            # print(i[2:-1])
         if i[0] == "I":
-            # print(i[2:-1])
             subFormulaDict[i[2:]] = len(subFormulaDict) + 1
             formula.add_formula(RefFormula(FormulaOp.ATOM, tuple()))
             varCounter += 1
@@ -40,14 +76,12 @@ def parseBCToFormula(filename):
                     subFormulaDict[childName] = len(subFormulaDict) + 1#placeholder for neg formula
                     childInt = formula.add_formula(RefFormula(FormulaOp.NEG, tuple([childInt])))
                 else:     #ongekende variable als kind
-                    # childInt = subFormulaDict[childName]
                     handleLater = True
                     break
                 children.append(childInt)
 
             if (handleLater):
                 lines.append(i+"#")
-                # print(f"variable {gName} handled later")
                 continue
 
             subFormulaDict[gName] = len(subFormulaDict) + 1
@@ -71,14 +105,17 @@ def parseBCToFormula(filename):
     return formula, lastNode, varCounter
 
 class Compiler():
-    def __init__(self, formula, sddManager, nrOfVars, heuristic):
+    def __init__(self, formula, nrOfVars, vtreeType, heuristic):
         self.dynamicCache = {}
         self.formula = formula
-        self.sddManager = sddManager
+        vtree = Vtree(var_count=nrOfVars, vtree_type=vtreeType) #kan nog aangepast worden voor experiment
+        self.sddManager = SddManager.from_vtree(vtree)
         self.nrOfVars = nrOfVars 
         self.heur = heuristic
     
-    def clean(self, sdd):
+    #garbage collection
+    #useful because otherwise cache may skew results of compiletimes
+    def cleanExcept(self, sdd):
         if sdd is not None: sdd.ref()
         self.sddManager.garbage_collect()
         if sdd is not None: sdd.deref()
@@ -106,8 +143,7 @@ class Compiler():
         self.dynamicCache[rootNodeId] = sdd
         return (sdd, sum(compileTimes) + totalTime, sum(noOverheadTimes) + noOverheadTime)
 
-
-import os, signal
+#iterate over all files and run some checks on the corresponding formulas
 def folderIterator(folderPath, timeOut, heur):
     class TimeoutError(Exception):
             pass
@@ -158,7 +194,16 @@ def folderIterator(folderPath, timeOut, heur):
             # return result
             for index, file in enumerate(sorted(files)):
                 filePath = os.path.join(root, file)
-                print(f"{index}: {filePath}")
+                if (deadlockDetector(filePath) or noResultsOOT(filePath)):
+                    try:
+                        # Remove the file
+                        os.remove(filePath)
+                        print(f"File {filePath} deleted successfully.")
+                        continue
+                    except Exception as e:
+                        print(f"Error occurred while deleting file {filePath}: {e}")
+
+                # print(f"{index}: {filePath}")
                 # formula, lastNodeNr, var_count = parseBCToFormula(filePath)
                 # lenOfForm = len(formula._formulas)
                 # formula._formulas[0].children
@@ -168,7 +213,7 @@ def folderIterator(folderPath, timeOut, heur):
 
                 # print(f"formLength = {len(childrenListLengths)}, nodes with 2 children = {list(childrenListLengths).count(2)}")
                 # print(f"max nr Of Children = {maxChildNr}")
-                # if maxChildNr < 4 or lenOfForm < 100 or lenOfForm > 1000:
+                # if maxChildNr < 4 or lenOfForm < 20 or lenOfForm > 1000:
                 #     try:
                 #         # Remove the file
                 #         os.remove(filePath)
@@ -186,6 +231,7 @@ def cnfValidation(filePath, var_count):
     sdd = mgr.read_cnf_file(bytes(filePath, encoding='utf-8'))
     return sdd
 
+#compile circuit and test some things on the DAG-formula or the resulting sdd 
 def testCircuit(folder_path, heur, id):
     data_directory = os.environ.get("VSC_DATA")
     if data_directory is None:
@@ -223,27 +269,59 @@ def testCircuit(folder_path, heur, id):
             os.makedirs(os.path.dirname(fullPath), exist_ok=True)
             with open(fullPath, 'w') as file:
                 file.write(f"{compTime} {timeNoOverhead}\n") 
-            
-#549 files
-# def main():
-#     # testCircuit("circuits/bcs/noisy_or_10.bc")
-#     folder_path = 'circuits/bcs'
-#     id = 5
-#     testCircuit(folder_path, RANDOM, id)
-#     # print(f"final size = {sdd.size()}, compileTime = {compTime}, woOH = {timeNoOverhead}")
-#     testCircuit(folder_path, VP_EL, id)
-#     # print(f"final size = {sdd.size()}, compileTime = {compTime}, woOH = {timeNoOverhead}")
 
-import sys
+#saves total time and time without overhead to file in VSC Data folder
+def saveToFile(local_file_path, compTime, timeNoOverhead):
+    data_directory = os.environ.get("VSC_DATA")
+    if data_directory is None:
+        data_directory = ""
+    fullPath = os.path.join(data_directory, local_file_path)
+    os.makedirs(os.path.dirname(fullPath), exist_ok=True)
+    with open(fullPath, 'w') as file:
+        file.write(f"{compTime} {timeNoOverhead}\n")   
+
+#compile all files in a folder to sdds, using a certain heuristic
+#compileTimes are recorded and saved to file
+def compileCircuits(folder_path, heur, id): 
+    data_directory = os.environ.get("VSC_DATA")
+    if data_directory is None:
+        data_directory = ""
+    fullFolderPath = os.path.join(data_directory, folder_path)
+
+    #loop over all files in a directory
+    for root, dirs, files in os.walk(fullFolderPath):
+        print(files)
+        for file in files:
+            #parsing of formula 
+            filePath = os.path.join(fullFolderPath, file)
+            formula, lastNodeNr, var_count = parseBCToFormula(filePath)
+            print("parsed")
+
+            #compile formule to sdd
+            compiler = Compiler(formula, var_count, heur)
+            (sdd, compTime, timeNoOverhead) = compiler.compileToSdd(lastNodeNr)
+            compiler.cleanExcept(sdd)
+
+            print(f"final size = {sdd.size()}, compileTime = {compTime}, woOH = {timeNoOverhead}")
+                # checking cnf, werkt niet, want moet in 3-cnf staan
+                # splitPath = filePath.split("/")
+                # cnfPath = splitPath[0] + "/dimacs/" + splitPath[2][:-3] + ".cnf"
+                # cnfSdd = cnfValidation(cnfPath, var_count)
+                # print(f"cnf compile size = {cnfSdd.size()}")
+
+            local_file_path = f"outputPaper/{file[:-3]}/{heur}_{id}.txt"
+            saveToFile(local_file_path, compTime, timeNoOverhead)
+
+#heur is een integer gelijk aan de heuristiek, zie Constants in heuristicApplier
+#id is de identifier van het experiment, zie BCCompilerScript.slurm (slurm_array_task_id)  
 def main():
-    # folder_path = 'circuits/bcs'
-    # folderIterator(folder_path, 5, 8)
+    folder_path = 'circuits/bcs'
     args = sys.argv[1:]
     heur = int(args[0])
     id = int(args[1])
     print(f"id = {id}, heur = {heur}")
-    folder_path = 'circuits/bcs'
-    testCircuit(folder_path, heur, id)
+    compileCircuits(folder_path, heur, id)
+
 
 if __name__ == "__main__":
     # Call main function with command line arguments excluding script name

@@ -1,0 +1,47 @@
+c BC-S1.2
+T asthman5
+I choice18_0_influencen3_n9_n3_n9
+I choice8_0_stressn8_n8
+I choice18_0_influencen9_n2_n9_n2
+I choice8_0_stressn7_n7
+I choice18_0_influencen3_n7_n3_n7
+I choice18_0_influencen4_n8_n4_n8
+I choice8_0_stressn5_n5
+I choice18_0_influencen3_n4_n3_n4
+I choice18_0_influencen0_n7_n0_n7
+I choice18_0_influencen7_n2_n7_n2
+I choice18_0_influencen3_n0_n3_n0
+I choice8_0_stressn2_n2
+I choice18_0_influencen8_n2_n8_n2
+I choice18_0_influencen3_n2_n3_n2
+I choice8_0_stressn0_n0
+I choice39_0_asthman5_n5
+I choice18_0_influencen4_n0_n4_n0
+I choice18_0_influencen8_n0_n8_n0
+I choice18_0_influencen2_n5_n2_n5
+I choice8_0_stressn3_n3
+I choice8_0_stressn4_n4
+I choice8_0_stressn9_n9
+I choice18_0_influencen3_n5_n3_n5
+G g6 := A choice18_0_influencen3_n2_n3_n2 choice8_0_stressn3_n3
+G g12 := A choice18_0_influencen3_n0_n3_n0 choice8_0_stressn3_n3
+G g16 := A choice18_0_influencen3_n4_n3_n4 choice8_0_stressn3_n3
+G smokesn4 := O choice8_0_stressn4_n4 g16
+G g18 := A choice18_0_influencen4_n0_n4_n0 smokesn4
+G g23 := A choice18_0_influencen4_n8_n4_n8 smokesn4
+G smokesn8 := O choice8_0_stressn8_n8 g23
+G g25 := A choice18_0_influencen8_n0_n8_n0 smokesn8
+G problog_cv_smokes_cb_0n0 := O choice8_0_stressn0_n0 g12 g18 g25
+G g27 := A choice18_0_influencen0_n7_n0_n7 problog_cv_smokes_cb_0n0
+G g29 := A choice18_0_influencen3_n7_n3_n7 choice8_0_stressn3_n3
+G problog_cv_smokes_cb_0n7 := O choice8_0_stressn7_n7 g27 g29
+G g31 := A choice18_0_influencen7_n2_n7_n2 problog_cv_smokes_cb_0n7
+G g33 := A choice18_0_influencen8_n2_n8_n2 smokesn8
+G g37 := A choice18_0_influencen3_n9_n3_n9 choice8_0_stressn3_n3
+G smokesn9 := O choice8_0_stressn9_n9 g37
+G g39 := A choice18_0_influencen9_n2_n9_n2 smokesn9
+G problog_cv_smokes_cb_0n2 := O choice8_0_stressn2_n2 g6 g31 g33 g39
+G g41 := A choice18_0_influencen2_n5_n2_n5 problog_cv_smokes_cb_0n2
+G g43 := A choice18_0_influencen3_n5_n3_n5 choice8_0_stressn3_n3
+G problog_cv_smokes_cb_0n5 := O choice8_0_stressn5_n5 g41 g43
+G asthman5 := A problog_cv_smokes_cb_0n5 choice39_0_asthman5_n5

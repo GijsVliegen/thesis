@@ -1,0 +1,70 @@
+c BC-S1.2
+T g1
+T g2
+T g3
+T g4
+T g5
+T g6
+T g7
+T g8
+T g9
+T g10
+T g11
+T g12
+T g13
+T g14
+T g15
+T g16
+T g17
+T g18
+T g19
+T g20
+I x3
+I x13
+I x8
+I x1
+I x5
+I x10
+I x4
+I x14
+I x7
+I x11
+G x2 := O x16 x17 x18
+G x6 := O x22 x23
+G x9 := O x24 x25
+G x12 := O x26 x27
+G x15 := O x28 x29
+G x16 := I x1
+G x17 := A x13 -x11 x10
+G x18 := A x8 -x7 x6
+G x19 := A x11 x10
+G x20 := A x3 x2
+G x21 := A x7 x6
+G x22 := A x14 -x12 x10
+G x23 := I x5
+G x24 := I x8
+G x25 := I x7
+G x26 := I x11
+G x27 := I x13
+G x28 := I x12
+G x29 := I x14
+G g1 := O x16 -x1
+G g2 := O -x16 x1
+G g3 := O -x4 x19 x20 x21
+G g4 := O x4 -x19
+G g5 := O x4 -x20
+G g6 := O x4 -x21
+G g7 := O x23 -x5
+G g8 := O -x23 x5
+G g9 := O x24 -x8
+G g10 := O -x24 x8
+G g11 := O x25 -x7
+G g12 := O -x25 x7
+G g13 := O x26 -x11
+G g14 := O -x26 x11
+G g15 := O x27 -x13
+G g16 := O -x27 x13
+G g17 := O x28 -x12
+G g18 := O -x28 x12
+G g19 := O x29 -x14
+G g20 := O -x29 x14
