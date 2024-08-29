@@ -280,8 +280,9 @@ def saveToFile(local_file_path, compTime, timeNoOverhead):
     with open(fullPath, 'w') as file:
         file.write(f"{compTime} {timeNoOverhead}\n")   
 
-#compile all files in a folder to sdds, using a certain heuristic
+#compile all files in a folder to sdds, using a certain heuristic heur
 #compileTimes are recorded and saved to file
+#id denotes the nr of this experiment, so you can start multiple jobs with an array of ids
 def compileCircuits(folder_path, heur, id): 
     data_directory = os.environ.get("VSC_DATA")
     if data_directory is None:

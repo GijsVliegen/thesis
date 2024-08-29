@@ -1,9 +1,14 @@
 jobs in vsc
 
-job in sbatch zetten: sbatch --export=NrOfVars=28,Iters=1,Vtree="balanced",Overhead="true" exampleSbatchScript.slurm
+job in sbatch zetten
 
-sbatch --array=1-549 --export=Heuristic=8 BCCompilerScript.slurm
+	-apply-order on cnf generated sdds: 	sbatch --export=NrOfVars=28,Iters=1,Vtree="balanced",Overhead="true" exampleSbatchScript.slurm
+
+	-apply-order on given formulas: 	sbatch --array=1-100 --export=Heuristic=8 BCCompilerScript.slurm
+	
 accounts: intro_vsc36004, lp_edu_alg_parallel_comp, lp_dtai1
+
+
 
 requesting compute resources
 
@@ -41,6 +46,7 @@ resetting all modules:
 kul cluster + partition
 	--clusters=wice
 	--partition=batch (default, 72 tasks per node)
+	
 voorbeeld voor mpi
 	#! /bin/bash
 	#
